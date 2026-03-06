@@ -804,90 +804,97 @@
             }
         }
         
-        // ========== БИЗНЕСЫ ==========
-        function renderMyBusiness(content) {
-            let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
+        /// ========== БИЗНЕСЫ ==========
+function renderMyBusiness(content) {
+    let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
+    
+    const owned = gameState.businesses.filter(b => b.owned);
+    
+    if (owned.length === 0) {
+        html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
+    } else {
+        owned.forEach(b => {
+            const upgrading = b.upgradeEnd > Date.now();
+            const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
             
-            const owned = gameState.businesses.filter(b => b.owned);
-            
-            if (owned.length === 0) {
-                html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
-            } else {
-                owned.forEach(b => {
-                    const upgrading = b.upgradeEnd > Date.now();
-                    const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
-                    
-                    html += `
-                        <div class="business-item" onclick="openBusiness(${b.id})">
-                            <div class="business-header">
-                                <span class="business-name">${b.name}</span>
-                                <span class="business-level">${b.level}/${b.maxLevel}</span>
-                            </div>
-                            <div class="business-stats">
-                                <span>💰 +${b.baseIncome * b.level}/сек</span>
-                                <span>📈 ${formatNumber(Math.floor(b.totalEarned))}</span>
-                            </div>
-                            ${upgrading ? `
-                                <div class="business-progress">
-                                    <div class="business-bar" style="width: ${((Date.now() - b.lastUpgrade) / (b.upgradeEnd - b.lastUpgrade) * 100)}%"></div>
-                                </div>
-                                <div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>
-                            ` : b.level < b.maxLevel ? `
-                                <div class="upgrade-time">💰 УЛУЧШИТЬ: ${formatNumber(b.upgradeCost)}</div>
-                            ` : '<div style="color:#ffd700; text-align:center;">МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>'}
-                        </div>
-                    `;
-                });
-            }
-            
-            html += '<div class="btn btn-gold" onclick="renderBuyBusiness()">➕ КУПИТЬ НОВЫЙ БИЗНЕС</div>';
-            html += '</div>';
-            content.innerHTML = html;
-        }
-        
-        function renderBuyBusiness() {
-            const content = document.getElementById('content');
-            let html = '<div class="card"><div class="card-title">🏪 КУПИТЬ БИЗНЕС</div>';
-            
-            const notOwned = gameState.businesses.filter(b => !b.owned);
-            
-            notOwned.forEach(b => {
-                html += `
-                    <div class="business-item" onclick="buyBusiness(${b.id})">
-                        <div class="business-header">
-                            <span class="business-name">${b.name}</span>
-                        </div>
-                        <div class="business-stats">
-                            <span>💰 ДОХОД: +${b.baseIncome}/сек</span>
-                            <span>⏱️ ВРЕМЯ: ${b.upgradeTime}С</span>
-                        </div>
-                        <div class="upgrade-time" style="color:#4CAF50;">💰 ЦЕНА: ${formatNumber(b.upgradeCost)}</div>
-                        <div class="btn btn-small" style="margin-top:10px;">КУПИТЬ</div>
+            html += `
+                <div class="business-item" onclick="openBusiness(${b.id})">
+                    <div class="business-header">
+                        <span class="business-name">${b.name}</span>
+                        <span class="business-level">${b.level}/${b.maxLevel}</span>
                     </div>
-                `;
-            });
-            
-            html += '<div class="btn" onclick="renderTab(\'mybusiness\')">◀ НАЗАД</div>';
-            html += '</div>';
-            content.innerHTML = html;
-        }
-        
-        function buyBusiness(id) {
-            const b = gameState.businesses.find(b => b.id === id);
-            if (!b || b.owned) return;
-            
-            if (gameState.balance >= b.upgradeCost) {
-                gameState.balance -= b.upgradeCost;
-                b.owned = true;
-                b.level = 1;
-                saveGame();
-                updateUI();
-                renderTab('mybusiness');
-            } else {
-                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-            }
-        }
-        
+                    <div class="business-stats">
+                        <span>💰 +${b.baseIncome * b.level}/сек</span>
+                        <span>📈 ${formatNumber(Math.floor(b.totalEarned))}</span>
+                    </div>
+                    ${upgrading ? `
+                        <div class="business-progress">
+                            <div class="business-bar" style="width: ${((Date.now() - b.lastUpgrade) / (b.upgradeEnd - b.lastUpgrade) * 100)}%"></div>
+                        </div>
+                        <div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>
+                    ` : b.level < b.maxLevel ? `
+                        <div class="upgrade-time">💰 УЛУЧШИТЬ: ${formatNumber(b.upgradeCost)}</div>
+                    ` : '<div style="color:#ffd700; text-align:center;">МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>'}
+                </div>
+            `;
+        });
+    }
+    
+    // ИСПРАВЛЕНО: теперь открывает модальное окно, а не переходит на другую страницу
+    html += '<div class="btn btn-gold" onclick="openBuyBusinessModal()">➕ КУПИТЬ НОВЫЙ БИЗНЕС</div>';
+    html += '</div>';
+    content.innerHTML = html;
+}
+
+// НОВАЯ ФУНКЦИЯ: открывает модальное окно для покупки бизнеса
+function openBuyBusinessModal() {
+    const modal = document.getElementById('businessModal');
+    const modalContent = document.getElementById('businessModalContent');
+    
+    let html = '<div class="modal-title">🏪 КУПИТЬ БИЗНЕС</div>';
+    
+    const notOwned = gameState.businesses.filter(b => !b.owned);
+    
+    notOwned.forEach(b => {
+        html += `
+            <div class="business-item" style="cursor:pointer;" onclick="buyBusinessFromModal(${b.id})">
+                <div class="business-header">
+                    <span class="business-name">${b.name}</span>
+                </div>
+                <div class="business-stats">
+                    <span>💰 ДОХОД: +${b.baseIncome}/сек</span>
+                    <span>⏱️ ВРЕМЯ: ${b.upgradeTime}С</span>
+                </div>
+                <div class="upgrade-time" style="color:#4CAF50;">💰 ЦЕНА: ${formatNumber(b.upgradeCost)}</div>
+                <div class="btn btn-small" style="margin-top:10px; pointer-events:none;">КУПИТЬ</div>
+            </div>
+        `;
+    });
+    
+    html += '<div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>';
+    
+    modalContent.innerHTML = html;
+    modal.classList.add('active');
+}
+
+// НОВАЯ ФУНКЦИЯ: покупка бизнеса из модального окна
+function buyBusinessFromModal(id) {
+    const b = gameState.businesses.find(b => b.id === id);
+    if (!b || b.owned) return;
+    
+    if (gameState.balance >= b.upgradeCost) {
+        gameState.balance -= b.upgradeCost;
+        b.owned = true;
+        b.level = 1;
+        saveGame();
+        updateUI();
+        closeBusinessModal();
+        // Показываем сообщение об успешной покупке
+        alert(`✅ Вы купили ${b.name}!`);
+    } else {
+        alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+    }
+}
         function openBusiness(id) {
             const b = gameState.businesses.find(b => b.id === id);
             if (!b) return;
@@ -1372,3 +1379,4 @@
     </script>
 </body>
 </html>
+
