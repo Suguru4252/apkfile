@@ -722,8 +722,8 @@
             }
             
             gameState.lastOnlineTime = now;
-            updateUI();
             checkBusinessUpgrades();
+            updateUI();
         }
         
         function saveGame() {
@@ -805,189 +805,232 @@
         }
         
         // ========== БИЗНЕСЫ ==========
-function renderMyBusiness(content) {
-    let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
-    
-    const owned = gameState.businesses.filter(b => b.owned);
-    
-    if (owned.length === 0) {
-        html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
-    } else {
-        owned.forEach(b => {
-            const upgrading = b.upgradeEnd > Date.now();
-            const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
+        function renderMyBusiness(content) {
+            let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
             
-            html += `
-                <div class="business-item" onclick="openBusiness(${b.id})">
-                    <div class="business-header">
-                        <span class="business-name">${b.name}</span>
-                        <span class="business-level">${b.level}/${b.maxLevel}</span>
-                    </div>
-                    <div class="business-stats">
-                        <span>💰 +${b.baseIncome * b.level}/сек</span>
-                        <span>📈 ${formatNumber(Math.floor(b.totalEarned))}</span>
-                    </div>
-                    ${upgrading ? `
-                        <div class="business-progress">
-                            <div class="business-bar" style="width: ${((Date.now() - b.lastUpgrade) / (b.upgradeEnd - b.lastUpgrade) * 100)}%"></div>
+            const owned = gameState.businesses.filter(b => b.owned);
+            
+            if (owned.length === 0) {
+                html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
+            } else {
+                owned.forEach(b => {
+                    const upgrading = b.upgradeEnd > Date.now();
+                    const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
+                    
+                    html += `
+                        <div class="business-item" onclick="openBusiness(${b.id})">
+                            <div class="business-header">
+                                <span class="business-name">${b.name}</span>
+                                <span class="business-level">${b.level}/${b.maxLevel}</span>
+                            </div>
+                            <div class="business-stats">
+                                <span>💰 +${b.baseIncome * b.level}/сек</span>
+                                <span>📈 ${formatNumber(Math.floor(b.totalEarned))}</span>
+                            </div>
+                            ${upgrading ? `
+                                <div class="business-progress">
+                                    <div class="business-bar" style="width: ${((Date.now() - b.lastUpgrade) / (b.upgradeEnd - b.lastUpgrade) * 100)}%"></div>
+                                </div>
+                                <div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>
+                            ` : b.level < b.maxLevel ? `
+                                <div class="upgrade-time">💰 УЛУЧШИТЬ: ${formatNumber(b.upgradeCost)}</div>
+                            ` : '<div style="color:#ffd700; text-align:center;">МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>'}
                         </div>
-                        <div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>
-                    ` : b.level < b.maxLevel ? `
-                        <div class="upgrade-time">💰 УЛУЧШИТЬ: ${formatNumber(b.upgradeCost)}</div>
-                    ` : '<div style="color:#ffd700; text-align:center;">МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>'}
-                </div>
-            `;
-        });
-    }
-    
-    html += '<div class="btn btn-gold" onclick="openBuyBusinessModal()">➕ КУПИТЬ НОВЫЙ БИЗНЕС</div>';
-    html += '</div>';
-    content.innerHTML = html;
-}
-
-// ИСПРАВЛЕННАЯ ФУНКЦИЯ УЛУЧШЕНИЯ
-function startUpgrade(id) {
-    const b = gameState.businesses.find(b => b.id === id);
-    if (!b || !b.owned) {
-        alert('❌ Бизнес не найден!');
-        return;
-    }
-    
-    if (b.level >= b.maxLevel) {
-        alert('❌ Достигнут максимальный уровень!');
-        return;
-    }
-    
-    if (b.upgradeEnd > Date.now()) {
-        alert('⏱️ Улучшение уже идет!');
-        return;
-    }
-    
-    // Проверяем баланс
-    if (gameState.balance < b.upgradeCost) {
-        alert('❌ Недостаточно монет!');
-        return;
-    }
-    
-    // СПИСЫВАЕМ ДЕНЬГИ
-    gameState.balance -= b.upgradeCost;
-    
-    // Запускаем улучшение
-    b.lastUpgrade = Date.now();
-    b.upgradeEnd = Date.now() + (b.upgradeTime * 1000);
-    
-    // Сохраняем
-    saveGame();
-    updateUI();
-    closeBusinessModal();
-    
-    // Показываем уведомление
-    alert(`✅ Улучшение запущено! Бизнес будет улучшен через ${b.upgradeTime} секунд.`);
-    
-    // Запускаем таймер
-    setTimeout(() => {
-        // Проверяем, не было ли отмены и не закончилось ли время
-        if (b.upgradeEnd > 0 && b.upgradeEnd <= Date.now()) {
-            // Повышаем уровень
-            b.level++;
+                    `;
+                });
+            }
             
-            // Увеличиваем стоимость следующего улучшения
-            b.upgradeCost = Math.floor(b.upgradeCost * 2.5);
+            html += '<div class="btn btn-gold" onclick="openBuyBusinessModal()">➕ КУПИТЬ НОВЫЙ БИЗНЕС</div>';
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        function openBuyBusinessModal() {
+            const modal = document.getElementById('businessModal');
+            const modalContent = document.getElementById('businessModalContent');
             
-            // Увеличиваем время следующего улучшения
-            b.upgradeTime = Math.floor(b.upgradeTime * 1.3);
+            let html = '<div class="modal-title">🏪 КУПИТЬ БИЗНЕС</div>';
             
-            // Сбрасываем флаг улучшения
-            b.upgradeEnd = 0;
+            const notOwned = gameState.businesses.filter(b => !b.owned);
+            
+            notOwned.forEach(b => {
+                html += `
+                    <div class="business-item" style="cursor:pointer;" onclick="buyBusinessFromModal(${b.id})">
+                        <div class="business-header">
+                            <span class="business-name">${b.name}</span>
+                        </div>
+                        <div class="business-stats">
+                            <span>💰 ДОХОД: +${b.baseIncome}/сек</span>
+                            <span>⏱️ ВРЕМЯ: ${b.upgradeTime}С</span>
+                        </div>
+                        <div class="upgrade-time" style="color:#4CAF50;">💰 ЦЕНА: ${formatNumber(b.upgradeCost)}</div>
+                        <div class="btn btn-small" style="margin-top:10px; pointer-events:none;">КУПИТЬ</div>
+                    </div>
+                `;
+            });
+            
+            html += '<div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>';
+            
+            modalContent.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function buyBusinessFromModal(id) {
+            const b = gameState.businesses.find(b => b.id === id);
+            if (!b || b.owned) return;
+            
+            if (gameState.balance >= b.upgradeCost) {
+                gameState.balance -= b.upgradeCost;
+                b.owned = true;
+                b.level = 1;
+                saveGame();
+                updateUI();
+                closeBusinessModal();
+                alert(`✅ Вы купили ${b.name}!`);
+            } else {
+                alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            }
+        }
+        
+        // ========== ИСПРАВЛЕННАЯ ФУНКЦИЯ УЛУЧШЕНИЯ ==========
+        function startUpgrade(id) {
+            const b = gameState.businesses.find(b => b.id === id);
+            if (!b || !b.owned) {
+                alert('❌ Бизнес не найден!');
+                return;
+            }
+            
+            if (b.level >= b.maxLevel) {
+                alert('❌ Достигнут максимальный уровень!');
+                return;
+            }
+            
+            if (b.upgradeEnd > Date.now()) {
+                alert('⏱️ Улучшение уже идет!');
+                return;
+            }
+            
+            // Проверяем баланс
+            if (gameState.balance < b.upgradeCost) {
+                alert('❌ Недостаточно монет!');
+                return;
+            }
+            
+            // СПИСЫВАЕМ ДЕНЬГИ
+            gameState.balance -= b.upgradeCost;
+            
+            // Запускаем улучшение
+            b.lastUpgrade = Date.now();
+            b.upgradeEnd = Date.now() + (b.upgradeTime * 1000);
             
             // Сохраняем
             saveGame();
             updateUI();
+            closeBusinessModal();
             
-            // Уведомление
+            // Показываем уведомление
+            alert(`✅ Улучшение запущено! Бизнес будет улучшен через ${b.upgradeTime} секунд.`);
+            
+            // Запускаем таймер
+            setTimeout(() => {
+                // Проверяем, не было ли отмены и не закончилось ли время
+                if (b.upgradeEnd > 0 && b.upgradeEnd <= Date.now()) {
+                    // Повышаем уровень
+                    b.level++;
+                    
+                    // Увеличиваем стоимость следующего улучшения
+                    b.upgradeCost = Math.floor(b.upgradeCost * 2.5);
+                    
+                    // Увеличиваем время следующего улучшения
+                    b.upgradeTime = Math.floor(b.upgradeTime * 1.3);
+                    
+                    // Сбрасываем флаг улучшения
+                    b.upgradeEnd = 0;
+                    
+                    // Сохраняем
+                    saveGame();
+                    updateUI();
+                    
+                    // Уведомление
+                    if (b.level < b.maxLevel) {
+                        alert(`✅ ${b.name} улучшен до ${b.level} уровня!`);
+                    } else {
+                        alert(`🎉 ПОЗДРАВЛЯЮ! ${b.name} достиг максимального (20) уровня!`);
+                    }
+                }
+            }, b.upgradeTime * 1000);
+        }
+        
+        function openBusiness(id) {
+            const b = gameState.businesses.find(b => b.id === id);
+            if (!b) return;
+            
+            const modal = document.getElementById('businessModal');
+            const modalContent = document.getElementById('businessModalContent');
+            
+            let content = `
+                <div class="modal-title">${b.name}</div>
+                <div style="text-align:center;">
+                    <div style="font-size:48px; margin:15px;">${b.name.charAt(0)}</div>
+                    <div style="margin:10px;">📊 УРОВЕНЬ: ${b.level}/${b.maxLevel}</div>
+                    <div style="margin:10px;">💰 ДОХОД: +${b.baseIncome * b.level}/сек</div>
+                    <div style="margin:10px;">📈 ВСЕГО ЗАРАБОТАНО: ${formatNumber(Math.floor(b.totalEarned))}</div>
+                    <div style="margin:10px;">⏱️ ВРЕМЯ УЛУЧШЕНИЯ: ${b.upgradeTime}С</div>
+            `;
+            
             if (b.level < b.maxLevel) {
-                alert(`✅ ${b.name} улучшен до ${b.level} уровня!`);
+                const upgrading = b.upgradeEnd > Date.now();
+                if (upgrading) {
+                    const timeLeft = Math.ceil((b.upgradeEnd - Date.now()) / 1000);
+                    content += `
+                        <div style="margin:15px; color:#ff9800;">
+                            ⏱️ УЛУЧШЕНИЕ ИДЕТ... Осталось ${timeLeft}С
+                        </div>
+                    `;
+                } else {
+                    content += `
+                        <div style="margin:15px;">
+                            <div class="btn btn-gold" onclick="startUpgrade(${b.id})">
+                                🚀 УЛУЧШИТЬ (${formatNumber(b.upgradeCost)}💰)
+                            </div>
+                        </div>
+                    `;
+                }
             } else {
-                alert(`🎉 ПОЗДРАВЛЯЮ! ${b.name} достиг максимального (20) уровня!`);
+                content += '<div style="margin:15px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
             }
+            
+            content += '</div><div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>';
+            modalContent.innerHTML = content;
+            modal.classList.add('active');
         }
-    }, b.upgradeTime * 1000);
-}
-
-// Функция открытия бизнеса (тоже обновлена)
-function openBusiness(id) {
-    const b = gameState.businesses.find(b => b.id === id);
-    if (!b) return;
-    
-    const modal = document.getElementById('businessModal');
-    const modalContent = document.getElementById('businessModalContent');
-    
-    let content = `
-        <div class="modal-title">${b.name}</div>
-        <div style="text-align:center;">
-            <div style="font-size:48px; margin:15px;">${b.name.charAt(0)}</div>
-            <div style="margin:10px;">📊 УРОВЕНЬ: ${b.level}/${b.maxLevel}</div>
-            <div style="margin:10px;">💰 ДОХОД: +${b.baseIncome * b.level}/сек</div>
-            <div style="margin:10px;">📈 ВСЕГО ЗАРАБОТАНО: ${formatNumber(Math.floor(b.totalEarned))}</div>
-            <div style="margin:10px;">⏱️ ВРЕМЯ УЛУЧШЕНИЯ: ${b.upgradeTime}С</div>
-    `;
-    
-    if (b.level < b.maxLevel) {
-        const upgrading = b.upgradeEnd > Date.now();
-        if (upgrading) {
-            const timeLeft = Math.ceil((b.upgradeEnd - Date.now()) / 1000);
-            content += `
-                <div style="margin:15px; color:#ff9800;">
-                    ⏱️ УЛУЧШЕНИЕ ИДЕТ... Осталось ${timeLeft}С
-                </div>
-            `;
-        } else {
-            content += `
-                <div style="margin:15px;">
-                    <div class="btn btn-gold" onclick="startUpgrade(${b.id})">
-                        🚀 УЛУЧШИТЬ (${formatNumber(b.upgradeCost)}💰)
-                    </div>
-                </div>
-            `;
+        
+        function closeBusinessModal() {
+            document.getElementById('businessModal').classList.remove('active');
         }
-    } else {
-        content += '<div style="margin:15px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
-    }
-    
-    content += '</div><div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>';
-    modalContent.innerHTML = content;
-    modal.classList.add('active');
-}
-
-// Функция проверки улучшений (нужно добавить)
-function checkBusinessUpgrades() {
-    const now = Date.now();
-    gameState.businesses.forEach(b => {
-        if (b.upgradeEnd > 0 && b.upgradeEnd <= now && b.level < b.maxLevel) {
-            // Повышаем уровень
-            b.level++;
-            
-            // Увеличиваем стоимость
-            b.upgradeCost = Math.floor(b.upgradeCost * 2.5);
-            
-            // Увеличиваем время
-            b.upgradeTime = Math.floor(b.upgradeTime * 1.3);
-            
-            // Сбрасываем флаг
-            b.upgradeEnd = 0;
-            
-            // Сохраняем
-            saveGame();
-            
-            // Уведомление
-            if (b.level === b.maxLevel) {
-                setTimeout(() => {
-                    alert(`🎉 ${b.name} достиг максимального уровня!`);
-                }, 100);
-            }
+        
+        // Функция проверки улучшений
+        function checkBusinessUpgrades() {
+            const now = Date.now();
+            gameState.businesses.forEach(b => {
+                if (b.upgradeEnd > 0 && b.upgradeEnd <= now && b.level < b.maxLevel) {
+                    // Повышаем уровень
+                    b.level++;
+                    
+                    // Увеличиваем стоимость
+                    b.upgradeCost = Math.floor(b.upgradeCost * 2.5);
+                    
+                    // Увеличиваем время
+                    b.upgradeTime = Math.floor(b.upgradeTime * 1.3);
+                    
+                    // Сбрасываем флаг
+                    b.upgradeEnd = 0;
+                    
+                    // Сохраняем
+                    saveGame();
+                }
+            });
         }
-    });
-}
         
         // ========== НЕДВИЖИМОСТЬ ==========
         function renderProperty(content) {
@@ -1378,10 +1421,11 @@ function checkBusinessUpgrades() {
             }
             
             // Глобальные функции
-            window.renderBuyBusiness = renderBuyBusiness;
-            window.buyBusiness = buyBusiness;
-            window.openBusiness = openBusiness;
+            window.renderMyBusiness = renderMyBusiness;
+            window.openBuyBusinessModal = openBuyBusinessModal;
+            window.buyBusinessFromModal = buyBusinessFromModal;
             window.startUpgrade = startUpgrade;
+            window.openBusiness = openBusiness;
             window.closeBusinessModal = closeBusinessModal;
             window.showPropertyCategory = showPropertyCategory;
             window.buyProperty = buyProperty;
@@ -1401,5 +1445,3 @@ function checkBusinessUpgrades() {
     </script>
 </body>
 </html>
-
-
