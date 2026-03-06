@@ -42,13 +42,13 @@
         .header {
             background: linear-gradient(135deg, #2a1b3d 0%, #1a0f2a 100%);
             color: white;
-            padding: 15px;
+            padding: 10px;
             text-align: center;
             border-bottom: 3px solid #ffd700;
         }
         
         .username {
-            font-size: 14px;
+            font-size: 12px;
             color: #ffd700;
             font-weight: bold;
         }
@@ -57,45 +57,51 @@
             background: rgba(255, 215, 0, 0.25);
             border: 2px solid #ffd700;
             border-radius: 30px;
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 5px 10px;
+            font-size: 12px;
             display: inline-block;
             color: #ffd700;
-            font-weight: bold;
             margin: 5px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
         }
         
         .balance-container {
             display: flex;
             justify-content: space-between;
-            gap: 8px;
-            margin: 15px 0;
+            gap: 5px;
+            margin: 10px 0;
         }
         
         .balance-box {
             background: rgba(0, 0, 0, 0.6);
-            padding: 12px 5px;
-            border-radius: 15px;
+            padding: 8px 3px;
+            border-radius: 10px;
             flex: 1;
-            border: 2px solid rgba(255, 215, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.5);
         }
         
         .balance-label {
-            font-size: 11px;
+            font-size: 9px;
             opacity: 0.9;
         }
         
         .balance-value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             color: #ffd700;
         }
         
         .level-bar {
             background: rgba(255, 255, 255, 0.2);
-            height: 8px;
-            border-radius: 4px;
-            margin: 10px 0;
+            height: 6px;
+            border-radius: 3px;
+            margin: 8px 0;
             overflow: hidden;
         }
         
@@ -103,23 +109,25 @@
             height: 100%;
             background: linear-gradient(90deg, #ffd700, #ffaa00);
             width: 0%;
-            border-radius: 4px;
         }
         
         /* Контент */
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 10px;
             color: white;
             scrollbar-width: none;
         }
         
-        /* Главная страница - кликабельная вся */
+        .content::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Главная страница */
         #home-content {
             min-height: 100%;
             cursor: pointer;
-            padding: 10px 0;
         }
         
         .clicker-area {
@@ -140,22 +148,21 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 6px solid rgba(255, 255, 255, 0.7);
+            border: 4px solid rgba(255, 255, 255, 0.7);
             box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6);
             pointer-events: none;
         }
         
         .click-btn span {
-            font-size: 20px;
+            font-size: 18px;
             margin-top: 10px;
         }
         
         .per-second {
             color: #4CAF50;
-            font-size: 18px;
+            font-size: 16px;
             margin: 10px 0;
             font-weight: bold;
-            pointer-events: none;
         }
         
         .offline-earnings {
@@ -164,49 +171,42 @@
             border-radius: 15px;
             padding: 15px;
             margin: 15px 0;
-            font-size: 16px;
+            font-size: 14px;
             animation: pulse 2s infinite;
-            font-weight: bold;
-            pointer-events: none;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
+            text-align: center;
         }
         
         /* Карточки */
         .card {
             background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 15px;
+            padding: 15px;
             margin-bottom: 15px;
             border: 2px solid rgba(255, 215, 0, 0.3);
         }
         
         .card-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #ffd700;
             text-align: center;
             border-bottom: 2px solid #ffd700;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         
-        /* Кнопки (КРУПНЫЕ) */
+        /* Кнопки */
         .btn {
             background: linear-gradient(135deg, #3a2a4d 0%, #2a1a3d 100%);
             border: 2px solid #ffd700;
             color: white;
-            padding: 18px 25px;
+            padding: 15px 20px;
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            margin: 10px 0;
-            font-size: 18px;
+            margin: 8px 0;
+            font-size: 16px;
             transition: transform 0.2s;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -226,18 +226,16 @@
             font-weight: bold;
         }
         
-        .btn-buy {
-            background: linear-gradient(135deg, #4a2a5a 0%, #3a1a4a 100%);
-            border: 2px solid #4CAF50;
-            padding: 15px 20px;
-            font-size: 16px;
+        .btn-small {
+            padding: 10px 15px;
+            font-size: 14px;
         }
         
-        /* Нижняя навигация (КРУПНЕЕ) */
+        /* Нижняя навигация */
         .bottom-nav {
             display: flex;
             background: rgba(0, 0, 0, 0.9);
-            padding: 10px 5px;
+            padding: 8px 5px;
             gap: 5px;
             border-top: 3px solid #ffd700;
         }
@@ -245,18 +243,18 @@
         .nav-item {
             flex: 1;
             text-align: center;
-            padding: 12px 2px;
+            padding: 8px 2px;
             color: rgba(255, 255, 255, 0.6);
-            border-radius: 15px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             transition: all 0.3s;
         }
         
         .nav-item span {
-            font-size: 22px;
+            font-size: 20px;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         
         .nav-item.active {
@@ -268,9 +266,9 @@
         /* Магазин */
         .shop-item {
             background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -284,12 +282,12 @@
         .item-name {
             font-weight: bold;
             color: #ffd700;
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 5px;
         }
         
         .item-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 5px;
         }
@@ -297,21 +295,21 @@
         .item-price {
             color: #4CAF50;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
         }
         
         .item-level {
             color: #ff9800;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .buy-btn {
             background: linear-gradient(135deg, #4a2a6a 0%, #3a1a5a 100%);
             border: 2px solid #ffd700;
             color: white;
-            padding: 15px 25px;
+            padding: 12px 20px;
             border-radius: 30px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -320,14 +318,14 @@
         .property-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
         
         .property-category {
             background: rgba(255, 255, 255, 0.07);
-            border-radius: 20px;
-            padding: 25px 10px;
+            border-radius: 15px;
+            padding: 20px 10px;
             text-align: center;
             cursor: pointer;
             border: 2px solid rgba(255, 215, 0, 0.4);
@@ -340,32 +338,28 @@
         }
         
         .property-category span {
-            font-size: 48px;
+            font-size: 40px;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .category-name {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 5px;
         }
         
         .category-count {
-            font-size: 16px;
+            font-size: 14px;
             color: #ffd700;
             font-weight: bold;
         }
         
         /* Список имущества */
-        .property-list {
-            margin-top: 10px;
-        }
-        
         .property-item {
             background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
+            border-radius: 12px;
+            padding: 15px;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -374,8 +368,8 @@
         }
         
         .property-emoji {
-            font-size: 42px;
-            width: 70px;
+            font-size: 36px;
+            width: 60px;
             text-align: center;
         }
         
@@ -385,37 +379,37 @@
         
         .property-title {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 5px;
         }
         
         .property-price {
             color: #ffd700;
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 3px;
         }
         
         .property-income {
             color: #4CAF50;
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .property-owned {
             background: #2e7d32;
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: bold;
-            border: 2px solid #ffd700;
+            border: 1px solid #ffd700;
         }
         
         /* Бизнес */
         .business-item {
             background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
             border: 2px solid rgba(255, 215, 0, 0.3);
             transition: all 0.3s;
@@ -435,29 +429,29 @@
         .business-name {
             font-weight: bold;
             color: #ffd700;
-            font-size: 20px;
+            font-size: 18px;
         }
         
         .business-level {
             color: #4CAF50;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
         }
         
         .business-stats {
             display: flex;
             justify-content: space-between;
-            font-size: 15px;
+            font-size: 14px;
             color: rgba(255, 255, 255, 0.9);
             margin: 10px 0;
         }
         
         .business-progress {
             background: rgba(255, 255, 255, 0.15);
-            height: 8px;
-            border-radius: 4px;
+            height: 6px;
+            border-radius: 3px;
             overflow: hidden;
-            margin: 10px 0;
+            margin: 8px 0;
         }
         
         .business-bar {
@@ -467,16 +461,18 @@
         }
         
         .upgrade-time {
-            font-size: 14px;
+            font-size: 13px;
             color: #ff9800;
             font-weight: bold;
+            text-align: center;
+            margin: 5px 0;
         }
         
-        .business-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
+        .upgrade-cost {
+            font-size: 13px;
+            color: #4CAF50;
+            text-align: center;
+            margin: 5px 0;
         }
         
         /* Модальное окно */
@@ -499,53 +495,75 @@
         
         .modal-content {
             background: #1a1025;
-            border-radius: 30px;
-            padding: 30px;
-            max-width: 350px;
+            border-radius: 25px;
+            padding: 25px;
+            max-width: 320px;
             width: 90%;
             color: white;
             border: 3px solid #ffd700;
+            animation: slideIn 0.3s;
+        }
+        
+        @keyframes slideIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         
         .modal-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             margin-bottom: 20px;
             color: #ffd700;
             text-align: center;
         }
         
+        .modal-stat {
+            font-size: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
         .modal-buttons {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .modal-btn {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             border-radius: 25px;
-            border: none;
             font-weight: bold;
             cursor: pointer;
+            font-size: 15px;
+            border: none;
+        }
+        
+        .close-btn {
+            background: #f44336;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
             font-size: 16px;
+            border: 1px solid #ffd700;
+        }
+        
+        /* Статистика */
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            font-size: 16px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .hidden {
             display: none !important;
-        }
-        
-        .back-btn {
-            background: #f44336;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 40px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0;
-            cursor: pointer;
-            border: 2px solid #ffd700;
         }
     </style>
 </head>
@@ -563,7 +581,7 @@
                 </div>
                 <div class="balance-box">
                     <div class="balance-label">💎 АЛМАЗЫ</div>
-                    <div class="balance-value" id="diamonds">0</div>
+                    <div class="balance-value" id="diamonds">10</div>
                 </div>
                 <div class="balance-box">
                     <div class="balance-label">📊 УРОВЕНЬ</div>
@@ -579,12 +597,12 @@
         <!-- Контент -->
         <div class="content" id="content"></div>
         
-        <!-- Нижняя навигация (КРУПНЫЕ КНОПКИ) -->
+        <!-- Нижняя навигация -->
         <div class="bottom-nav">
             <div class="nav-item active" data-tab="home"><span>🏠</span>ГЛАВНАЯ</div>
-            <div class="nav-item" data-tab="shop"><span>🏪</span>МАГАЗИН</div>
             <div class="nav-item" data-tab="mybusiness"><span>💼</span>МОЙ БИЗНЕС</div>
             <div class="nav-item" data-tab="property"><span>🏰</span>НЕДВИЖ.</div>
+            <div class="nav-item" data-tab="shop"><span>🏪</span>МАГАЗИН</div>
             <div class="nav-item" data-tab="stats"><span>📊</span>СТАТИС.</div>
         </div>
     </div>
@@ -594,12 +612,19 @@
         <div class="modal-content">
             <div class="modal-title" id="businessModalTitle">УПРАВЛЕНИЕ БИЗНЕСОМ</div>
             <div id="businessModalContent"></div>
-            <div class="modal-buttons">
-                <button class="modal-btn" onclick="closeBusinessModal()" style="background:#f44336; color:white;">ЗАКРЫТЬ</button>
-            </div>
+            <div class="close-btn" onclick="closeBusinessModal()">ЗАКРЫТЬ</div>
         </div>
     </div>
     
+    <!-- Модальное окно сообщений -->
+    <div class="modal" id="messageModal">
+        <div class="modal-content">
+            <div class="modal-title" id="messageModalTitle">СООБЩЕНИЕ</div>
+            <div id="messageModalContent" style="text-align:center; font-size:18px; margin:20px;"></div>
+            <div class="close-btn" onclick="closeMessageModal()">ОК</div>
+        </div>
+    </div>
+
     <script>
         // Telegram
         const tg = window.Telegram?.WebApp;
@@ -610,71 +635,75 @@
         
         // ========== СОСТОЯНИЕ ИГРЫ ==========
         let gameState = {
-            balance: 1000000,
-            diamonds: 500,
+            // Ресурсы
+            balance: 0,
+            diamonds: 10,
             exp: 0,
             level: 1,
             
+            // Улучшения
             clickPower: 1,
             clickPowerLevel: 0,
             autoClickerLevel: 0,
             critLevel: 0,
             
+            // Статистика
             totalClicks: 0,
-            totalEarned: 1000000,
+            totalEarned: 0,
             playTime: 0,
             lastOnlineTime: Date.now(),
             
-            // БИЗНЕСЫ (10 штук)
+            // БИЗНЕСЫ (10 штук, максимум 20 уровней)
             businesses: [
-                { id: 0, name: "🚗 ТАКСОПАРК", emoji: "🚕", level: 0, baseIncome: 500, upgradeCost: 500000, upgradeTime: 3600, owned: false, totalEarned: 0 },
-                { id: 1, name: "🍔 РЕСТОРАН", emoji: "🍽️", level: 0, baseIncome: 800, upgradeCost: 800000, upgradeTime: 7200, owned: false, totalEarned: 0 },
-                { id: 2, name: "⛽ ЗАПРАВКА", emoji: "⛽", level: 0, baseIncome: 1200, upgradeCost: 1200000, upgradeTime: 10800, owned: false, totalEarned: 0 },
-                { id: 3, name: "🏭 ЗАВОД", emoji: "🏭", level: 0, baseIncome: 2000, upgradeCost: 2000000, upgradeTime: 14400, owned: false, totalEarned: 0 },
-                { id: 4, name: "🏨 ОТЕЛЬ", emoji: "🏨", level: 0, baseIncome: 3000, upgradeCost: 3000000, upgradeTime: 21600, owned: false, totalEarned: 0 },
-                { id: 5, name: "🎰 КАЗИНО", emoji: "🎰", level: 0, baseIncome: 5000, upgradeCost: 5000000, upgradeTime: 28800, owned: false, totalEarned: 0 },
-                { id: 6, name: "🏦 БАНК", emoji: "🏦", level: 0, baseIncome: 8000, upgradeCost: 8000000, upgradeTime: 36000, owned: false, totalEarned: 0 },
-                { id: 7, name: "🛳️ ПОРТ", emoji: "🛳️", level: 0, baseIncome: 12000, upgradeCost: 12000000, upgradeTime: 43200, owned: false, totalEarned: 0 },
-                { id: 8, name: "✈️ АЭРОПОРТ", emoji: "✈️", level: 0, baseIncome: 20000, upgradeCost: 20000000, upgradeTime: 50400, owned: false, totalEarned: 0 },
-                { id: 9, name: "🏛️ ИМПЕРИЯ", emoji: "🏛️", level: 0, baseIncome: 50000, upgradeCost: 50000000, upgradeTime: 86400, owned: false, totalEarned: 0 }
+                { id: 0, name: "🚕 ТАКСОПАРК", level: 0, maxLevel: 20, baseIncome: 1, upgradeCost: 100, upgradeTime: 30, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 1, name: "🍔 РЕСТОРАН", level: 0, maxLevel: 20, baseIncome: 2, upgradeCost: 500, upgradeTime: 60, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 2, name: "⛽ ЗАПРАВКА", level: 0, maxLevel: 20, baseIncome: 5, upgradeCost: 2500, upgradeTime: 120, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 3, name: "🏭 ЗАВОД", level: 0, maxLevel: 20, baseIncome: 10, upgradeCost: 10000, upgradeTime: 180, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 4, name: "🏨 ОТЕЛЬ", level: 0, maxLevel: 20, baseIncome: 20, upgradeCost: 50000, upgradeTime: 300, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 5, name: "🎰 КАЗИНО", level: 0, maxLevel: 20, baseIncome: 50, upgradeCost: 250000, upgradeTime: 600, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 6, name: "🏦 БАНК", level: 0, maxLevel: 20, baseIncome: 100, upgradeCost: 1000000, upgradeTime: 1200, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 7, name: "🛳️ ПОРТ", level: 0, maxLevel: 20, baseIncome: 200, upgradeCost: 5000000, upgradeTime: 2400, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 8, name: "✈️ АЭРОПОРТ", level: 0, maxLevel: 20, baseIncome: 500, upgradeCost: 25000000, upgradeTime: 4800, upgradeEnd: 0, owned: false, totalEarned: 0 },
+                { id: 9, name: "🏛️ ИМПЕРИЯ", level: 0, maxLevel: 20, baseIncome: 1000, upgradeCost: 100000000, upgradeTime: 9600, upgradeEnd: 0, owned: false, totalEarned: 0 }
             ],
             
-            // НЕДВИЖИМОСТЬ (ДОРОГО)
+            // НЕДВИЖИМОСТЬ
             houses: [
-                { id: 0, name: "КВАРТИРА", emoji: "🏢", price: 5000000, income: 50000, owned: false },
-                { id: 1, name: "ДОМ", emoji: "🏠", price: 20000000, income: 200000, owned: false },
-                { id: 2, name: "ОСОБНЯК", emoji: "🏰", price: 100000000, income: 1000000, owned: false },
-                { id: 3, name: "ВИЛЛА", emoji: "🏛️", price: 500000000, income: 5000000, owned: false }
+                { id: 0, name: "КВАРТИРА", emoji: "🏢", price: 50000, income: 5, owned: false },
+                { id: 1, name: "ДОМ", emoji: "🏠", price: 500000, income: 50, owned: false },
+                { id: 2, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, income: 500, owned: false },
+                { id: 3, name: "ВИЛЛА", emoji: "🏛️", price: 50000000, income: 5000, owned: false }
             ],
             cars: [
-                { id: 0, name: "ЛАДА", emoji: "🚗", price: 2000000, income: 20000, owned: false },
-                { id: 1, name: "МЕРСЕДЕС", emoji: "🚘", price: 10000000, income: 100000, owned: false },
-                { id: 2, name: "ФЕРРАРИ", emoji: "🏎️", price: 50000000, income: 500000, owned: false },
-                { id: 3, name: "БУГАТТИ", emoji: "🚀", price: 250000000, income: 2500000, owned: false }
+                { id: 0, name: "ЛАДА", emoji: "🚗", price: 20000, income: 2, owned: false },
+                { id: 1, name: "МЕРСЕДЕС", emoji: "🚘", price: 200000, income: 20, owned: false },
+                { id: 2, name: "ФЕРРАРИ", emoji: "🏎️", price: 2000000, income: 200, owned: false },
+                { id: 3, name: "БУГАТТИ", emoji: "🚀", price: 20000000, income: 2000, owned: false }
             ],
             planes: [
-                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 10000000, income: 100000, owned: false },
-                { id: 1, name: "БОИНГ", emoji: "🛩️", price: 50000000, income: 500000, owned: false },
-                { id: 2, name: "ЧАСТНЫЙ", emoji: "🛫", price: 200000000, income: 2000000, owned: false },
-                { id: 3, name: "РЕАКТИВНЫЙ", emoji: "🛬", price: 1000000000, income: 10000000, owned: false }
+                { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 100000, income: 10, owned: false },
+                { id: 1, name: "БОИНГ", emoji: "🛩️", price: 1000000, income: 100, owned: false },
+                { id: 2, name: "ЧАСТНЫЙ", emoji: "🛫", price: 10000000, income: 1000, owned: false },
+                { id: 3, name: "РЕАКТИВНЫЙ", emoji: "🛬", price: 100000000, income: 10000, owned: false }
             ],
             ships: [
-                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 3000000, income: 30000, owned: false },
-                { id: 1, name: "КАРТЕР", emoji: "⛵", price: 15000000, income: 150000, owned: false },
-                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 100000000, income: 1000000, owned: false },
-                { id: 3, name: "ЛАЙНЕР", emoji: "🚢", price: 500000000, income: 5000000, owned: false }
+                { id: 0, name: "ЛОДКА", emoji: "🛶", price: 30000, income: 3, owned: false },
+                { id: 1, name: "КАРТЕР", emoji: "⛵", price: 300000, income: 30, owned: false },
+                { id: 2, name: "ЯХТА", emoji: "🛥️", price: 3000000, income: 300, owned: false },
+                { id: 3, name: "ЛАЙНЕР", emoji: "🚢", price: 30000000, income: 3000, owned: false }
             ]
         };
         
-        const prices = {
-            clickPower: [50000, 250000, 1000000, 5000000, 25000000],
-            autoClicker: [100000, 500000, 2000000, 10000000, 50000000],
-            crit: [200000, 1000000, 5000000, 25000000, 100000000]
+        // Цены улучшений
+        const upgradePrices = {
+            clickPower: [1000, 5000, 25000, 125000, 625000],
+            autoClicker: [2000, 10000, 50000, 250000, 1250000],
+            crit: [5000, 25000, 125000, 625000, 3125000]
         };
         
-        // ========== ЗАГРУЗКА ==========
+        // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
         function loadGame() {
-            const saved = localStorage.getItem('imperia2026');
+            const saved = localStorage.getItem('imperiaFull2026');
             if (saved) {
                 try {
                     const loaded = JSON.parse(saved);
@@ -682,12 +711,12 @@
                 } catch(e) {}
             }
             
+            // Оффлайн доход
             const now = Date.now();
             const secondsPassed = Math.floor((now - gameState.lastOnlineTime) / 1000);
             
-            if (secondsPassed > 60) {
-                let offlineIncome = 0;
-                offlineIncome += gameState.autoClickerLevel * secondsPassed;
+            if (secondsPassed > 30) {
+                let offlineIncome = gameState.autoClickerLevel * secondsPassed;
                 
                 gameState.businesses.forEach(b => {
                     if (b.owned && b.level > 0) {
@@ -696,42 +725,40 @@
                     }
                 });
                 
-                [gameState.houses, gameState.cars, gameState.planes, gameState.ships].forEach(cat => {
-                    cat.forEach(item => {
-                        if (item.owned) {
-                            offlineIncome += item.income * secondsPassed / 3600;
-                        }
-                    });
-                });
-                
                 if (offlineIncome > 0) {
-                    gameState.balance += offlineIncome;
-                    gameState.totalEarned += offlineIncome;
-                    setTimeout(() => {
-                        document.getElementById('offlineBadge').style.display = 'inline-block';
-                        document.getElementById('offlineBadge').textContent = `⏱️ +${Math.floor(offlineIncome).toLocaleString()}💰`;
-                        setTimeout(() => {
-                            document.getElementById('offlineBadge').style.display = 'none';
-                        }, 5000);
-                    }, 500);
+                    gameState.balance += Math.floor(offlineIncome);
+                    gameState.totalEarned += Math.floor(offlineIncome);
+                    showMessage(`⏱️ ОФФЛАЙН ДОХОД: +${Math.floor(offlineIncome)}💰`);
                 }
             }
             
             gameState.lastOnlineTime = now;
             updateUI();
+            checkBusinessUpgrades();
         }
         
         function saveGame() {
             gameState.lastOnlineTime = Date.now();
-            localStorage.setItem('imperia2026', JSON.stringify(gameState));
+            localStorage.setItem('imperiaFull2026', JSON.stringify(gameState));
+        }
+        
+        function showMessage(text) {
+            const modal = document.getElementById('messageModal');
+            const content = document.getElementById('messageModalContent');
+            content.textContent = text;
+            modal.classList.add('active');
+        }
+        
+        function closeMessageModal() {
+            document.getElementById('messageModal').classList.remove('active');
         }
         
         function updateUI() {
             document.getElementById('balance').textContent = Math.floor(gameState.balance).toLocaleString();
-            document.getElementById('diamonds').textContent = Math.floor(gameState.diamonds).toLocaleString();
+            document.getElementById('diamonds').textContent = gameState.diamonds;
             document.getElementById('level').textContent = gameState.level;
             
-            const expNeeded = gameState.level * 5000;
+            const expNeeded = gameState.level * 1000;
             const expPercent = (gameState.exp / expNeeded) * 100;
             document.getElementById('levelProgress').style.width = Math.min(expPercent, 100) + '%';
             
@@ -742,23 +769,23 @@
         // ========== КЛИК ==========
         function handleClick() {
             let power = gameState.clickPower * (1 + gameState.clickPowerLevel * 0.5);
-            if (Math.random() * 100 < gameState.critLevel * 10) power *= 10;
             
-            gameState.balance += Math.floor(power);
-            gameState.totalClicks++;
-            gameState.totalEarned += Math.floor(power);
-            gameState.exp += power / 100;
-            
-            while (gameState.exp >= gameState.level * 5000) {
-                gameState.exp -= gameState.level * 5000;
-                gameState.level++;
-                gameState.diamonds += gameState.level * 100;
+            if (Math.random() * 100 < gameState.critLevel * 10) {
+                power *= 10;
             }
             
-            const btn = document.querySelector('.click-btn');
-            if (btn) {
-                btn.style.transform = 'scale(0.95)';
-                setTimeout(() => btn.style.transform = 'scale(1)', 100);
+            const earned = Math.floor(power);
+            gameState.balance += earned;
+            gameState.totalClicks++;
+            gameState.totalEarned += earned;
+            gameState.exp += earned / 100;
+            
+            // Проверка уровня
+            while (gameState.exp >= gameState.level * 1000) {
+                gameState.exp -= gameState.level * 1000;
+                gameState.level++;
+                gameState.diamonds += gameState.level * 5;
+                showMessage(`🎉 УРОВЕНЬ ${gameState.level}! +${gameState.level * 5}💎`);
             }
             
             updateUI();
@@ -771,275 +798,363 @@
             
             if (tab === 'home') {
                 const power = gameState.clickPower * (1 + gameState.clickPowerLevel * 0.5);
+                const totalIncome = gameState.autoClickerLevel + 
+                    gameState.businesses.filter(b => b.owned).reduce((sum, b) => sum + (b.baseIncome * b.level), 0);
+                
                 content.innerHTML = `
-                    <div id="home-content" style="min-height:100%;">
+                    <div id="home-content">
                         <div class="clicker-area">
-                            <div class="per-second">⏱️ АВТО: +${gameState.autoClickerLevel}/сек</div>
+                            <div class="per-second">⏱️ ДОХОД/СЕК: ${totalIncome}</div>
                             <div class="click-btn">
                                 👆
                                 <span>+${Math.floor(power)}</span>
                             </div>
-                            <div class="offline-earnings">💰 ДОХОД ЗА ОФФЛАЙН РАБОТАЕТ</div>
+                            <div class="offline-earnings">
+                                💰 ОФФЛАЙН ДОХОД РАБОТАЕТ
+                            </div>
                         </div>
                     </div>
                 `;
                 document.getElementById('home-content').addEventListener('click', handleClick);
                 
-            } else if (tab === 'shop') {
-                let html = '<div class="card"><div class="card-title">🏪 МАГАЗИН УЛУЧШЕНИЙ</div>';
-                
-                if (gameState.clickPowerLevel < 5) {
-                    html += `
-                        <div class="shop-item">
-                            <div class="item-info">
-                                <div class="item-name">💪 СИЛА КЛИКА Lv.${gameState.clickPowerLevel+1}</div>
-                                <div class="item-price">💰 ${prices.clickPower[gameState.clickPowerLevel].toLocaleString()}</div>
-                            </div>
-                            <button class="buy-btn" onclick="buyUpgrade('clickPower')">↑</button>
-                        </div>
-                    `;
-                }
-                if (gameState.autoClickerLevel < 5) {
-                    html += `
-                        <div class="shop-item">
-                            <div class="item-info">
-                                <div class="item-name">🤖 АВТОКЛИКЕР Lv.${gameState.autoClickerLevel+1}</div>
-                                <div class="item-price">💰 ${prices.autoClicker[gameState.autoClickerLevel].toLocaleString()}</div>
-                            </div>
-                            <button class="buy-btn" onclick="buyUpgrade('autoClicker')">↑</button>
-                        </div>
-                    `;
-                }
-                if (gameState.critLevel < 5) {
-                    html += `
-                        <div class="shop-item">
-                            <div class="item-info">
-                                <div class="item-name">⚡ КРИТ Lv.${gameState.critLevel+1}</div>
-                                <div class="item-price">💰 ${prices.crit[gameState.critLevel].toLocaleString()}</div>
-                            </div>
-                            <button class="buy-btn" onclick="buyUpgrade('crit')">↑</button>
-                        </div>
-                    `;
-                }
-                
-                html += '<div class="btn btn-gold" onclick="exchangeDiamonds()">💎 ОБМЕНЯТЬ АЛМАЗЫ (1💎=10000💰)</div>';
-                html += '</div>';
-                content.innerHTML = html;
-                
             } else if (tab === 'mybusiness') {
-                let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
-                
-                const owned = gameState.businesses.filter(b => b.owned);
-                if (owned.length === 0) {
-                    html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
-                } else {
-                    owned.forEach(b => {
-                        html += `
-                            <div class="business-item" onclick="openBusiness(${b.id})">
-                                <div class="business-header">
-                                    <span class="business-name">${b.emoji} ${b.name}</span>
-                                    <span class="business-level">УР.${b.level}</span>
-                                </div>
-                                <div class="business-stats">
-                                    <span>💰 +${b.baseIncome * b.level}/сек</span>
-                                    <span>📈 ${Math.floor(b.totalEarned).toLocaleString()}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-                
-                html += '<div class="btn btn-success" onclick="renderTab(\'buybusiness\')">🏪 КУПИТЬ НОВЫЙ БИЗНЕС</div>';
-                html += '</div>';
-                content.innerHTML = html;
-                
-            } else if (tab === 'buybusiness') {
-                let html = '<div class="card"><div class="card-title">🏪 КУПИТЬ БИЗНЕС</div>';
-                
-                const notOwned = gameState.businesses.filter(b => !b.owned);
-                if (notOwned.length === 0) {
-                    html += '<div style="text-align:center; padding:30px;">ВСЕ БИЗНЕСЫ КУПЛЕНЫ</div>';
-                } else {
-                    notOwned.forEach(b => {
-                        html += `
-                            <div class="shop-item">
-                                <div class="item-info">
-                                    <div class="item-name">${b.emoji} ${b.name}</div>
-                                    <div class="item-desc">ДОХОД: ${b.baseIncome}/сек</div>
-                                    <div class="item-price">💰 ${b.upgradeCost.toLocaleString()}</div>
-                                </div>
-                                <button class="buy-btn" onclick="buyBusiness(${b.id})">КУПИТЬ</button>
-                            </div>
-                        `;
-                    });
-                }
-                
-                html += '<div class="btn" onclick="renderTab(\'mybusiness\')">◀ НАЗАД</div>';
-                html += '</div>';
-                content.innerHTML = html;
-                
+                renderMyBusiness(content);
             } else if (tab === 'property') {
-                const housesOwned = gameState.houses.filter(h => h.owned).length;
-                const carsOwned = gameState.cars.filter(c => c.owned).length;
-                const planesOwned = gameState.planes.filter(p => p.owned).length;
-                const shipsOwned = gameState.ships.filter(s => s.owned).length;
-                
-                content.innerHTML = `
-                    <div class="card">
-                        <div class="card-title">🏰 НЕДВИЖИМОСТЬ</div>
-                        <div class="property-grid">
-                            <div class="property-category" onclick="showPropertyCategory('houses')">
-                                <span>🏠</span>
-                                <div class="category-name">ДОМА</div>
-                                <div class="category-count">${housesOwned}/4</div>
-                            </div>
-                            <div class="property-category" onclick="showPropertyCategory('cars')">
-                                <span>🚗</span>
-                                <div class="category-name">МАШИНЫ</div>
-                                <div class="category-count">${carsOwned}/4</div>
-                            </div>
-                            <div class="property-category" onclick="showPropertyCategory('planes')">
-                                <span>✈️</span>
-                                <div class="category-name">САМОЛЕТЫ</div>
-                                <div class="category-count">${planesOwned}/4</div>
-                            </div>
-                            <div class="property-category" onclick="showPropertyCategory('ships')">
-                                <span>🚢</span>
-                                <div class="category-name">КОРАБЛИ</div>
-                                <div class="category-count">${shipsOwned}/4</div>
-                            </div>
-                        </div>
-                        <div class="btn btn-gold" onclick="renderTab('garage')">🚗 МОЙ ГАРАЖ</div>
-                        <div class="btn btn-gold" onclick="renderTab('myhouses')">🏠 МОИ ДОМА</div>
-                        <div class="btn btn-gold" onclick="renderTab('myplanes')">✈️ МОИ САМОЛЕТЫ</div>
-                        <div class="btn btn-gold" onclick="renderTab('myships')">🚢 МОИ КОРАБЛИ</div>
-                    </div>
-                `;
-                
-            } else if (tab === 'garage' || tab === 'myhouses' || tab === 'myplanes' || tab === 'myships') {
-                let category, title;
-                if (tab === 'garage') { category = 'cars'; title = '🚗 МОЙ ГАРАЖ'; }
-                else if (tab === 'myhouses') { category = 'houses'; title = '🏠 МОИ ДОМА'; }
-                else if (tab === 'myplanes') { category = 'planes'; title = '✈️ МОИ САМОЛЕТЫ'; }
-                else if (tab === 'myships') { category = 'ships'; title = '🚢 МОИ КОРАБЛИ'; }
-                
-                const items = gameState[category];
-                let html = `<div class="card"><div class="card-title">${title}</div>`;
-                
-                items.forEach(item => {
-                    if (item.owned) {
-                        html += `
-                            <div class="property-item">
-                                <div class="property-emoji">${item.emoji}</div>
-                                <div class="property-details">
-                                    <div class="property-title">${item.name}</div>
-                                    <div class="property-income">💰 +${item.income}/час</div>
-                                </div>
-                                <span class="property-owned">ВЛАДЕЮ</span>
-                            </div>
-                        `;
-                    }
-                });
-                
-                html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div>';
-                html += '</div>';
-                content.innerHTML = html;
-                
+                renderProperty(content);
+            } else if (tab === 'shop') {
+                renderShop(content);
             } else if (tab === 'stats') {
-                const totalIncome = gameState.autoClickerLevel + 
-                    gameState.businesses.filter(b => b.owned).reduce((sum, b) => sum + b.baseIncome * b.level, 0);
-                
-                content.innerHTML = `
-                    <div class="card">
-                        <div class="card-title">📊 СТАТИСТИКА</div>
-                        <div style="background:rgba(255,255,255,0.07); padding:20px; border-radius:15px;">
-                            <div style="margin:15px 0; font-size:16px;">👆 КЛИКОВ: ${gameState.totalClicks.toLocaleString()}</div>
-                            <div style="margin:15px 0; font-size:16px;">💰 ЗАРАБОТАНО: ${Math.floor(gameState.totalEarned).toLocaleString()}</div>
-                            <div style="margin:15px 0; font-size:16px;">⏱️ ДОХОД/СЕК: ${totalIncome}</div>
-                            <div style="margin:15px 0; font-size:16px;">🎮 В ИГРЕ: ${Math.floor(gameState.playTime / 60)} МИН</div>
-                            <div style="margin:15px 0; font-size:16px;">💎 АЛМАЗЫ: ${gameState.diamonds}</div>
+                renderStats(content);
+            }
+        }
+        
+        // ========== БИЗНЕСЫ ==========
+        function renderMyBusiness(content) {
+            let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
+            
+            const owned = gameState.businesses.filter(b => b.owned);
+            
+            if (owned.length === 0) {
+                html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
+            } else {
+                owned.forEach(b => {
+                    const upgrading = b.upgradeEnd > Date.now();
+                    const timeLeft = upgrading ? Math.ceil((b.upgradeEnd - Date.now()) / 1000) : 0;
+                    
+                    html += `
+                        <div class="business-item" onclick="openBusiness(${b.id})">
+                            <div class="business-header">
+                                <span class="business-name">${b.name}</span>
+                                <span class="business-level">${b.level}/${b.maxLevel}</span>
+                            </div>
+                            <div class="business-stats">
+                                <span>💰 +${b.baseIncome * b.level}/сек</span>
+                                <span>📈 ${Math.floor(b.totalEarned).toLocaleString()}</span>
+                            </div>
+                            ${upgrading ? `
+                                <div class="business-progress">
+                                    <div class="business-bar" style="width: ${((Date.now() - b.lastUpgrade) / (b.upgradeEnd - b.lastUpgrade) * 100)}%"></div>
+                                </div>
+                                <div class="upgrade-time">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>
+                            ` : b.level < b.maxLevel ? `
+                                <div class="upgrade-cost">💰 УЛУЧШИТЬ: ${Math.floor(b.upgradeCost).toLocaleString()}</div>
+                            ` : '<div style="color:#ffd700; text-align:center;">МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>'}
                         </div>
-                    </div>
-                `;
+                    `;
+                });
             }
+            
+            html += '<div class="btn btn-gold" onclick="renderTab(\'buybusiness\')">➕ КУПИТЬ НОВЫЙ БИЗНЕС</div>';
+            html += '</div>';
+            content.innerHTML = html;
         }
         
-        // ========== ПОКУПКИ ==========
-        function buyUpgrade(type) {
-            const level = gameState[type + 'Level'];
-            if (level >= 5) return;
-            if (gameState.balance >= prices[type][level]) {
-                gameState.balance -= prices[type][level];
-                gameState[type + 'Level']++;
-                updateUI();
-                saveGame();
-            } else alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-        }
-        
-        function exchangeDiamonds() {
-            if (gameState.diamonds >= 1) {
-                gameState.diamonds--;
-                gameState.balance += 10000;
-                updateUI();
-                saveGame();
+        function renderBuyBusiness(content) {
+            let html = '<div class="card"><div class="card-title">🏪 КУПИТЬ БИЗНЕС</div>';
+            
+            const notOwned = gameState.businesses.filter(b => !b.owned);
+            
+            if (notOwned.length === 0) {
+                html += '<div style="text-align:center; padding:30px;">ВСЕ БИЗНЕСЫ КУПЛЕНЫ</div>';
+            } else {
+                notOwned.forEach(b => {
+                    html += `
+                        <div class="business-item" onclick="buyBusiness(${b.id})">
+                            <div class="business-header">
+                                <span class="business-name">${b.name}</span>
+                            </div>
+                            <div class="business-stats">
+                                <span>💰 ДОХОД: +${b.baseIncome}/сек</span>
+                                <span>⏱️ АПГРЕЙД: ${b.upgradeTime}С</span>
+                            </div>
+                            <div class="upgrade-cost">💰 ЦЕНА: ${b.upgradeCost.toLocaleString()}</div>
+                            <div class="btn btn-small" style="margin-top:10px;">КУПИТЬ</div>
+                        </div>
+                    `;
+                });
             }
+            
+            html += '<div class="btn" onclick="renderTab(\'mybusiness\')">◀ НАЗАД</div>';
+            html += '</div>';
+            content.innerHTML = html;
         }
         
         function buyBusiness(id) {
-            const business = gameState.businesses.find(b => b.id === id);
-            if (!business || business.owned) return;
-            if (gameState.balance >= business.upgradeCost) {
-                gameState.balance -= business.upgradeCost;
-                business.owned = true;
-                business.level = 1;
-                updateUI();
+            const b = gameState.businesses.find(b => b.id === id);
+            if (!b || b.owned) return;
+            
+            if (gameState.balance >= b.upgradeCost) {
+                gameState.balance -= b.upgradeCost;
+                b.owned = true;
+                b.level = 1;
                 saveGame();
+                updateUI();
+                showMessage(`✅ ВЫ КУПИЛИ ${b.name}!`);
                 renderTab('mybusiness');
-            } else alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            } else {
+                showMessage('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            }
+        }
+        
+        function startUpgrade(id) {
+            const b = gameState.businesses.find(b => b.id === id);
+            if (!b || !b.owned) return;
+            if (b.level >= b.maxLevel) {
+                showMessage('❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ!');
+                return;
+            }
+            if (b.upgradeEnd > Date.now()) {
+                showMessage('⏱️ УЛУЧШЕНИЕ УЖЕ ИДЕТ!');
+                return;
+            }
+            
+            const cost = b.upgradeCost;
+            if (gameState.balance < cost) {
+                showMessage('❌ НЕДОСТАТОЧНО МОНЕТ!');
+                return;
+            }
+            
+            gameState.balance -= cost;
+            b.lastUpgrade = Date.now();
+            b.upgradeEnd = Date.now() + (b.upgradeTime * 1000);
+            
+            saveGame();
+            updateUI();
+            closeBusinessModal();
         }
         
         function openBusiness(id) {
-            const business = gameState.businesses.find(b => b.id === id);
+            const b = gameState.businesses.find(b => b.id === id);
+            if (!b) return;
+            
             const modal = document.getElementById('businessModal');
             const modalTitle = document.getElementById('businessModalTitle');
             const modalContent = document.getElementById('businessModalContent');
             
-            modalTitle.textContent = `${business.emoji} ${business.name}`;
-            modalContent.innerHTML = `
+            modalTitle.textContent = b.name;
+            
+            let content = `
                 <div style="text-align:center;">
-                    <div style="font-size:48px; margin:20px;">${business.emoji}</div>
-                    <div style="margin:15px; font-size:20px;">УРОВЕНЬ: ${business.level}</div>
-                    <div style="margin:15px; font-size:18px;">💰 ДОХОД: ${business.baseIncome * business.level}/сек</div>
-                    <div style="margin:15px; font-size:18px;">📈 ЗАРАБОТАНО: ${Math.floor(business.totalEarned).toLocaleString()}</div>
-                    <button class="btn btn-gold" onclick="upgradeBusiness(${id})" style="margin:20px 0;">
-                        🚀 УЛУЧШИТЬ (${(business.upgradeCost * business.level).toLocaleString()}💰)
-                    </button>
-                </div>
+                    <div style="font-size:48px; margin:15px;">${b.name[0]}</div>
+                    <div class="modal-stat">📊 УРОВЕНЬ: ${b.level}/${b.maxLevel}</div>
+                    <div class="modal-stat">💰 ДОХОД: ${b.baseIncome * b.level}/сек</div>
+                    <div class="modal-stat">📈 ВСЕГО ЗАРАБОТАНО: ${Math.floor(b.totalEarned).toLocaleString()}</div>
+                    <div class="modal-stat">⏱️ ВРЕМЯ АПГРЕЙДА: ${b.upgradeTime}С</div>
             `;
+            
+            if (b.level < b.maxLevel) {
+                const upgrading = b.upgradeEnd > Date.now();
+                if (upgrading) {
+                    const timeLeft = Math.ceil((b.upgradeEnd - Date.now()) / 1000);
+                    content += `<div class="modal-stat" style="color:#ff9800;">⏱️ УЛУЧШЕНИЕ: ${timeLeft}С</div>`;
+                } else {
+                    content += `
+                        <div class="btn btn-gold" onclick="startUpgrade(${b.id})" style="margin:20px 0;">
+                            🚀 УЛУЧШИТЬ (${b.upgradeCost.toLocaleString()}💰)
+                        </div>
+                    `;
+                }
+            } else {
+                content += '<div style="color:#ffd700; font-size:18px; margin:20px;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
+            }
+            
+            content += '</div>';
+            modalContent.innerHTML = content;
             modal.classList.add('active');
-        }
-        
-        function upgradeBusiness(id) {
-            const business = gameState.businesses.find(b => b.id === id);
-            const cost = business.upgradeCost * business.level;
-            if (gameState.balance >= cost) {
-                gameState.balance -= cost;
-                business.level++;
-                updateUI();
-                saveGame();
-                openBusiness(id);
-            } else alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
-            closeBusinessModal();
         }
         
         function closeBusinessModal() {
             document.getElementById('businessModal').classList.remove('active');
         }
         
+        function checkBusinessUpgrades() {
+            gameState.businesses.forEach(b => {
+                if (b.upgradeEnd > 0 && b.upgradeEnd < Date.now() && b.level < b.maxLevel) {
+                    b.level++;
+                    b.totalEarned += b.baseIncome * b.level * 10; // Бонус за завершение апгрейда
+                    b.upgradeCost = Math.floor(b.upgradeCost * 2.2);
+                    b.upgradeEnd = 0;
+                    if (b.level === b.maxLevel) {
+                        showMessage(`🎉 ${b.name} ДОСТИГ МАКСИМАЛЬНОГО УРОВНЯ!`);
+                    }
+                }
+            });
+        }
+        
         // ========== НЕДВИЖИМОСТЬ ==========
+        function renderProperty(content) {
+            const housesOwned = gameState.houses.filter(h => h.owned).length;
+            const carsOwned = gameState.cars.filter(c => c.owned).length;
+            const planesOwned = gameState.planes.filter(p => p.owned).length;
+            const shipsOwned = gameState.ships.filter(s => s.owned).length;
+            
+            content.innerHTML = `
+                <div class="card">
+                    <div class="card-title">🏰 НЕДВИЖИМОСТЬ</div>
+                    
+                    <div class="property-grid">
+                        <div class="property-category" onclick="showPropertyCategory('houses')">
+                            <span>🏠</span>
+                            <div class="category-name">ДОМА</div>
+                            <div class="category-count">${housesOwned}/4</div>
+                        </div>
+                        <div class="property-category" onclick="showPropertyCategory('cars')">
+                            <span>🚗</span>
+                            <div class="category-name">МАШИНЫ</div>
+                            <div class="category-count">${carsOwned}/4</div>
+                        </div>
+                        <div class="property-category" onclick="showPropertyCategory('planes')">
+                            <span>✈️</span>
+                            <div class="category-name">САМОЛЕТЫ</div>
+                            <div class="category-count">${planesOwned}/4</div>
+                        </div>
+                        <div class="property-category" onclick="showPropertyCategory('ships')">
+                            <span>🚢</span>
+                            <div class="category-name">КОРАБЛИ</div>
+                            <div class="category-count">${shipsOwned}/4</div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn btn-gold" onclick="renderGarage()">🚗 МОЙ ГАРАЖ</div>
+                    <div class="btn btn-gold" onclick="renderMyHouses()">🏠 МОИ ДОМА</div>
+                    <div class="btn btn-gold" onclick="renderMyPlanes()">✈️ МОИ САМОЛЕТЫ</div>
+                    <div class="btn btn-gold" onclick="renderMyShips()">🚢 МОИ КОРАБЛИ</div>
+                </div>
+            `;
+        }
+        
+        function renderGarage() {
+            const content = document.getElementById('content');
+            let html = '<div class="card"><div class="card-title">🚗 МОЙ ГАРАЖ</div>';
+            
+            const ownedCars = gameState.cars.filter(c => c.owned);
+            if (ownedCars.length === 0) {
+                html += '<div style="text-align:center; padding:20px;">У ВАС НЕТ МАШИН</div>';
+            } else {
+                ownedCars.forEach(car => {
+                    html += `
+                        <div class="property-item">
+                            <div class="property-emoji">${car.emoji}</div>
+                            <div class="property-details">
+                                <div class="property-title">${car.name}</div>
+                                <div class="property-income">⏱️ +${car.income}/ЧАС</div>
+                            </div>
+                            <span class="property-owned">ВЛАДЕЮ</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div></div>';
+            content.innerHTML = html;
+        }
+        
+        function renderMyHouses() {
+            const content = document.getElementById('content');
+            let html = '<div class="card"><div class="card-title">🏠 МОИ ДОМА</div>';
+            
+            const ownedHouses = gameState.houses.filter(h => h.owned);
+            if (ownedHouses.length === 0) {
+                html += '<div style="text-align:center; padding:20px;">У ВАС НЕТ ДОМОВ</div>';
+            } else {
+                ownedHouses.forEach(house => {
+                    html += `
+                        <div class="property-item">
+                            <div class="property-emoji">${house.emoji}</div>
+                            <div class="property-details">
+                                <div class="property-title">${house.name}</div>
+                                <div class="property-income">⏱️ +${house.income}/ЧАС</div>
+                            </div>
+                            <span class="property-owned">ВЛАДЕЮ</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div></div>';
+            content.innerHTML = html;
+        }
+        
+        function renderMyPlanes() {
+            const content = document.getElementById('content');
+            let html = '<div class="card"><div class="card-title">✈️ МОИ САМОЛЕТЫ</div>';
+            
+            const ownedPlanes = gameState.planes.filter(p => p.owned);
+            if (ownedPlanes.length === 0) {
+                html += '<div style="text-align:center; padding:20px;">У ВАС НЕТ САМОЛЕТОВ</div>';
+            } else {
+                ownedPlanes.forEach(plane => {
+                    html += `
+                        <div class="property-item">
+                            <div class="property-emoji">${plane.emoji}</div>
+                            <div class="property-details">
+                                <div class="property-title">${plane.name}</div>
+                                <div class="property-income">⏱️ +${plane.income}/ЧАС</div>
+                            </div>
+                            <span class="property-owned">ВЛАДЕЮ</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div></div>';
+            content.innerHTML = html;
+        }
+        
+        function renderMyShips() {
+            const content = document.getElementById('content');
+            let html = '<div class="card"><div class="card-title">🚢 МОИ КОРАБЛИ</div>';
+            
+            const ownedShips = gameState.ships.filter(s => s.owned);
+            if (ownedShips.length === 0) {
+                html += '<div style="text-align:center; padding:20px;">У ВАС НЕТ КОРАБЛЕЙ</div>';
+            } else {
+                ownedShips.forEach(ship => {
+                    html += `
+                        <div class="property-item">
+                            <div class="property-emoji">${ship.emoji}</div>
+                            <div class="property-details">
+                                <div class="property-title">${ship.name}</div>
+                                <div class="property-income">⏱️ +${ship.income}/ЧАС</div>
+                            </div>
+                            <span class="property-owned">ВЛАДЕЮ</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div></div>';
+            content.innerHTML = html;
+        }
+        
         function showPropertyCategory(category) {
             const items = gameState[category];
-            const titles = { houses: '🏠 ДОМА', cars: '🚗 МАШИНЫ', planes: '✈️ САМОЛЕТЫ', ships: '🚢 КОРАБЛИ' };
+            const titles = {
+                houses: '🏠 ДОМА',
+                cars: '🚗 МАШИНЫ',
+                planes: '✈️ САМОЛЕТЫ',
+                ships: '🚢 КОРАБЛИ'
+            };
             
             let html = `<div class="card"><div class="card-title">${titles[category]}</div>`;
             
@@ -1054,35 +1169,179 @@
                         </div>
                         ${item.owned ? 
                             '<span class="property-owned">ВЛАДЕЮ</span>' : 
-                            `<button class="btn btn-gold" style="padding:12px 20px;" onclick="buyProperty('${category}', ${item.id})">КУПИТЬ</button>`
+                            `<div class="btn btn-small" style="width:auto;" onclick="buyProperty('${category}', ${item.id})">КУПИТЬ</div>`
                         }
                     </div>
                 `;
             });
             
-            html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div>';
-            html += '</div>';
+            html += '<div class="btn" onclick="renderTab(\'property\')">◀ НАЗАД</div></div>';
             document.getElementById('content').innerHTML = html;
         }
         
         function buyProperty(category, id) {
             const item = gameState[category][id];
+            if (item.owned) return;
+            
             if (gameState.balance >= item.price) {
                 gameState.balance -= item.price;
                 item.owned = true;
-                updateUI();
                 saveGame();
+                updateUI();
+                showMessage(`✅ ВЫ КУПИЛИ ${item.name}!`);
                 showPropertyCategory(category);
-            } else alert('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            } else {
+                showMessage('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            }
+        }
+        
+        // ========== МАГАЗИН ==========
+        function renderShop(content) {
+            let html = '<div class="card"><div class="card-title">🏪 МАГАЗИН УЛУЧШЕНИЙ</div>';
+            
+            // Сила клика
+            if (gameState.clickPowerLevel < 5) {
+                html += `
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <div class="item-name">💪 СИЛА КЛИКА +${gameState.clickPowerLevel + 1}</div>
+                            <div class="item-desc">Увеличивает доход с клика</div>
+                            <div class="item-price">💰 ${upgradePrices.clickPower[gameState.clickPowerLevel].toLocaleString()}</div>
+                            <div class="item-level">УРОВЕНЬ: ${gameState.clickPowerLevel}/5</div>
+                        </div>
+                        <button class="buy-btn" onclick="buyUpgrade('clickPower')">↑</button>
+                    </div>
+                `;
+            }
+            
+            // Автокликер
+            if (gameState.autoClickerLevel < 5) {
+                html += `
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <div class="item-name">🤖 АВТОКЛИКЕР +${gameState.autoClickerLevel + 1}</div>
+                            <div class="item-desc">Автоматический доход в секунду</div>
+                            <div class="item-price">💰 ${upgradePrices.autoClicker[gameState.autoClickerLevel].toLocaleString()}</div>
+                            <div class="item-level">УРОВЕНЬ: ${gameState.autoClickerLevel}/5</div>
+                        </div>
+                        <button class="buy-btn" onclick="buyUpgrade('autoClicker')">↑</button>
+                    </div>
+                `;
+            }
+            
+            // Крит
+            if (gameState.critLevel < 5) {
+                html += `
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <div class="item-name">⚡ КРИТИЧЕСКИЙ УДАР +10%</div>
+                            <div class="item-desc">Шанс умножить доход x10</div>
+                            <div class="item-price">💰 ${upgradePrices.crit[gameState.critLevel].toLocaleString()}</div>
+                            <div class="item-level">УРОВЕНЬ: ${gameState.critLevel}/5</div>
+                        </div>
+                        <button class="buy-btn" onclick="buyUpgrade('crit')">↑</button>
+                    </div>
+                `;
+            }
+            
+            // Премиум раздел
+            html += `
+                <div style="margin:20px 0 10px; color:#ffd700; text-align:center;">💎 ПРЕМИУМ</div>
+                <div class="shop-item">
+                    <div class="item-info">
+                        <div class="item-name">💰 ОБМЕН АЛМАЗОВ</div>
+                        <div class="item-desc">1💎 = 1000💰</div>
+                    </div>
+                    <button class="buy-btn buy-btn-gold" onclick="exchangeDiamonds()">ОБМЕН</button>
+                </div>
+            `;
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        function buyUpgrade(type) {
+            const level = gameState[type + 'Level'];
+            if (level >= 5) {
+                showMessage('❌ МАКСИМАЛЬНЫЙ УРОВЕНЬ!');
+                return;
+            }
+            
+            const price = upgradePrices[type][level];
+            if (gameState.balance >= price) {
+                gameState.balance -= price;
+                gameState[type + 'Level']++;
+                saveGame();
+                updateUI();
+                showMessage(`✅ УЛУЧШЕНИЕ ПРИОБРЕТЕНО!`);
+            } else {
+                showMessage('❌ НЕДОСТАТОЧНО МОНЕТ!');
+            }
+        }
+        
+        function exchangeDiamonds() {
+            if (gameState.diamonds >= 1) {
+                gameState.diamonds--;
+                gameState.balance += 1000;
+                saveGame();
+                updateUI();
+                showMessage('✅ +1000💰');
+            } else {
+                showMessage('❌ НЕТ АЛМАЗОВ!');
+            }
+        }
+        
+        // ========== СТАТИСТИКА ==========
+        function renderStats(content) {
+            const totalIncome = gameState.autoClickerLevel + 
+                gameState.businesses.filter(b => b.owned).reduce((sum, b) => sum + (b.baseIncome * b.level), 0);
+            
+            const ownedBusinesses = gameState.businesses.filter(b => b.owned).length;
+            const ownedProperties = [
+                ...gameState.houses.filter(h => h.owned),
+                ...gameState.cars.filter(c => c.owned),
+                ...gameState.planes.filter(p => p.owned),
+                ...gameState.ships.filter(s => s.owned)
+            ].length;
+            
+            content.innerHTML = `
+                <div class="card">
+                    <div class="card-title">📊 СТАТИСТИКА ИГРОКА</div>
+                    
+                    <div class="stat-item">
+                        <div>👆 ВСЕГО КЛИКОВ: ${gameState.totalClicks.toLocaleString()}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>💰 ЗАРАБОТАНО ВСЕГО: ${Math.floor(gameState.totalEarned).toLocaleString()}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>⏱️ ДОХОД В СЕКУНДУ: ${totalIncome}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>💼 БИЗНЕСОВ: ${ownedBusinesses}/10</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>🏠 ИМУЩЕСТВА: ${ownedProperties}/16</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>🎮 В ИГРЕ: ${Math.floor(gameState.playTime / 60)} МИН ${gameState.playTime % 60} СЕК</div>
+                    </div>
+                    <div class="stat-item">
+                        <div>💎 АЛМАЗОВ: ${gameState.diamonds}</div>
+                    </div>
+                </div>
+            `;
         }
         
         // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
         setInterval(() => {
+            // Автокликер
             if (gameState.autoClickerLevel > 0) {
                 gameState.balance += gameState.autoClickerLevel;
                 gameState.totalEarned += gameState.autoClickerLevel;
             }
             
+            // Бизнесы
             gameState.businesses.forEach(b => {
                 if (b.owned && b.level > 0) {
                     const income = b.baseIncome * b.level;
@@ -1090,16 +1349,6 @@
                     gameState.totalEarned += income;
                     b.totalEarned += income;
                 }
-            });
-            
-            [gameState.houses, gameState.cars, gameState.planes, gameState.ships].forEach(cat => {
-                cat.forEach(item => {
-                    if (item.owned) {
-                        const income = item.income / 3600;
-                        gameState.balance += income;
-                        gameState.totalEarned += income;
-                    }
-                });
             });
             
             gameState.playTime++;
@@ -1119,11 +1368,34 @@
         // ========== ЗАПУСК ==========
         window.onload = function() {
             loadGame();
+            
             if (tg) {
                 const user = tg.initDataUnsafe?.user;
-                if (user) document.getElementById('username').textContent = `👑 ${(user.first_name || 'IMPERIA').toUpperCase()}`;
+                if (user) {
+                    document.getElementById('username').textContent = `👑 ${(user.first_name || 'IMPERIA').toUpperCase()}`;
+                }
             }
+            
+            // Добавляем вкладку покупки бизнесов
+            window.renderTab = renderTab;
+            window.showPropertyCategory = showPropertyCategory;
+            window.buyProperty = buyProperty;
+            window.openBusiness = openBusiness;
+            window.buyBusiness = buyBusiness;
+            window.startUpgrade = startUpgrade;
+            window.closeBusinessModal = closeBusinessModal;
+            window.closeMessageModal = closeMessageModal;
+            window.renderGarage = renderGarage;
+            window.renderMyHouses = renderMyHouses;
+            window.renderMyPlanes = renderMyPlanes;
+            window.renderMyShips = renderMyShips;
+            window.buyUpgrade = buyUpgrade;
+            window.exchangeDiamonds = exchangeDiamonds;
+            
             renderTab('home');
+            
+            // Проверка улучшений каждую секунду
+            setInterval(checkBusinessUpgrades, 1000);
         };
     </script>
 </body>
