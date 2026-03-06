@@ -235,14 +235,57 @@
             color: white;
         }
         
-        .btn-buy {
-            background: linear-gradient(135deg, #4a2a5a 0%, #3a1a4a 100%);
-            border: 2px solid #4CAF50;
+        /* Формы ввода */
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
             padding: 15px 20px;
+            width: 100%;
+            margin: 10px 0;
+            color: white;
             font-size: 16px;
+            outline: none;
         }
         
-        /* Нижняя навигация (КРУПНЕЕ) */
+        .input-field:focus {
+            border-color: #ffd700;
+        }
+        
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Экран регистрации/входа */
+        .auth-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100%;
+            padding: 20px;
+        }
+        
+        .auth-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .auth-switch span {
+            color: #ffd700;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        /* Нижняя навигация */
         .bottom-nav {
             display: flex;
             background: rgba(0, 0, 0, 0.9);
@@ -297,21 +340,10 @@
             margin-bottom: 5px;
         }
         
-        .item-desc {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 5px;
-        }
-        
         .item-price {
             color: #4CAF50;
             font-weight: bold;
             font-size: 16px;
-        }
-        
-        .item-level {
-            color: #ff9800;
-            font-size: 14px;
         }
         
         .buy-btn {
@@ -323,11 +355,6 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-        }
-        
-        .buy-btn-diamond {
-            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
-            color: #333;
         }
         
         /* Сетка недвижимости */
@@ -348,11 +375,6 @@
             transition: all 0.3s;
         }
         
-        .property-category:active {
-            transform: scale(0.95);
-            background: rgba(255, 215, 0, 0.15);
-        }
-        
         .property-category span {
             font-size: 48px;
             display: block;
@@ -371,59 +393,6 @@
             font-weight: bold;
         }
         
-        /* Список имущества */
-        .property-list {
-            margin-top: 10px;
-        }
-        
-        .property-item {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-        }
-        
-        .property-emoji {
-            font-size: 42px;
-            width: 70px;
-            text-align: center;
-        }
-        
-        .property-details {
-            flex: 1;
-        }
-        
-        .property-title {
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .property-price {
-            color: #ffd700;
-            font-size: 16px;
-            margin-bottom: 3px;
-        }
-        
-        .property-income {
-            color: #4CAF50;
-            font-size: 14px;
-        }
-        
-        .property-owned {
-            background: #2e7d32;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-            border: 2px solid #ffd700;
-        }
-        
         /* Бизнес */
         .business-item {
             background: rgba(255, 255, 255, 0.07);
@@ -433,11 +402,6 @@
             cursor: pointer;
             border: 2px solid rgba(255, 215, 0, 0.3);
             transition: all 0.3s;
-        }
-        
-        .business-item:active {
-            transform: scale(0.98);
-            background: rgba(255, 215, 0, 0.1);
         }
         
         .business-header {
@@ -486,13 +450,6 @@
             font-weight: bold;
         }
         
-        .business-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
         /* Модальное окно */
         .modal {
             display: none;
@@ -531,22 +488,6 @@
             text-align: center;
         }
         
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        .modal-btn {
-            flex: 1;
-            padding: 15px;
-            border-radius: 25px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
         .close-btn {
             background: #f44336;
             color: white;
@@ -580,9 +521,9 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Шапка -->
-        <div class="header">
-            <div class="username" id="username">IMPERIA</div>
+        <!-- Шапка (будет видна только после входа) -->
+        <div class="header" id="header" style="display: none;">
+            <div class="username" id="username">ГОСТЬ</div>
             <div class="offline-badge" id="offlineBadge" style="display:none;">⏱️ ОФФЛАЙН ДОХОД</div>
             
             <div class="balance-container">
@@ -608,8 +549,8 @@
         <!-- Контент -->
         <div class="content" id="content"></div>
         
-        <!-- Нижняя навигация -->
-        <div class="bottom-nav">
+        <!-- Нижняя навигация (будет видна только после входа) -->
+        <div class="bottom-nav" id="bottomNav" style="display: none;">
             <div class="nav-item active" data-tab="home"><span>🏠</span>ГЛАВНАЯ</div>
             <div class="nav-item" data-tab="mybusiness"><span>💼</span>БИЗНЕСЫ</div>
             <div class="nav-item" data-tab="property"><span>🏰</span>НЕДВИЖ.</div>
@@ -636,31 +577,101 @@
             tg.expand();
         }
         
-        // ========== СОСТОЯНИЕ ИГРЫ ==========
-        let gameState = {
-            // Ресурсы
-            balance: 0,
-            diamonds: 10,
-            exp: 0,
-            level: 1,
+        // ========== СИСТЕМА АККАУНТОВ ==========
+        
+        // Хранилище пользователей
+        let users = {};
+        let currentUser = null;
+        
+        // Загрузка пользователей из localStorage
+        function loadUsers() {
+            const saved = localStorage.getItem('imperiaUsers');
+            if (saved) {
+                try {
+                    users = JSON.parse(saved);
+                } catch(e) {
+                    users = {};
+                }
+            } else {
+                users = {};
+            }
+        }
+        
+        // Сохранение пользователей
+        function saveUsers() {
+            localStorage.setItem('imperiaUsers', JSON.stringify(users));
+        }
+        
+        // Простое хеширование пароля (для демо - в реальном проекте используйте bcrypt)
+        function hashPassword(password) {
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(16);
+        }
+        
+        // Проверка существования ника
+        function isNicknameExists(nickname) {
+            return users.hasOwnProperty(nickname);
+        }
+        
+        // Регистрация нового пользователя
+        function registerUser(nickname, password) {
+            if (isNicknameExists(nickname)) {
+                return { success: false, message: "❌ Такой никнейм уже существует!" };
+            }
             
-            // Улучшения
-            clickPower: 1,
-            clickPowerLevel: 0,
-            autoClickerLevel: 0,
-            critLevel: 0,
+            const hashedPassword = hashPassword(password);
             
-            // Статистика
-            totalClicks: 0,
-            totalEarned: 0,
-            playTime: 0,
-            lastOnlineTime: Date.now(),
+            // Создаем нового пользователя с начальными данными
+            users[nickname] = {
+                password: hashedPassword,
+                gameState: {
+                    balance: 0,
+                    diamonds: 10,
+                    exp: 0,
+                    level: 1,
+                    clickPower: 1,
+                    clickPowerLevel: 0,
+                    autoClickerLevel: 0,
+                    critLevel: 0,
+                    totalClicks: 0,
+                    totalEarned: 0,
+                    playTime: 0,
+                    lastOnlineTime: Date.now(),
+                    myBusinesses: [],
+                    houses: [
+                        { id: 0, name: "КВАРТИРА", emoji: "🏢", price: 50000, income: 5, owned: false },
+                        { id: 1, name: "ДОМ", emoji: "🏠", price: 500000, income: 50, owned: false },
+                        { id: 2, name: "ОСОБНЯК", emoji: "🏰", price: 5000000, income: 500, owned: false },
+                        { id: 3, name: "ВИЛЛА", emoji: "🏛️", price: 50000000, income: 5000, owned: false }
+                    ],
+                    cars: [
+                        { id: 0, name: "ЛАДА", emoji: "🚗", price: 20000, income: 2, owned: false },
+                        { id: 1, name: "МЕРСЕДЕС", emoji: "🚘", price: 200000, income: 20, owned: false },
+                        { id: 2, name: "ФЕРРАРИ", emoji: "🏎️", price: 2000000, income: 200, owned: false },
+                        { id: 3, name: "БУГАТТИ", emoji: "🚀", price: 20000000, income: 2000, owned: false }
+                    ],
+                    planes: [
+                        { id: 0, name: "КУКУРУЗНИК", emoji: "✈️", price: 100000, income: 10, owned: false },
+                        { id: 1, name: "БОИНГ", emoji: "🛩️", price: 1000000, income: 100, owned: false },
+                        { id: 2, name: "ЧАСТНЫЙ", emoji: "🛫", price: 10000000, income: 1000, owned: false },
+                        { id: 3, name: "РЕАКТИВНЫЙ", emoji: "🛬", price: 100000000, income: 10000, owned: false }
+                    ],
+                    ships: [
+                        { id: 0, name: "ЛОДКА", emoji: "🛶", price: 30000, income: 3, owned: false },
+                        { id: 1, name: "КАРТЕР", emoji: "⛵", price: 300000, income: 30, owned: false },
+                        { id: 2, name: "ЯХТА", emoji: "🛥️", price: 3000000, income: 300, owned: false },
+                        { id: 3, name: "ЛАЙНЕР", emoji: "🚢", price: 30000000, income: 3000, owned: false }
+                    ]
+                }
+            };
             
-            // МОИ БИЗНЕСЫ (массив купленных бизнесов)
-            myBusinesses: [],
-            
-            // ШАБЛОНЫ БИЗНЕСОВ (для магазина)
-            businessTemplates: [
+            // Шаблоны бизнесов (не сохраняются в пользователе, а используются глобально)
+            users[nickname].businessTemplates = [
                 { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 1000, upgradeTime: 30, maxLevel: 20 },
                 { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 5000, upgradeTime: 60, maxLevel: 20 },
                 { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 25000, upgradeTime: 120, maxLevel: 20 },
@@ -671,9 +682,211 @@
                 { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 50000000, upgradeTime: 2400, maxLevel: 20 },
                 { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 250000000, upgradeTime: 4800, maxLevel: 20 },
                 { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 1000000000, upgradeTime: 9600, maxLevel: 20 }
-            ],
+            ];
             
-            // НЕДВИЖИМОСТЬ
+            saveUsers();
+            return { success: true, message: "✅ Регистрация успешна!" };
+        }
+        
+        // Вход пользователя
+        function loginUser(nickname, password) {
+            if (!isNicknameExists(nickname)) {
+                return { success: false, message: "❌ Пользователь не найден!" };
+            }
+            
+            const hashedPassword = hashPassword(password);
+            if (users[nickname].password !== hashedPassword) {
+                return { success: false, message: "❌ Неверный пароль!" };
+            }
+            
+            currentUser = nickname;
+            localStorage.setItem('currentUser', nickname);
+            
+            // Загружаем состояние игры пользователя
+            loadUserGameState();
+            
+            return { success: true, message: "✅ Вход выполнен!" };
+        }
+        
+        // Выход из аккаунта
+        function logoutUser() {
+            // Сохраняем текущее состояние перед выходом
+            saveUserGameState();
+            
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            
+            // Показываем экран входа
+            showAuthScreen();
+        }
+        
+        // Сохраняем состояние игры текущего пользователя
+        function saveUserGameState() {
+            if (currentUser && users[currentUser]) {
+                // Сохраняем все данные gameState в users
+                users[currentUser].gameState = {
+                    balance: gameState.balance,
+                    diamonds: gameState.diamonds,
+                    exp: gameState.exp,
+                    level: gameState.level,
+                    clickPower: gameState.clickPower,
+                    clickPowerLevel: gameState.clickPowerLevel,
+                    autoClickerLevel: gameState.autoClickerLevel,
+                    critLevel: gameState.critLevel,
+                    totalClicks: gameState.totalClicks,
+                    totalEarned: gameState.totalEarned,
+                    playTime: gameState.playTime,
+                    lastOnlineTime: gameState.lastOnlineTime,
+                    myBusinesses: gameState.myBusinesses,
+                    houses: gameState.houses,
+                    cars: gameState.cars,
+                    planes: gameState.planes,
+                    ships: gameState.ships
+                };
+                saveUsers();
+            }
+        }
+        
+        // Загружаем состояние игры пользователя
+        function loadUserGameState() {
+            if (currentUser && users[currentUser]) {
+                const userState = users[currentUser].gameState;
+                gameState = { ...gameState, ...userState };
+                
+                // Обновляем время последнего входа
+                gameState.lastOnlineTime = Date.now();
+                
+                // Показываем интерфейс
+                document.getElementById('header').style.display = 'block';
+                document.getElementById('bottomNav').style.display = 'flex';
+                document.getElementById('username').textContent = `👑 ${currentUser}`;
+                
+                updateUI();
+            }
+        }
+        
+        // Показываем экран авторизации
+        function showAuthScreen() {
+            document.getElementById('header').style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'none';
+            
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="auth-screen">
+                    <div class="auth-title">IMPERIA CLICKER</div>
+                    
+                    <div id="authForm">
+                        <input type="text" id="loginNickname" class="input-field" placeholder="Никнейм">
+                        <input type="password" id="loginPassword" class="input-field" placeholder="Пароль">
+                        
+                        <button class="btn btn-gold" onclick="handleLogin()">🔓 ВОЙТИ</button>
+                        
+                        <div class="auth-switch">
+                            Нет аккаунта? <span onclick="showRegisterForm()">Зарегистрироваться</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Показываем форму регистрации
+        function showRegisterForm() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="auth-screen">
+                    <div class="auth-title">РЕГИСТРАЦИЯ</div>
+                    
+                    <div id="authForm">
+                        <input type="text" id="regNickname" class="input-field" placeholder="Придумайте никнейм">
+                        <input type="password" id="regPassword" class="input-field" placeholder="Придумайте пароль">
+                        <input type="password" id="regPasswordConfirm" class="input-field" placeholder="Повторите пароль">
+                        
+                        <button class="btn btn-gold" onclick="handleRegister()">📝 ЗАРЕГИСТРИРОВАТЬСЯ</button>
+                        
+                        <div class="auth-switch">
+                            Уже есть аккаунт? <span onclick="showAuthScreen()">Войти</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Обработка входа
+        function handleLogin() {
+            const nickname = document.getElementById('loginNickname')?.value;
+            const password = document.getElementById('loginPassword')?.value;
+            
+            if (!nickname || !password) {
+                alert('❌ Заполните все поля!');
+                return;
+            }
+            
+            const result = loginUser(nickname, password);
+            
+            if (result.success) {
+                // Успешный вход - показываем игру
+                document.getElementById('header').style.display = 'block';
+                document.getElementById('bottomNav').style.display = 'flex';
+                document.getElementById('username').textContent = `👑 ${nickname}`;
+                
+                renderTab('home');
+            } else {
+                alert(result.message);
+            }
+        }
+        
+        // Обработка регистрации
+        function handleRegister() {
+            const nickname = document.getElementById('regNickname')?.value;
+            const password = document.getElementById('regPassword')?.value;
+            const passwordConfirm = document.getElementById('regPasswordConfirm')?.value;
+            
+            if (!nickname || !password || !passwordConfirm) {
+                alert('❌ Заполните все поля!');
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                alert('❌ Пароли не совпадают!');
+                return;
+            }
+            
+            if (nickname.length < 3) {
+                alert('❌ Никнейм должен быть минимум 3 символа!');
+                return;
+            }
+            
+            if (password.length < 4) {
+                alert('❌ Пароль должен быть минимум 4 символа!');
+                return;
+            }
+            
+            const result = registerUser(nickname, password);
+            
+            if (result.success) {
+                alert(result.message);
+                // Автоматически входим после регистрации
+                loginUser(nickname, password);
+            } else {
+                alert(result.message);
+            }
+        }
+        
+        // ========== СОСТОЯНИЕ ИГРЫ ==========
+        let gameState = {
+            balance: 0,
+            diamonds: 10,
+            exp: 0,
+            level: 1,
+            clickPower: 1,
+            clickPowerLevel: 0,
+            autoClickerLevel: 0,
+            critLevel: 0,
+            totalClicks: 0,
+            totalEarned: 0,
+            playTime: 0,
+            lastOnlineTime: Date.now(),
+            myBusinesses: [],
             houses: [
                 { id: 0, name: "КВАРТИРА", emoji: "🏢", price: 50000, income: 5, owned: false },
                 { id: 1, name: "ДОМ", emoji: "🏠", price: 500000, income: 50, owned: false },
@@ -700,6 +913,20 @@
             ]
         };
         
+        // Шаблоны бизнесов
+        const businessTemplates = [
+            { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 1000, upgradeTime: 30, maxLevel: 20 },
+            { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 5000, upgradeTime: 60, maxLevel: 20 },
+            { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 25000, upgradeTime: 120, maxLevel: 20 },
+            { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 100000, upgradeTime: 180, maxLevel: 20 },
+            { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 500000, upgradeTime: 300, maxLevel: 20 },
+            { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 2500000, upgradeTime: 600, maxLevel: 20 },
+            { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 10000000, upgradeTime: 1200, maxLevel: 20 },
+            { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 50000000, upgradeTime: 2400, maxLevel: 20 },
+            { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 250000000, upgradeTime: 4800, maxLevel: 20 },
+            { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 1000000000, upgradeTime: 9600, maxLevel: 20 }
+        ];
+        
         // Цены улучшений
         const upgradePrices = {
             clickPower: [1000, 5000, 25000, 125000, 625000],
@@ -714,7 +941,7 @@
         
         // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
         function loadGame() {
-            const saved = localStorage.getItem('imperiaFull2026');
+            const saved = localStorage.getItem('imperiaGameState');
             if (saved) {
                 try {
                     const loaded = JSON.parse(saved);
@@ -722,7 +949,6 @@
                 } catch(e) {}
             }
             
-            // Оффлайн доход
             const now = Date.now();
             const secondsPassed = Math.floor((now - gameState.lastOnlineTime) / 1000);
             
@@ -731,7 +957,7 @@
                 
                 gameState.myBusinesses.forEach(business => {
                     if (business.level > 0) {
-                        const template = gameState.businessTemplates[business.templateId];
+                        const template = businessTemplates[business.templateId];
                         offlineIncome += template.baseIncome * business.level * secondsPassed;
                         business.totalEarned += template.baseIncome * business.level * secondsPassed;
                     }
@@ -750,10 +976,18 @@
         
         function saveGame() {
             gameState.lastOnlineTime = Date.now();
-            localStorage.setItem('imperiaFull2026', JSON.stringify(gameState));
+            
+            // Если пользователь авторизован, сохраняем в его аккаунт
+            if (currentUser) {
+                saveUserGameState();
+            } else {
+                localStorage.setItem('imperiaGameState', JSON.stringify(gameState));
+            }
         }
         
         function updateUI() {
+            if (!currentUser) return;
+            
             document.getElementById('balance').textContent = formatNumber(Math.floor(gameState.balance));
             document.getElementById('diamonds').textContent = gameState.diamonds;
             document.getElementById('level').textContent = gameState.level;
@@ -798,7 +1032,7 @@
                 const power = gameState.clickPower * (1 + gameState.clickPowerLevel * 0.5);
                 const totalIncome = gameState.autoClickerLevel + 
                     gameState.myBusinesses.reduce((sum, b) => {
-                        const template = gameState.businessTemplates[b.templateId];
+                        const template = businessTemplates[b.templateId];
                         return sum + (template.baseIncome * b.level);
                     }, 0);
                 
@@ -829,7 +1063,7 @@
             }
         }
         
-        // ========== БИЗНЕСЫ (НОВАЯ ВЕРСИЯ) ==========
+        // ========== БИЗНЕСЫ ==========
         
         function renderMyBusiness(content) {
             let html = '<div class="card"><div class="card-title">💼 МОИ БИЗНЕСЫ</div>';
@@ -838,7 +1072,7 @@
                 html += '<div style="text-align:center; padding:30px;">У ВАС НЕТ БИЗНЕСОВ</div>';
             } else {
                 gameState.myBusinesses.forEach((business, index) => {
-                    const template = gameState.businessTemplates[business.templateId];
+                    const template = businessTemplates[business.templateId];
                     const upgrading = business.upgradeEnd > Date.now();
                     const timeLeft = upgrading ? Math.ceil((business.upgradeEnd - Date.now()) / 1000) : 0;
                     
@@ -876,7 +1110,7 @@
             
             let html = '<div class="modal-title">🏪 КУПИТЬ БИЗНЕС</div>';
             
-            gameState.businessTemplates.forEach(template => {
+            businessTemplates.forEach(template => {
                 const ownedCount = gameState.myBusinesses.filter(b => b.templateId === template.id).length;
                 
                 html += `
@@ -907,7 +1141,7 @@
         }
         
         function buyBusinessFromModal(templateId) {
-            const template = gameState.businessTemplates.find(t => t.id === templateId);
+            const template = businessTemplates.find(t => t.id === templateId);
             if (!template) return;
             
             const ownedCount = gameState.myBusinesses.filter(b => b.templateId === templateId).length;
@@ -930,8 +1164,7 @@
                     upgradeTime: template.upgradeTime,
                     upgradeEnd: 0,
                     lastUpgrade: 0,
-                    totalEarned: 0,
-                    totalSpent: price // Запоминаем сколько потрачено на покупку
+                    totalEarned: 0
                 };
                 
                 gameState.myBusinesses.push(newBusiness);
@@ -946,13 +1179,8 @@
         }
         
         function calculateBusinessTotalSpent(business, template) {
-            // Стоимость покупки (базовая цена)
             let totalSpent = template.baseUpgradeCost;
             
-            // Добавляем стоимость всех улучшений
-            // Уровень 1 = базовая цена
-            // Уровень 2 = базовая цена * 2.5
-            // Уровень 3 = (базовая цена * 2.5) * 2.5 и т.д.
             let currentCost = template.baseUpgradeCost;
             for (let i = 1; i < business.level; i++) {
                 currentCost = Math.floor(currentCost * 2.5);
@@ -966,7 +1194,7 @@
             const business = gameState.myBusinesses[index];
             if (!business) return;
             
-            const template = gameState.businessTemplates[business.templateId];
+            const template = businessTemplates[business.templateId];
             const totalSpent = calculateBusinessTotalSpent(business, template);
             const sellPrice = Math.floor(totalSpent * 0.5);
             
@@ -1007,7 +1235,6 @@
                 content += '<div style="margin:15px; color:#ffd700;">✅ МАКСИМАЛЬНЫЙ УРОВЕНЬ</div>';
             }
             
-            // Кнопка продажи
             content += `
                 <div style="margin:15px;">
                     <div class="sell-btn" onclick="sellBusiness(${index})">
@@ -1025,15 +1252,12 @@
             const business = gameState.myBusinesses[index];
             if (!business) return;
             
-            const template = gameState.businessTemplates[business.templateId];
+            const template = businessTemplates[business.templateId];
             const totalSpent = calculateBusinessTotalSpent(business, template);
             const sellPrice = Math.floor(totalSpent * 0.5);
             
             if (confirm(`Продать ${template.name} #${index + 1} за ${formatNumber(sellPrice)}💰?`)) {
-                // Удаляем бизнес из массива
                 gameState.myBusinesses.splice(index, 1);
-                
-                // Начисляем деньги
                 gameState.balance += sellPrice;
                 
                 saveGame();
@@ -1047,7 +1271,7 @@
             const business = gameState.myBusinesses[index];
             if (!business) return;
             
-            const template = gameState.businessTemplates[business.templateId];
+            const template = businessTemplates[business.templateId];
             
             if (business.level >= template.maxLevel) {
                 alert('❌ Достигнут максимальный уровень!');
@@ -1101,7 +1325,7 @@
         function checkBusinessUpgrades() {
             const now = Date.now();
             gameState.myBusinesses.forEach(business => {
-                const template = gameState.businessTemplates[business.templateId];
+                const template = businessTemplates[business.templateId];
                 if (business.upgradeEnd > 0 && business.upgradeEnd <= now && business.level < template.maxLevel) {
                     business.level++;
                     business.upgradeCost = Math.floor(business.upgradeCost * 2.5);
@@ -1412,7 +1636,7 @@
         function renderStats(content) {
             const totalIncome = gameState.autoClickerLevel + 
                 gameState.myBusinesses.reduce((sum, b) => {
-                    const template = gameState.businessTemplates[b.templateId];
+                    const template = businessTemplates[b.templateId];
                     return sum + (template.baseIncome * b.level);
                 }, 0);
             
@@ -1456,22 +1680,26 @@
                         <span>💎 АЛМАЗЫ</span>
                         <span style="color:#ffd700;">${gameState.diamonds}</span>
                     </div>
+                    
+                    <div style="margin-top:20px;">
+                        <button class="btn btn-danger" onclick="logoutUser()">🚪 ВЫЙТИ ИЗ АККАУНТА</button>
+                    </div>
                 </div>
             `;
         }
         
         // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
         setInterval(() => {
-            // Автокликер
+            if (!currentUser) return;
+            
             if (gameState.autoClickerLevel > 0) {
                 gameState.balance += gameState.autoClickerLevel;
                 gameState.totalEarned += gameState.autoClickerLevel;
             }
             
-            // Бизнесы
             gameState.myBusinesses.forEach(business => {
                 if (business.level > 0) {
-                    const template = gameState.businessTemplates[business.templateId];
+                    const template = businessTemplates[business.templateId];
                     const income = template.baseIncome * business.level;
                     gameState.balance += income;
                     gameState.totalEarned += income;
@@ -1487,6 +1715,8 @@
         // ========== НАВИГАЦИЯ ==========
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
+                if (!currentUser) return;
+                
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 this.classList.add('active');
                 renderTab(this.dataset.tab);
@@ -1495,13 +1725,21 @@
         
         // ========== ЗАПУСК ==========
         window.onload = function() {
-            loadGame();
+            loadUsers();
+            
+            // Проверяем, есть ли текущий пользователь
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser && users[savedUser]) {
+                currentUser = savedUser;
+                loadUserGameState();
+                renderTab('home');
+            } else {
+                showAuthScreen();
+            }
             
             if (tg) {
                 const user = tg.initDataUnsafe?.user;
-                if (user) {
-                    document.getElementById('username').textContent = `👑 ${user.first_name || 'IMPERIA'}`;
-                }
+                // Не показываем Telegram username, так как используем свою систему
             }
             
             // Глобальные функции
@@ -1521,10 +1759,12 @@
             window.showMyShips = showMyShips;
             window.buyUpgrade = buyUpgrade;
             window.exchangeDiamonds = exchangeDiamonds;
+            window.handleLogin = handleLogin;
+            window.handleRegister = handleRegister;
+            window.showRegisterForm = showRegisterForm;
+            window.showAuthScreen = showAuthScreen;
+            window.logoutUser = logoutUser;
             
-            renderTab('home');
-            
-            // Проверка улучшений каждую секунду
             setInterval(checkBusinessUpgrades, 1000);
         };
     </script>
