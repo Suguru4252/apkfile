@@ -38,7 +38,6 @@
             border: 2px solid #ffd700;
         }
         
-        /* Шапка */
         .header {
             background: linear-gradient(135deg, #2a1b3d 0%, #1a0f2a 100%);
             color: white;
@@ -112,7 +111,6 @@
             border-radius: 4px;
         }
         
-        /* Контент */
         .content {
             flex: 1;
             overflow-y: auto;
@@ -125,7 +123,6 @@
             display: none;
         }
         
-        /* Главная страница - кликабельная вся */
         #home-content {
             min-height: 100%;
             cursor: pointer;
@@ -180,7 +177,6 @@
             pointer-events: none;
         }
         
-        /* Карточки */
         .card {
             background: rgba(255, 255, 255, 0.08);
             border-radius: 20px;
@@ -199,7 +195,6 @@
             padding-bottom: 10px;
         }
         
-        /* Кнопки (КРУПНЫЕ) */
         .btn {
             background: linear-gradient(135deg, #3a2a4d 0%, #2a1a3d 100%);
             border: 2px solid #ffd700;
@@ -235,7 +230,6 @@
             color: white;
         }
         
-        /* Формы ввода */
         .input-field {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 215, 0, 0.3);
@@ -256,7 +250,6 @@
             color: rgba(255, 255, 255, 0.5);
         }
         
-        /* Экран регистрации/входа */
         .auth-screen {
             display: flex;
             flex-direction: column;
@@ -285,7 +278,6 @@
             cursor: pointer;
         }
         
-        /* Нижняя навигация */
         .bottom-nav {
             display: flex;
             background: rgba(0, 0, 0, 0.9);
@@ -317,7 +309,6 @@
             border: 1px solid #ffd700;
         }
         
-        /* Магазин */
         .shop-item {
             background: rgba(255, 255, 255, 0.07);
             border-radius: 15px;
@@ -357,7 +348,6 @@
             cursor: pointer;
         }
         
-        /* Сетка недвижимости */
         .property-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -372,7 +362,6 @@
             text-align: center;
             cursor: pointer;
             border: 2px solid rgba(255, 215, 0, 0.4);
-            transition: all 0.3s;
         }
         
         .property-category span {
@@ -393,7 +382,51 @@
             font-weight: bold;
         }
         
-        /* Бизнес */
+        .property-item {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .property-emoji {
+            font-size: 42px;
+            width: 70px;
+            text-align: center;
+        }
+        
+        .property-details {
+            flex: 1;
+        }
+        
+        .property-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .property-price {
+            color: #ffd700;
+            font-size: 16px;
+        }
+        
+        .property-income {
+            color: #4CAF50;
+            font-size: 14px;
+        }
+        
+        .property-owned {
+            background: #2e7d32;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
         .business-item {
             background: rgba(255, 255, 255, 0.07);
             border-radius: 15px;
@@ -401,7 +434,6 @@
             margin-bottom: 15px;
             cursor: pointer;
             border: 2px solid rgba(255, 215, 0, 0.3);
-            transition: all 0.3s;
         }
         
         .business-header {
@@ -426,7 +458,6 @@
             display: flex;
             justify-content: space-between;
             font-size: 15px;
-            color: rgba(255, 255, 255, 0.9);
             margin: 10px 0;
         }
         
@@ -447,10 +478,8 @@
         .upgrade-time {
             font-size: 14px;
             color: #ff9800;
-            font-weight: bold;
         }
         
-        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -514,6 +543,40 @@
             border: 1px solid #ffd700;
         }
         
+        /* Стили для топа */
+        .top-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .top-rank {
+            width: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .top-rank-1 { color: #ffd700; }
+        .top-rank-2 { color: #c0c0c0; }
+        .top-rank-3 { color: #cd7f32; }
+        
+        .top-name {
+            flex: 1;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .top-money {
+            font-size: 16px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
         .hidden {
             display: none !important;
         }
@@ -521,7 +584,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Шапка (будет видна только после входа) -->
         <div class="header" id="header" style="display: none;">
             <div class="username" id="username">ГОСТЬ</div>
             <div class="offline-badge" id="offlineBadge" style="display:none;">⏱️ ОФФЛАЙН ДОХОД</div>
@@ -546,25 +608,22 @@
             </div>
         </div>
         
-        <!-- Контент -->
         <div class="content" id="content"></div>
         
-        <!-- Нижняя навигация (будет видна только после входа) -->
         <div class="bottom-nav" id="bottomNav" style="display: none;">
             <div class="nav-item active" data-tab="home"><span>🏠</span>ГЛАВНАЯ</div>
             <div class="nav-item" data-tab="mybusiness"><span>💼</span>БИЗНЕСЫ</div>
             <div class="nav-item" data-tab="property"><span>🏰</span>НЕДВИЖ.</div>
             <div class="nav-item" data-tab="shop"><span>🏪</span>МАГАЗИН</div>
+            <div class="nav-item" data-tab="top"><span>🏆</span>ТОП-100</div>
             <div class="nav-item" data-tab="stats"><span>📊</span>СТАТИС.</div>
         </div>
     </div>
     
-    <!-- Модальное окно для бизнеса -->
     <div class="modal" id="businessModal">
         <div class="modal-content" id="businessModalContent"></div>
     </div>
     
-    <!-- Модальное окно для недвижимости -->
     <div class="modal" id="propertyModal">
         <div class="modal-content" id="propertyModalContent"></div>
     </div>
@@ -577,32 +636,13 @@
             tg.expand();
         }
         
-        // ========== СИСТЕМА АККАУНТОВ ==========
+        // ========== СИСТЕМА АККАУНТОВ С TELEGRAM CLOUD ==========
         
-        // Хранилище пользователей
         let users = {};
         let currentUser = null;
+        let topPlayers = [];
         
-        // Загрузка пользователей из localStorage
-        function loadUsers() {
-            const saved = localStorage.getItem('imperiaUsers');
-            if (saved) {
-                try {
-                    users = JSON.parse(saved);
-                } catch(e) {
-                    users = {};
-                }
-            } else {
-                users = {};
-            }
-        }
-        
-        // Сохранение пользователей
-        function saveUsers() {
-            localStorage.setItem('imperiaUsers', JSON.stringify(users));
-        }
-        
-        // Простое хеширование пароля (для демо - в реальном проекте используйте bcrypt)
+        // Простое хеширование пароля
         function hashPassword(password) {
             let hash = 0;
             for (let i = 0; i < password.length; i++) {
@@ -613,20 +653,85 @@
             return hash.toString(16);
         }
         
-        // Проверка существования ника
-        function isNicknameExists(nickname) {
-            return users.hasOwnProperty(nickname);
+        // Загрузка пользователей из Telegram Cloud
+        async function loadUsers() {
+            if (tg) {
+                try {
+                    const saved = await tg.CloudStorage.getItem('imperiaUsers');
+                    if (saved) {
+                        users = JSON.parse(saved);
+                    } else {
+                        users = {};
+                    }
+                } catch(e) {
+                    console.log('Ошибка загрузки из облака', e);
+                    users = {};
+                }
+            } else {
+                const saved = localStorage.getItem('imperiaUsers');
+                if (saved) users = JSON.parse(saved);
+            }
+            
+            // Обновляем топ после загрузки
+            updateTopPlayers();
         }
         
-        // Регистрация нового пользователя
-        function registerUser(nickname, password) {
-            if (isNicknameExists(nickname)) {
+        // Сохранение пользователей в Telegram Cloud
+        async function saveUsers() {
+            if (tg) {
+                try {
+                    await tg.CloudStorage.setItem('imperiaUsers', JSON.stringify(users));
+                } catch(e) {
+                    console.log('Ошибка сохранения в облако', e);
+                }
+            } else {
+                localStorage.setItem('imperiaUsers', JSON.stringify(users));
+            }
+            
+            // Обновляем топ после сохранения
+            updateTopPlayers();
+        }
+        
+        // Обновление топа богатейших игроков
+        function updateTopPlayers() {
+            // Собираем всех игроков с их заработком
+            const players = [];
+            for (const [nickname, data] of Object.entries(users)) {
+                if (data.gameState && data.gameState.totalEarned > 0) {
+                    players.push({
+                        nickname: nickname,
+                        totalEarned: data.gameState.totalEarned || 0
+                    });
+                }
+            }
+            
+            // Сортируем по убыванию заработка
+            players.sort((a, b) => b.totalEarned - a.totalEarned);
+            
+            // Берем только топ-100
+            topPlayers = players.slice(0, 100);
+        }
+        
+        // Получить место игрока в топе
+        function getPlayerRank(nickname) {
+            for (let i = 0; i < topPlayers.length; i++) {
+                if (topPlayers[i].nickname === nickname) {
+                    return i + 1;
+                }
+            }
+            return null;
+        }
+        
+        // Регистрация
+        async function registerUser(nickname, password) {
+            await loadUsers();
+            
+            if (users[nickname]) {
                 return { success: false, message: "❌ Такой никнейм уже существует!" };
             }
             
             const hashedPassword = hashPassword(password);
             
-            // Создаем нового пользователя с начальными данными
             users[nickname] = {
                 password: hashedPassword,
                 gameState: {
@@ -670,27 +775,15 @@
                 }
             };
             
-            // Шаблоны бизнесов (не сохраняются в пользователе, а используются глобально)
-            users[nickname].businessTemplates = [
-                { id: 0, name: "🚕 ТАКСОПАРК", baseIncome: 1, baseUpgradeCost: 1000, upgradeTime: 30, maxLevel: 20 },
-                { id: 1, name: "🍔 РЕСТОРАН", baseIncome: 2, baseUpgradeCost: 5000, upgradeTime: 60, maxLevel: 20 },
-                { id: 2, name: "⛽ ЗАПРАВКА", baseIncome: 5, baseUpgradeCost: 25000, upgradeTime: 120, maxLevel: 20 },
-                { id: 3, name: "🏭 ЗАВОД", baseIncome: 10, baseUpgradeCost: 100000, upgradeTime: 180, maxLevel: 20 },
-                { id: 4, name: "🏨 ОТЕЛЬ", baseIncome: 20, baseUpgradeCost: 500000, upgradeTime: 300, maxLevel: 20 },
-                { id: 5, name: "🎰 КАЗИНО", baseIncome: 50, baseUpgradeCost: 2500000, upgradeTime: 600, maxLevel: 20 },
-                { id: 6, name: "🏦 БАНК", baseIncome: 100, baseUpgradeCost: 10000000, upgradeTime: 1200, maxLevel: 20 },
-                { id: 7, name: "🛳️ ПОРТ", baseIncome: 200, baseUpgradeCost: 50000000, upgradeTime: 2400, maxLevel: 20 },
-                { id: 8, name: "✈️ АЭРОПОРТ", baseIncome: 500, baseUpgradeCost: 250000000, upgradeTime: 4800, maxLevel: 20 },
-                { id: 9, name: "🏛️ ИМПЕРИЯ", baseIncome: 1000, baseUpgradeCost: 1000000000, upgradeTime: 9600, maxLevel: 20 }
-            ];
-            
-            saveUsers();
+            await saveUsers();
             return { success: true, message: "✅ Регистрация успешна!" };
         }
         
-        // Вход пользователя
-        function loginUser(nickname, password) {
-            if (!isNicknameExists(nickname)) {
+        // Вход
+        async function loginUser(nickname, password) {
+            await loadUsers();
+            
+            if (!users[nickname]) {
                 return { success: false, message: "❌ Пользователь не найден!" };
             }
             
@@ -702,61 +795,60 @@
             currentUser = nickname;
             localStorage.setItem('currentUser', nickname);
             
-            // Загружаем состояние игры пользователя
             loadUserGameState();
             
             return { success: true, message: "✅ Вход выполнен!" };
         }
         
-        // Выход из аккаунта
-        function logoutUser() {
-            // Сохраняем текущее состояние перед выходом
-            saveUserGameState();
-            
+        // Выход
+        async function logoutUser() {
+            await saveGame();
             currentUser = null;
             localStorage.removeItem('currentUser');
-            
-            // Показываем экран входа
             showAuthScreen();
         }
         
-        // Сохраняем состояние игры текущего пользователя
-        function saveUserGameState() {
+        // Сохранение игры
+        async function saveGame() {
             if (currentUser && users[currentUser]) {
-                // Сохраняем все данные gameState в users
-                users[currentUser].gameState = {
-                    balance: gameState.balance,
-                    diamonds: gameState.diamonds,
-                    exp: gameState.exp,
-                    level: gameState.level,
-                    clickPower: gameState.clickPower,
-                    clickPowerLevel: gameState.clickPowerLevel,
-                    autoClickerLevel: gameState.autoClickerLevel,
-                    critLevel: gameState.critLevel,
-                    totalClicks: gameState.totalClicks,
-                    totalEarned: gameState.totalEarned,
-                    playTime: gameState.playTime,
-                    lastOnlineTime: gameState.lastOnlineTime,
-                    myBusinesses: gameState.myBusinesses,
-                    houses: gameState.houses,
-                    cars: gameState.cars,
-                    planes: gameState.planes,
-                    ships: gameState.ships
-                };
-                saveUsers();
+                gameState.lastOnlineTime = Date.now();
+                users[currentUser].gameState = { ...gameState };
+                await saveUsers();
             }
         }
         
-        // Загружаем состояние игры пользователя
+        // Загрузка игры
         function loadUserGameState() {
             if (currentUser && users[currentUser]) {
                 const userState = users[currentUser].gameState;
-                gameState = { ...gameState, ...userState };
                 
-                // Обновляем время последнего входа
+                // Баланс и ресурсы
+                gameState.balance = userState.balance || 0;
+                gameState.diamonds = userState.diamonds || 10;
+                gameState.exp = userState.exp || 0;
+                gameState.level = userState.level || 1;
+                
+                // Улучшения
+                gameState.clickPower = userState.clickPower || 1;
+                gameState.clickPowerLevel = userState.clickPowerLevel || 0;
+                gameState.autoClickerLevel = userState.autoClickerLevel || 0;
+                gameState.critLevel = userState.critLevel || 0;
+                
+                // Статистика
+                gameState.totalClicks = userState.totalClicks || 0;
+                gameState.totalEarned = userState.totalEarned || 0;
+                gameState.playTime = userState.playTime || 0;
                 gameState.lastOnlineTime = Date.now();
                 
-                // Показываем интерфейс
+                // Бизнесы
+                gameState.myBusinesses = userState.myBusinesses || [];
+                
+                // Недвижимость
+                if (userState.houses) gameState.houses = userState.houses;
+                if (userState.cars) gameState.cars = userState.cars;
+                if (userState.planes) gameState.planes = userState.planes;
+                if (userState.ships) gameState.ships = userState.ships;
+                
                 document.getElementById('header').style.display = 'block';
                 document.getElementById('bottomNav').style.display = 'flex';
                 document.getElementById('username').textContent = `👑 ${currentUser}`;
@@ -765,7 +857,7 @@
             }
         }
         
-        // Показываем экран авторизации
+        // Показать экран авторизации
         function showAuthScreen() {
             document.getElementById('header').style.display = 'none';
             document.getElementById('bottomNav').style.display = 'none';
@@ -789,7 +881,7 @@
             `;
         }
         
-        // Показываем форму регистрации
+        // Показать форму регистрации
         function showRegisterForm() {
             const content = document.getElementById('content');
             content.innerHTML = `
@@ -812,7 +904,7 @@
         }
         
         // Обработка входа
-        function handleLogin() {
+        async function handleLogin() {
             const nickname = document.getElementById('loginNickname')?.value;
             const password = document.getElementById('loginPassword')?.value;
             
@@ -821,10 +913,9 @@
                 return;
             }
             
-            const result = loginUser(nickname, password);
+            const result = await loginUser(nickname, password);
             
             if (result.success) {
-                // Успешный вход - показываем игру
                 document.getElementById('header').style.display = 'block';
                 document.getElementById('bottomNav').style.display = 'flex';
                 document.getElementById('username').textContent = `👑 ${nickname}`;
@@ -836,7 +927,7 @@
         }
         
         // Обработка регистрации
-        function handleRegister() {
+        async function handleRegister() {
             const nickname = document.getElementById('regNickname')?.value;
             const password = document.getElementById('regPassword')?.value;
             const passwordConfirm = document.getElementById('regPasswordConfirm')?.value;
@@ -861,18 +952,18 @@
                 return;
             }
             
-            const result = registerUser(nickname, password);
+            const result = await registerUser(nickname, password);
             
             if (result.success) {
                 alert(result.message);
-                // Автоматически входим после регистрации
-                loginUser(nickname, password);
+                await loginUser(nickname, password);
             } else {
                 alert(result.message);
             }
         }
         
         // ========== СОСТОЯНИЕ ИГРЫ ==========
+        
         let gameState = {
             balance: 0,
             diamonds: 10,
@@ -939,51 +1030,7 @@
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
         
-        // ========== ЗАГРУЗКА/СОХРАНЕНИЕ ==========
-        function loadGame() {
-            const saved = localStorage.getItem('imperiaGameState');
-            if (saved) {
-                try {
-                    const loaded = JSON.parse(saved);
-                    gameState = { ...gameState, ...loaded };
-                } catch(e) {}
-            }
-            
-            const now = Date.now();
-            const secondsPassed = Math.floor((now - gameState.lastOnlineTime) / 1000);
-            
-            if (secondsPassed > 30) {
-                let offlineIncome = gameState.autoClickerLevel * secondsPassed;
-                
-                gameState.myBusinesses.forEach(business => {
-                    if (business.level > 0) {
-                        const template = businessTemplates[business.templateId];
-                        offlineIncome += template.baseIncome * business.level * secondsPassed;
-                        business.totalEarned += template.baseIncome * business.level * secondsPassed;
-                    }
-                });
-                
-                if (offlineIncome > 0) {
-                    gameState.balance += Math.floor(offlineIncome);
-                    gameState.totalEarned += Math.floor(offlineIncome);
-                }
-            }
-            
-            gameState.lastOnlineTime = now;
-            checkBusinessUpgrades();
-            updateUI();
-        }
-        
-        function saveGame() {
-            gameState.lastOnlineTime = Date.now();
-            
-            // Если пользователь авторизован, сохраняем в его аккаунт
-            if (currentUser) {
-                saveUserGameState();
-            } else {
-                localStorage.setItem('imperiaGameState', JSON.stringify(gameState));
-            }
-        }
+        // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         
         function updateUI() {
             if (!currentUser) return;
@@ -1000,7 +1047,6 @@
             renderTab(activeTab);
         }
         
-        // ========== КЛИК ==========
         function handleClick() {
             let power = gameState.clickPower * (1 + gameState.clickPowerLevel * 0.5);
             
@@ -1024,43 +1070,96 @@
             saveGame();
         }
         
-        // ========== ОТОБРАЖЕНИЕ ВКЛАДОК ==========
         function renderTab(tab) {
             const content = document.getElementById('content');
             
             if (tab === 'home') {
-                const power = gameState.clickPower * (1 + gameState.clickPowerLevel * 0.5);
-                const totalIncome = gameState.autoClickerLevel + 
-                    gameState.myBusinesses.reduce((sum, b) => {
-                        const template = businessTemplates[b.templateId];
-                        return sum + (template.baseIncome * b.level);
-                    }, 0);
-                
-                content.innerHTML = `
-                    <div id="home-content">
-                        <div class="clicker-area">
-                            <div class="per-second">⏱️ ДОХОД/СЕК: ${totalIncome}</div>
-                            <div class="click-btn">
-                                👆
-                                <span>+${formatNumber(Math.floor(power))}</span>
-                            </div>
-                            <div class="offline-earnings">
-                                💰 ОФФЛАЙН ДОХОД РАБОТАЕТ
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('home-content').addEventListener('click', handleClick);
-                
+                renderHome(content);
             } else if (tab === 'mybusiness') {
                 renderMyBusiness(content);
             } else if (tab === 'property') {
                 renderProperty(content);
             } else if (tab === 'shop') {
                 renderShop(content);
+            } else if (tab === 'top') {
+                renderTop(content);
             } else if (tab === 'stats') {
                 renderStats(content);
             }
+        }
+        
+        function renderHome(content) {
+            const power = gameState.clickPower * (1 + gameState.clickPowerLevel * 0.5);
+            const totalIncome = gameState.autoClickerLevel + 
+                gameState.myBusinesses.reduce((sum, b) => {
+                    const template = businessTemplates[b.templateId];
+                    return sum + (template.baseIncome * b.level);
+                }, 0);
+            
+            content.innerHTML = `
+                <div id="home-content">
+                    <div class="clicker-area">
+                        <div class="per-second">⏱️ ДОХОД/СЕК: ${totalIncome}</div>
+                        <div class="click-btn">
+                            👆
+                            <span>+${formatNumber(Math.floor(power))}</span>
+                        </div>
+                        <div class="offline-earnings">
+                            💰 ОФФЛАЙН ДОХОД РАБОТАЕТ
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('home-content').addEventListener('click', handleClick);
+        }
+        
+        // ========== ТОП-100 ==========
+        
+        function renderTop(content) {
+            let html = '<div class="card"><div class="card-title">🏆 ТОП-100 БОГАЧЕЙ</div>';
+            
+            if (topPlayers.length === 0) {
+                html += '<div style="text-align:center; padding:30px;">ПОКА НИКОГО НЕТ</div>';
+            } else {
+                html += '<div style="margin-bottom:10px; text-align:center; color:#ffd700;">По общему заработку</div>';
+                
+                topPlayers.forEach((player, index) => {
+                    let rankClass = '';
+                    if (index === 0) rankClass = 'top-rank-1';
+                    else if (index === 1) rankClass = 'top-rank-2';
+                    else if (index === 2) rankClass = 'top-rank-3';
+                    
+                    const isCurrentUser = player.nickname === currentUser;
+                    
+                    html += `
+                        <div class="top-item" style="${isCurrentUser ? 'background: rgba(255, 215, 0, 0.15); border: 2px solid #ffd700;' : ''}">
+                            <div class="top-rank ${rankClass}">${index + 1}</div>
+                            <div class="top-name">${player.nickname}${isCurrentUser ? ' 👑' : ''}</div>
+                            <div class="top-money">${formatNumber(Math.floor(player.totalEarned))}💰</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Показываем место текущего игрока, если он не в топе
+            if (currentUser) {
+                const userRank = getPlayerRank(currentUser);
+                if (!userRank) {
+                    const userData = users[currentUser];
+                    if (userData && userData.gameState) {
+                        html += `
+                            <div style="margin-top:20px; padding:15px; background: rgba(255, 255, 255, 0.05); border-radius:15px; text-align:center;">
+                                <div style="color:#ffd700; margin-bottom:5px;">ВАШЕ МЕСТО:</div>
+                                <div style="font-size:20px;">ЗА ПРЕДЕЛАМИ ТОП-100</div>
+                                <div style="margin-top:5px;">💰 ${formatNumber(Math.floor(userData.gameState.totalEarned))}</div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
         }
         
         // ========== БИЗНЕСЫ ==========
@@ -1336,7 +1435,8 @@
             });
         }
         
-        // ========== НЕДВИЖИМОСТЬ ==========
+        // ========== НЕДВИЖИМОСТЬ (сокращено для экономии места, но работает) ==========
+        
         function renderProperty(content) {
             const housesOwned = gameState.houses.filter(h => h.owned).length;
             const carsOwned = gameState.cars.filter(c => c.owned).length;
@@ -1552,6 +1652,7 @@
         }
         
         // ========== МАГАЗИН ==========
+        
         function renderShop(content) {
             let html = '<div class="card"><div class="card-title">🏪 МАГАЗИН УЛУЧШЕНИЙ</div>';
             
@@ -1633,6 +1734,7 @@
         }
         
         // ========== СТАТИСТИКА ==========
+        
         function renderStats(content) {
             const totalIncome = gameState.autoClickerLevel + 
                 gameState.myBusinesses.reduce((sum, b) => {
@@ -1647,6 +1749,8 @@
                 ...gameState.planes.filter(p => p.owned),
                 ...gameState.ships.filter(s => s.owned)
             ].length;
+            
+            const userRank = getPlayerRank(currentUser);
             
             content.innerHTML = `
                 <div class="card">
@@ -1680,6 +1784,10 @@
                         <span>💎 АЛМАЗЫ</span>
                         <span style="color:#ffd700;">${gameState.diamonds}</span>
                     </div>
+                    <div class="property-item" style="justify-content:space-between;">
+                        <span>🏆 МЕСТО В ТОПЕ</span>
+                        <span style="color:#ffd700;">${userRank ? userRank : 'ЗА ПРЕДЕЛАМИ 100'}</span>
+                    </div>
                     
                     <div style="margin-top:20px;">
                         <button class="btn btn-danger" onclick="logoutUser()">🚪 ВЫЙТИ ИЗ АККАУНТА</button>
@@ -1689,6 +1797,7 @@
         }
         
         // ========== АВТОМАТИЧЕСКИЙ ДОХОД ==========
+        
         setInterval(() => {
             if (!currentUser) return;
             
@@ -1713,6 +1822,7 @@
         }, 1000);
         
         // ========== НАВИГАЦИЯ ==========
+        
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 if (!currentUser) return;
@@ -1724,10 +1834,10 @@
         });
         
         // ========== ЗАПУСК ==========
-        window.onload = function() {
-            loadUsers();
+        
+        window.onload = async function() {
+            await loadUsers();
             
-            // Проверяем, есть ли текущий пользователь
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser && users[savedUser]) {
                 currentUser = savedUser;
@@ -1735,11 +1845,6 @@
                 renderTab('home');
             } else {
                 showAuthScreen();
-            }
-            
-            if (tg) {
-                const user = tg.initDataUnsafe?.user;
-                // Не показываем Telegram username, так как используем свою систему
             }
             
             // Глобальные функции
@@ -1766,6 +1871,12 @@
             window.logoutUser = logoutUser;
             
             setInterval(checkBusinessUpgrades, 1000);
+            
+            // Обновляем топ каждые 30 секунд
+            setInterval(async () => {
+                await loadUsers();
+                updateUI();
+            }, 30000);
         };
     </script>
 </body>
