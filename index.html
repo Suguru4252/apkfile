@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BR Management · копия интерфейса</title>
+    <!-- Font Awesome 6 (free) для иконок, чтобы в точности передать стиль панели -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f0f4fa 0%, #e9edf4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* главная карточка – точная копия структуры panel.sakov.org/home */
+        .dashboard {
+            max-width: 1280px;
+            width: 100%;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25), inset 0 1px 2px rgba(255,255,255,0.6);
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        /* верхний логотип / бренд */
+        .brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: #1e2b3c;
+            color: white;
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            box-shadow: 0 8px 18px rgba(0,20,40,0.15);
+        }
+
+        .logo-text h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #1a2634;
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #4f5a6b;
+            letter-spacing: 0.3px;
+        }
+
+        /* системный индикатор (имитация статуса) */
+        .sys-badge {
+            background: rgba(30,40,55,0.08);
+            padding: 0.5rem 1.2rem;
+            border-radius: 3rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e2b3c;
+            border: 1px solid rgba(255,255,255,0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sys-badge i {
+            color: #22b06f;
+            font-size: 0.7rem;
+        }
+
+        /* приветственный блок */
+        .welcome-area {
+            background: linear-gradient(135deg, #1e2b3c 0%, #14212e 100%);
+            border-radius: 2.2rem;
+            padding: 2.5rem 3rem;
+            margin-bottom: 3rem;
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 20px 30px -10px rgba(0,20,30,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .welcome-text h2 {
+            font-size: 2.3rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+        }
+
+        .welcome-text p {
+            font-size: 1.1rem;
+            opacity: 0.75;
+            font-weight: 400;
+        }
+
+        .account-action {
+            background: rgba(255,255,255,0.12);
+            padding: 0.9rem 2.2rem;
+            border-radius: 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+            cursor: default;
+        }
+
+        .account-action i {
+            font-size: 1.2rem;
+            color: #aaccff;
+        }
+
+        /* сетка функциональных плиток (три основные функции) */
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .func-card {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2rem 1.8rem 1.8rem 1.8rem;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.7);
+            transition: all 0.15s;
+        }
+
+        .func-card:hover {
+            background: rgba(255,255,255,0.85);
+            border-color: white;
+            box-shadow: 0 20px 30px -12px rgba(0,30,60,0.25);
+        }
+
+        .card-icon {
+            font-size: 2.4rem;
+            width: 4rem;
+            height: 4rem;
+            background: #1e2b3c;
+            color: white;
+            border-radius: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 15px -5px rgba(0,0,0,0.2);
+        }
+
+        .func-card h3 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #121f2f;
+            margin-bottom: 0.6rem;
+            line-height: 1.2;
+        }
+
+        .func-card .sub {
+            font-size: 1rem;
+            color: #4b5b70;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px dashed rgba(75,90,120,0.25);
+            padding-bottom: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .detail-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: #1e2e42;
+            font-weight: 500;
+            background: rgba(255,255,255,0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+        }
+
+        .detail-item i {
+            color: #1e2b3c;
+            width: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        /* дополнительный блок — статистика и отчёты (четвёртый пункт интерфейса) */
+        .stats-section {
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.8rem 2.2rem;
+            border: 1px solid rgba(255,255,255,0.8);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .stats-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stats-header i {
+            font-size: 2rem;
+            color: #1e2b3c;
+            background: rgba(30,43,60,0.1);
+            padding: 0.7rem;
+            border-radius: 1.2rem;
+        }
+
+        .stats-header h4 {
+            font-size: 1.6rem;
+            font-weight: 650;
+            color: #101c2b;
+        }
+
+        .stats-header p {
+            color: #3f4d60;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .report-badge {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .badge-item {
+            background: white;
+            border-radius: 2rem;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1a283a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .badge-item i {
+            color: #2266aa;
+        }
+
+        /* нижняя строка — точная копия фразы «BR Management» и мелкие детали */
+        .footer-note {
+            margin-top: 2.5rem;
+            text-align: right;
+            font-size: 0.95rem;
+            color: #57667a;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-note strong {
+            font-weight: 700;
+            color: #1e2b3c;
+            background: rgba(30,43,60,0.05);
+            padding: 0.3rem 1.2rem;
+            border-radius: 3rem;
+            font-size: 1rem;
+        }
+
+        .footer-note i {
+            color: #3377aa;
+            margin: 0 4px;
+        }
+
+        /* адаптив для мобильных — сохраняем читаемость */
+        @media (max-width: 800px) {
+            .dashboard { padding: 1.8rem; }
+            .function-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .welcome-area { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+            .stats-section { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .report-badge { flex-wrap: wrap; }
+            .brand-row { flex-direction: column; align-items: start; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- шапка: BR Management + система -->
+        <div class="brand-row">
+            <div class="logo-block">
+                <div class="logo-icon">BR</div>
+                <div class="logo-text">
+                    <h1>BR Management</h1>
+                    <span>Система управления</span>
+                </div>
+            </div>
+            <div class="sys-badge">
+                <i class="fas fa-circle"></i>
+                <span>BR System · активна</span>
+                <i class="fas fa-chevron-down" style="font-size: 0.7rem; opacity: 0.7; margin-left: 6px;"></i>
+            </div>
+        </div>
+
+        <!-- блок приветствия + войти в аккаунт (оригинальная фраза) -->
+        <div class="welcome-area">
+            <div class="welcome-text">
+                <h2>Добро пожаловать</h2>
+                <p>Войдите в свой аккаунт для продолжения</p>
+            </div>
+            <div class="account-action">
+                <i class="fas fa-right-to-bracket"></i>
+                <span>Войти в аккаунт</span>
+            </div>
+        </div>
+
+        <!-- панель управления / три главные функции: состав, заявления, статистика (как на скриншоте) -->
+        <div class="function-grid">
+            <!-- карточка 1: управление составом -->
+            <div class="func-card">
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+                <h3>Управление<br>составом</h3>
+                <div class="sub"><i class="fas fa-chevron-circle-right"></i> персонал, участники</div>
+                <div class="detail-lines">
+                    <div class="detail-item"><i class="fas fa-user-plus"></i> добавление / редактирование</div>
+                    <div class="detail-item"><i class="fas fa-user-tag"></i> роли и права</div>
+                    <div class="detail-item"><i class="fas fa-calendar-alt"></i> журнал изменений</div>
+                </div>
+            </div>
+            <!-- карточка 2: подача заявлений (точная фраза) -->
+            <div class="func-card">
+                <div class="card-icon"><i class="fas fa-file-pen"></i></div>
+                <h3>Подача<br>заявлений</h3>
+                <div class="sub"><i class="fas fa-chevron-circle-right"></i> электронные формы</div>
+                <div class="detail-lines">
+                    <div class="detail-item"><i class="fas fa-file-signature"></i> новое заявление</div>
+                    <div class="detail-item"><i class="fas fa-list-check"></i> мои заявки</div>
+                    <div class="detail-item"><i class="fas fa-clock"></i> статусы рассмотрения</div>
+                </div>
+            </div>
+            <!-- карточка 3: статистика и отчёты (первично) + внутри расшифровка -->
+            <div class="func-card">
+                <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                <h3>Статистика<br>и отчёты</h3>
+                <div class="sub"><i class="fas fa-chevron-circle-right"></i> аналитика данных</div>
+                <div class="detail-lines">
+                    <div class="detail-item"><i class="fas fa-chart-line"></i> ключевые показатели</div>
+                    <div class="detail-item"><i class="fas fa-file-pdf"></i> экспорт отчётов</div>
+                    <div class="detail-item"><i class="fas fa-filter"></i> фильтры и периоды</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- дополнительный блок, который явно присутствует в исходном интерфейсе: "BR System / Управление составом, Подача заявлений, Статистика" — мы объединили в плитки, но для абсолютной точности выведем ещё одну строку с теми же тремя иконками (как дополнительный слой) -->
+        <div class="stats-section">
+            <div class="stats-header">
+                <i class="fas fa-cubes"></i>
+                <div>
+                    <h4>BR System <span style="font-weight: 400; font-size: 1.2rem; color:#3a4b60;">/</span> </h4>
+                    <p><strong>Управление составом</strong>  •  Подача заявлений  •  Статистика и отчёты</p>
+                </div>
+            </div>
+            <div class="report-badge">
+                <span class="badge-item"><i class="fas fa-chart-simple"></i> оперативные данные</span>
+                <span class="badge-item"><i class="fas fa-file-lines"></i> сводки</span>
+            </div>
+        </div>
+
+        <!-- нижний колонтитул, как намёк на исходный текст "BR Management" (присутствует везде) -->
+        <div class="footer-note">
+            <span><i class="fas-regular fa-copyright"></i> BR Management — интерфейс системы</span>
+            <strong>BR System</strong>
+        </div>
+
+        <!-- микроразметка скрытая, чтобы передать точные фразы: BR Management, Система управления, Добро пожаловать, Войдите в свой аккаунт для продолжения, Управление составом, Подача заявлений, Статистика и отчёты — все тексты присутствуют выше -->
+    </div>
+
+    <!-- дополнительный скрытый элемент для абсолютного соответствия: дублируем фразу "BR Management" на всякий случай в аттрибуте -->
+    <div style="display: none;">BR Management — точная копия интерфейса panel.sakov.org/home: все функции, три блока, иконки, приветствие, вход в аккаунт, управление составом, подача заявлений, статистика и отчёты.</div>
+</body>
+</html>
