@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BR Management · вход в систему</title>
+    <title>BR Management · вход</title>
     <style>
         * {
             margin: 0;
@@ -12,30 +12,29 @@
         }
 
         body {
-            background: white;
+            background: #1a1a1a; /* темный фон вокруг */
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            color: #000000;
         }
 
         .login-container {
             width: 100%;
             max-width: 500px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: #000000; /* черный фон контейнера */
+            border: 2px solid #8b0000; /* темно-красная рамка */
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
         }
 
-        /* заголовок BR Management */
+        /* верх: BR Management / СИСТЕМА УПРАВЛЕНИЯ */
         .main-title {
-            background-color: #1e2b3c;
+            background-color: #8b0000; /* темно-красный */
             color: white;
             padding: 16px 24px;
-            border-bottom: 2px solid #0f1a24;
+            border-bottom: 2px solid #4a0000;
         }
 
         .main-title h1 {
@@ -43,11 +42,12 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
+            color: #ffffff;
         }
 
         .main-title .subtitle {
             font-size: 13px;
-            color: #a0b3c9;
+            color: #ffcccc; /* светло-красный для контраста */
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
@@ -55,19 +55,20 @@
         /* основная часть */
         .content {
             padding: 30px 24px 24px 24px;
+            background: #000000; /* черный */
         }
 
         /* приветствие */
         .welcome h2 {
             font-size: 22px;
             font-weight: 600;
-            color: #000;
+            color: #ffffff;
             margin-bottom: 6px;
         }
 
         .welcome p {
             font-size: 15px;
-            color: #333;
+            color: #cccccc; /* светло-серый */
             margin-bottom: 30px;
         }
 
@@ -82,7 +83,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            color: #111;
+            color: #ff9999; /* красноватый */
             margin-bottom: 8px;
         }
 
@@ -90,37 +91,44 @@
             width: 100%;
             padding: 12px 16px;
             font-size: 15px;
-            border: 2px solid #ccc;
+            border: 2px solid #8b0000;
             border-radius: 0;
-            background: white;
+            background: #1a1a1a; /* темно-серый, почти черный */
+            color: #ffffff;
             font-family: inherit;
             transition: 0.2s;
         }
 
         .input-field:focus, .select-field:focus {
             outline: none;
-            border-color: #1e2b3c;
+            border-color: #ff3333; /* ярко-красный при фокусе */
+            background: #000000;
         }
 
         .input-field::placeholder {
-            color: #999;
+            color: #666666;
             font-size: 14px;
         }
 
-        /* дропдаун (стрелка сохраняется) */
+        /* дропдаун */
         .select-field {
             appearance: auto;
             -webkit-appearance: menulist;
-            background: white;
-            color: #333;
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .select-field option {
+            background: #1a1a1a;
+            color: #ffffff;
         }
 
         /* кнопка входа */
         .login-btn {
             width: 100%;
             padding: 14px 20px;
-            background: #1e2b3c;
-            border: none;
+            background: #8b0000; /* темно-красный */
+            border: 2px solid #4a0000;
             color: white;
             font-size: 16px;
             font-weight: 600;
@@ -133,12 +141,13 @@
         }
 
         .login-btn:hover {
-            background: #2a3b50;
+            background: #a52a2a; /* более яркий красный при наведении */
+            border-color: #8b0000;
         }
 
         /* раздел BR SYSTEM */
         .system-block {
-            border-top: 2px solid #eaeef2;
+            border-top: 2px solid #8b0000; /* красная линия */
             padding-top: 25px;
             margin-top: 5px;
         }
@@ -146,7 +155,7 @@
         .system-title {
             font-size: 20px;
             font-weight: 700;
-            color: #000;
+            color: #ff9999; /* красноватый */
             margin-bottom: 15px;
             letter-spacing: 0.3px;
         }
@@ -160,15 +169,15 @@
             font-size: 16px;
             padding: 10px 0 10px 28px;
             position: relative;
-            border-bottom: 1px solid #f0f0f0;
-            color: #222;
+            border-bottom: 1px solid #330000; /* темно-красная линия */
+            color: #ffffff;
         }
 
         .system-list li:before {
             content: "•";
             position: absolute;
             left: 8px;
-            color: #1e2b3c;
+            color: #8b0000; /* красные точки */
             font-size: 20px;
             top: 7px;
         }
@@ -177,45 +186,36 @@
         .footer-note {
             margin-top: 25px;
             font-size: 14px;
-            color: #444;
+            color: #ff9999; /* красноватый текст */
             padding: 15px 0 0 0;
-            border-top: 1px dashed #aaa;
+            border-top: 1px dashed #8b0000;
         }
 
-        /* точное соответствие элементам из скриншота */
         .placeholder-text {
-            color: #555;
-            font-style: normal;
-        }
-
-        /* эмуляция дропдауна "Введите пароль..." */
-        select.select-field option {
-            color: #333;
+            color: #666666;
         }
 
         select.select-field option:first-child {
-            color: #777;
+            color: #999999;
         }
-
-        /* стрелка у селекта сохраняется браузерная */
     </style>
 </head>
 <body>
     <div class="login-container">
-        <!-- верх: BR Management / СИСТЕМА УПРАВЛЕНИЯ -->
+        <!-- верх: BR Management / СИСТЕМА УПРАВЛЕНИЯ (красное на черном) -->
         <div class="main-title">
             <h1>BR Management</h1>
             <div class="subtitle">СИСТЕМА УПРАВЛЕНИЯ</div>
         </div>
 
         <div class="content">
-            <!-- приветствие точь-в-точь -->
+            <!-- приветствие -->
             <div class="welcome">
                 <h2>Добро пожаловать</h2>
                 <p>Войдите в свой аккаунт для продолжения</p>
             </div>
 
-            <!-- форма входа: TELEGRAM ID / ПАРОЛЬ (дропдаун) -->
+            <!-- форма входа -->
             <div class="form-group">
                 <label>TELEGRAM ID</label>
                 <input type="text" class="input-field" placeholder="Ваш Telegram ID..." value="">
@@ -223,17 +223,14 @@
 
             <div class="form-group">
                 <label>ПАРОЛЬ</label>
-                <!-- выпадающий список "Введите пароль..." как на скриншоте -->
                 <select class="select-field">
                     <option value="" disabled selected>Введите пароль...</option>
                     <option value="option1">••••••••</option>
-                    <option value="option2">(поле для ввода)</option>
-                    <!-- технически это селект, но выглядит как дропдаун с плейсхолдером -->
+                    <option value="option2">(введите пароль)</option>
                 </select>
-                <!-- маленькое пояснение: если нужно именно поле ввода, но на скриншоте показан именно дропдаун с текстом "Введите пароль..." -->
             </div>
 
-            <!-- кнопка Войти (жирная, темная) -->
+            <!-- кнопка Войти (красная) -->
             <button class="login-btn">Войти</button>
 
             <!-- BR SYSTEM и три пункта -->
@@ -246,13 +243,11 @@
                 </ul>
             </div>
 
-            <!-- футер: обращение к куратору -->
+            <!-- футер -->
             <div class="footer-note">
                 Нет доступа? Обратитесь к вашему куратору.
             </div>
         </div>
     </div>
-
-    <!-- скрытый комментарий для полной идентичности фраз (все уже выведено) -->
 </body>
 </html>
