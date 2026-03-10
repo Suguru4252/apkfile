@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BR Management · вход</title>
+    <title>BR Management · система</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: #1a1a1a; /* темный фон вокруг */
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #1a1a1a;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -21,44 +21,54 @@
             padding: 20px;
         }
 
-        .login-container {
+        /* основной контейнер */
+        .app {
             width: 100%;
             max-width: 500px;
-            background: #000000; /* черный фон контейнера */
-            border: 2px solid #8b0000; /* темно-красная рамка */
+            background: #000000;
+            border: 2px solid #8b0000;
             box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
         }
 
-        /* верх: BR Management / СИСТЕМА УПРАВЛЕНИЯ */
-        .main-title {
-            background-color: #8b0000; /* темно-красный */
+        /* все страницы */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* заголовок (общий для всех страниц) */
+        .header {
+            background-color: #8b0000;
             color: white;
             padding: 16px 24px;
             border-bottom: 2px solid #4a0000;
         }
 
-        .main-title h1 {
+        .header h1 {
             font-size: 24px;
             font-weight: 600;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
-            color: #ffffff;
         }
 
-        .main-title .subtitle {
+        .header .subtitle {
             font-size: 13px;
-            color: #ffcccc; /* светло-красный для контраста */
+            color: #ffcccc;
             text-transform: uppercase;
             letter-spacing: 0.8px;
         }
 
-        /* основная часть */
+        /* контент */
         .content {
             padding: 30px 24px 24px 24px;
-            background: #000000; /* черный */
+            background: #000000;
+            color: white;
         }
 
-        /* приветствие */
+        /* СТРАНИЦА 1 - ВХОД */
         .welcome h2 {
             font-size: 22px;
             font-weight: 600;
@@ -68,11 +78,10 @@
 
         .welcome p {
             font-size: 15px;
-            color: #cccccc; /* светло-серый */
+            color: #cccccc;
             margin-bottom: 30px;
         }
 
-        /* форма */
         .form-group {
             margin-bottom: 22px;
         }
@@ -83,7 +92,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            color: #ff9999; /* красноватый */
+            color: #ff9999;
             margin-bottom: 8px;
         }
 
@@ -93,29 +102,17 @@
             font-size: 15px;
             border: 2px solid #8b0000;
             border-radius: 0;
-            background: #1a1a1a; /* темно-серый, почти черный */
+            background: #1a1a1a;
             color: #ffffff;
-            font-family: inherit;
-            transition: 0.2s;
-        }
-
-        .input-field:focus, .select-field:focus {
-            outline: none;
-            border-color: #ff3333; /* ярко-красный при фокусе */
-            background: #000000;
         }
 
         .input-field::placeholder {
             color: #666666;
-            font-size: 14px;
         }
 
-        /* дропдаун */
         .select-field {
             appearance: auto;
             -webkit-appearance: menulist;
-            background: #1a1a1a;
-            color: #ffffff;
         }
 
         .select-field option {
@@ -123,11 +120,10 @@
             color: #ffffff;
         }
 
-        /* кнопка входа */
         .login-btn {
             width: 100%;
             padding: 14px 20px;
-            background: #8b0000; /* темно-красный */
+            background: #8b0000;
             border: 2px solid #4a0000;
             color: white;
             font-size: 16px;
@@ -136,18 +132,14 @@
             letter-spacing: 0.8px;
             cursor: pointer;
             margin: 30px 0 35px 0;
-            border-radius: 0;
-            transition: 0.15s;
         }
 
         .login-btn:hover {
-            background: #a52a2a; /* более яркий красный при наведении */
-            border-color: #8b0000;
+            background: #a52a2a;
         }
 
-        /* раздел BR SYSTEM */
         .system-block {
-            border-top: 2px solid #8b0000; /* красная линия */
+            border-top: 2px solid #8b0000;
             padding-top: 25px;
             margin-top: 5px;
         }
@@ -155,9 +147,8 @@
         .system-title {
             font-size: 20px;
             font-weight: 700;
-            color: #ff9999; /* красноватый */
+            color: #ff9999;
             margin-bottom: 15px;
-            letter-spacing: 0.3px;
         }
 
         .system-list {
@@ -169,7 +160,7 @@
             font-size: 16px;
             padding: 10px 0 10px 28px;
             position: relative;
-            border-bottom: 1px solid #330000; /* темно-красная линия */
+            border-bottom: 1px solid #330000;
             color: #ffffff;
         }
 
@@ -177,77 +168,378 @@
             content: "•";
             position: absolute;
             left: 8px;
-            color: #8b0000; /* красные точки */
+            color: #8b0000;
             font-size: 20px;
             top: 7px;
         }
 
-        /* нижняя строка */
         .footer-note {
             margin-top: 25px;
             font-size: 14px;
-            color: #ff9999; /* красноватый текст */
+            color: #ff9999;
             padding: 15px 0 0 0;
             border-top: 1px dashed #8b0000;
         }
 
-        .placeholder-text {
-            color: #666666;
+        /* СТРАНИЦА 2 - ПРОФИЛЬ (как на втором фото) */
+        .user-info {
+            margin-bottom: 25px;
         }
 
-        select.select-field option:first-child {
-            color: #999999;
+        .user-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .user-rank {
+            font-size: 18px;
+            color: #8b0000;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+            border: 2px solid #8b0000;
+            padding: 15px 20px;
+            margin: 25px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8b0000;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .discipline-title {
+            font-size: 18px;
+            color: #ff9999;
+            margin: 20px 0 15px 0;
+            text-transform: uppercase;
+        }
+
+        /* навигационные кнопки */
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            border-top: 2px solid #8b0000;
+            padding-top: 20px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: #1a1a1a;
+            border: 2px solid #8b0000;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.15s;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #8b0000;
+        }
+
+        .nav-btn.active {
+            background: #8b0000;
+        }
+
+        /* СТРАНИЦА 3 - ЗАЯВЛЕНИЯ (как на третьем фото) */
+        .time-display {
+            text-align: right;
+            font-size: 20px;
+            color: #8b0000;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .application-title {
+            font-size: 24px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .dept-badge {
+            background: #1a1a1a;
+            border: 2px solid #8b0000;
+            padding: 12px 16px;
+            font-size: 18px;
+            color: #ff9999;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .app-card {
+            background: #1a1a1a;
+            border: 2px solid #8b0000;
+            padding: 20px 10px;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .app-card:hover {
+            background: #8b0000;
+        }
+
+        /* для имитации работы фото */
+        .mock-img {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <!-- верх: BR Management / СИСТЕМА УПРАВЛЕНИЯ (красное на черном) -->
-        <div class="main-title">
+    <div class="app">
+        <!-- ШАПКА (одинаковая для всех) -->
+        <div class="header">
             <h1>BR Management</h1>
             <div class="subtitle">СИСТЕМА УПРАВЛЕНИЯ</div>
         </div>
 
-        <div class="content">
-            <!-- приветствие -->
-            <div class="welcome">
-                <h2>Добро пожаловать</h2>
-                <p>Войдите в свой аккаунт для продолжения</p>
+        <!-- СТРАНИЦА 1: ВХОД -->
+        <div id="page1" class="page active">
+            <div class="content">
+                <div class="welcome">
+                    <h2>Добро пожаловать</h2>
+                    <p>Войдите в свой аккаунт для продолжения</p>
+                </div>
+
+                <div class="form-group">
+                    <label>TELEGRAM ID</label>
+                    <input type="text" class="input-field" placeholder="Ваш Telegram ID..." id="telegramId">
+                </div>
+
+                <div class="form-group">
+                    <label>ПАРОЛЬ</label>
+                    <select class="select-field" id="password">
+                        <option value="" disabled selected>Введите пароль...</option>
+                        <option value="pass">••••••••</option>
+                    </select>
+                </div>
+
+                <button class="login-btn" onclick="login()">Войти</button>
+
+                <div class="system-block">
+                    <div class="system-title">BR SYSTEM</div>
+                    <ul class="system-list">
+                        <li>Управление составом</li>
+                        <li>Подача заявлений</li>
+                        <li>Статистика и отчёты</li>
+                    </ul>
+                </div>
+
+                <div class="footer-note">
+                    Нет доступа? Обратитесь к вашему куратору.
+                </div>
             </div>
+        </div>
 
-            <!-- форма входа -->
-            <div class="form-group">
-                <label>TELEGRAM ID</label>
-                <input type="text" class="input-field" placeholder="Ваш Telegram ID..." value="">
+        <!-- СТРАНИЦА 2: ПРОФИЛЬ (как на втором фото) -->
+        <div id="page2" class="page">
+            <div class="content">
+                <div class="user-info">
+                    <div class="user-name">Artem_Suguru</div>
+                    <div class="user-rank">BLACK</div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Должность</div>
+                        <div class="info-value">Младший Модератор</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Добавил</div>
+                        <div class="info-value">Jony_Myrphyy</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Дата назначения</div>
+                        <div class="info-value">19.02.2026</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Дата повышения</div>
+                        <div class="info-value">---</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Дней на должности</div>
+                        <div class="info-value">19</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Возраст</div>
+                        <div class="info-value">15</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Отдел</div>
+                        <div class="info-value">Администрация</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Доступ к ПК</div>
+                        <div class="info-value">Да</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Часовой пояс</div>
+                        <div class="info-value">МСК</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Направление</div>
+                        <div class="info-value">—</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-number">2658</div>
+                        <div class="stat-label">REPORT</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2902</div>
+                        <div class="stat-label">ONLINE</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">51</div>
+                        <div class="stat-label">БАЛЛЫ</div>
+                    </div>
+                </div>
+
+                <div class="discipline-title">ДИСЦИПЛИНАРНАЯ ИСТОРИЯ</div>
+
+                <!-- навигация (как внизу второго фото) -->
+                <div class="nav-buttons">
+                    <button class="nav-btn active" onclick="showPage(2)">Профиль</button>
+                    <button class="nav-btn" onclick="showPage(3)">Заявления</button>
+                    <button class="nav-btn" onclick="logout()">Выйти</button>
+                </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>ПАРОЛЬ</label>
-                <select class="select-field">
-                    <option value="" disabled selected>Введите пароль...</option>
-                    <option value="option1">••••••••</option>
-                    <option value="option2">(введите пароль)</option>
-                </select>
-            </div>
+        <!-- СТРАНИЦА 3: ЗАЯВЛЕНИЯ (как на третьем фото) -->
+        <div id="page3" class="page">
+            <div class="content">
+                <div class="time-display" id="currentTime">20:10</div>
+                
+                <div class="user-info">
+                    <div class="user-name">Artem_Suguru</div>
+                    <div class="user-rank">BLACK</div>
+                </div>
 
-            <!-- кнопка Войти (красная) -->
-            <button class="login-btn">Войти</button>
+                <div class="application-title">ПОДАЧА ЗАЯВОК</div>
 
-            <!-- BR SYSTEM и три пункта -->
-            <div class="system-block">
-                <div class="system-title">BR SYSTEM</div>
-                <ul class="system-list">
-                    <li>Управление составом</li>
-                    <li>Подача заявлений</li>
-                    <li>Статистика и отчёты</li>
-                </ul>
-            </div>
+                <div class="dept-badge">ОТДЕЛ: АДМИНИСТРАЦИЯ</div>
 
-            <!-- футер -->
-            <div class="footer-note">
-                Нет доступа? Обратитесь к вашему куратору.
+                <div class="app-grid">
+                    <div class="app-card">Неактив</div>
+                    <div class="app-card">Наказания</div>
+                    <div class="app-card">Доп. работа</div>
+                    <div class="app-card">Повышение</div>
+                    <div class="app-card">Отчет</div>
+                </div>
+
+                <!-- навигация (как внизу третьего фото) -->
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="showPage(2)">Профиль</button>
+                    <button class="nav-btn active" onclick="showPage(3)">Заявления</button>
+                    <button class="nav-btn" onclick="logout()">Выйти</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // функция входа
+        function login() {
+            // проверка на заполненные поля (для демо можно любой id)
+            let telegramId = document.getElementById('telegramId').value;
+            if (telegramId.trim() !== '') {
+                showPage(2); // переход в профиль
+            } else {
+                alert('Введите Telegram ID');
+            }
+        }
+
+        // показать нужную страницу
+        function showPage(pageNumber) {
+            // скрываем все страницы
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page3').classList.remove('active');
+            
+            // показываем нужную
+            document.getElementById('page' + pageNumber).classList.add('active');
+        }
+
+        // выход на первую страницу
+        function logout() {
+            showPage(1);
+            // очищаем поле ввода (опционально)
+            document.getElementById('telegramId').value = '';
+        }
+
+        // обновление времени (как на третьем фото)
+        function updateTime() {
+            let now = new Date();
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('currentTime').textContent = hours + ':' + minutes;
+        }
+
+        // обновляем время каждую секунду
+        setInterval(updateTime, 1000);
+        updateTime(); // сразу при загрузке
+    </script>
 </body>
 </html>
