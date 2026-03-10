@@ -9,7 +9,7 @@ from github import GithubException
 
 # ===== НАСТРОЙКИ =====
 BOT_TOKEN = "8633962057:AAHURLKcS7fYytFzrCuQx4xPfynryYh8pKA"
-GITHUB_TOKEN = "ТВОЙ_ТОКЕН_ГИТХАБ"  # Создай на github.com → Settings → Developer settings → Personal access tokens
+GITHUB_TOKEN = "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"  # Создай на github.com → Settings → Developer settings → Personal access tokens
 ADMIN_ID = 5596589260  # Узнай у @userinfobot
 
 bot = telebot.TeleBot(BOT_TOKEN)
