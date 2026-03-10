@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+icons/
+builds/
+config.py
+*.db
