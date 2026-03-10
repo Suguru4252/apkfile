@@ -297,21 +297,17 @@
             border: 2px solid #8b0000;
             padding: 15px;
             margin-bottom: 10px;
-            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .app-request:hover {
+            border-color: #ffd700;
+            transform: scale(1.02);
         }
 
         .app-request.pending {
             border-left: 5px solid #ffd700;
-        }
-
-        .app-request.approved {
-            border-left: 5px solid #00ff00;
-            opacity: 0.7;
-        }
-
-        .app-request.rejected {
-            border-left: 5px solid #ff0000;
-            opacity: 0.7;
         }
 
         .app-type {
@@ -326,43 +322,101 @@
             font-weight: 600;
         }
 
-        .app-photo {
-            margin: 10px 0;
-            max-width: 100%;
-            border: 2px solid #8b0000;
+        /* ДЕТАЛИ ЗАЯВКИ */
+        .application-detail {
+            background: #1a1a1a;
+            border: 3px solid #8b0000;
+            padding: 20px;
+            margin: 20px 0;
         }
 
-        .app-photo img {
-            max-width: 100%;
-            max-height: 150px;
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b0000;
+        }
+
+        .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .detail-user {
+            color: white;
+            font-size: 16px;
+        }
+
+        .detail-field {
+            margin: 15px 0;
+        }
+
+        .detail-label {
+            color: #ff9999;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-text {
+            background: #000;
+            padding: 12px;
+            border: 2px solid #8b0000;
+            color: white;
+            white-space: pre-wrap;
+        }
+
+        .detail-photos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .detail-photo {
+            border: 2px solid #8b0000;
+            background: #000;
+        }
+
+        .detail-photo img {
+            width: 100%;
+            height: auto;
             display: block;
         }
 
-        .app-actions {
+        .detail-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
-        .app-btn {
+        .action-btn {
             flex: 1;
-            padding: 8px;
+            padding: 14px;
             border: none;
             font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        .app-btn.approve {
+        .action-btn.approve {
             background: #00aa00;
             color: white;
         }
 
-        .app-btn.reject {
+        .action-btn.reject {
             background: #aa0000;
             color: white;
         }
 
-        .app-btn:hover {
+        .action-btn.back {
+            background: #666;
+            color: white;
+        }
+
+        .action-btn:hover {
             opacity: 0.8;
         }
 
@@ -509,17 +563,50 @@
             cursor: pointer;
         }
 
-        .upload-preview {
-            max-width: 100%;
-            max-height: 150px;
-            margin-top: 10px;
-            display: none;
+        .photo-counter {
+            color: #ff9999;
+            font-size: 12px;
+            margin-top: 5px;
         }
 
-        .upload-preview img {
-            max-width: 100%;
-            max-height: 150px;
+        .photo-previews {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .photo-preview {
             border: 2px solid #8b0000;
+            background: #000;
+            position: relative;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-preview .remove-photo {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #8b0000;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .photo-preview .remove-photo:hover {
+            background: #ff0000;
         }
 
         .submit-btn {
@@ -537,6 +624,11 @@
 
         .submit-btn:hover {
             background: #a52a2a;
+        }
+
+        .submit-btn:disabled {
+            background: #444;
+            cursor: not-allowed;
         }
 
         .work-item {
@@ -698,12 +790,13 @@
                             <textarea class="reason-input" placeholder="Укажите причину неактива..." id="inactiveReason"></textarea>
                             
                             <div class="file-upload-area">
-                                📎 Прикрепить фото (необязательно)
-                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'inactivePreview')">
-                                <div class="upload-preview" id="inactivePreview"></div>
+                                📸 Прикрепить фото (1-10 фото)
+                                <input type="file" class="file-input" accept="image/*" multiple onchange="handlePhotos(this, 'inactive')">
+                                <div class="photo-counter" id="inactivePhotoCounter">0/10 фото</div>
+                                <div class="photo-previews" id="inactivePreviews"></div>
                             </div>
                             
-                            <button class="submit-btn" onclick="submitApplication('inactive')">Подать заявку</button>
+                            <button class="submit-btn" id="inactiveSubmit" onclick="submitApplication('inactive')">Подать заявку</button>
                         </div>
                     </div>
 
@@ -721,12 +814,13 @@
                             </div>
                             
                             <div class="file-upload-area">
-                                📎 Прикрепить фото (необязательно)
-                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'punishmentPreview')">
-                                <div class="upload-preview" id="punishmentPreview"></div>
+                                📸 Прикрепить фото (1-10 фото)
+                                <input type="file" class="file-input" accept="image/*" multiple onchange="handlePhotos(this, 'punishment')">
+                                <div class="photo-counter" id="punishmentPhotoCounter">0/10 фото</div>
+                                <div class="photo-previews" id="punishmentPreviews"></div>
                             </div>
                             
-                            <button class="submit-btn" onclick="submitApplication('punishment')">Подать заявку</button>
+                            <button class="submit-btn" id="punishmentSubmit" onclick="submitApplication('punishment')">Подать заявку</button>
                         </div>
                     </div>
 
@@ -742,7 +836,7 @@
                             
                             <button class="add-work-btn" onclick="addWork()">+ Добавить ещё работу</button>
                             
-                            <button class="submit-btn" onclick="submitApplication('work')">Подать заявку</button>
+                            <button class="submit-btn" id="workSubmit" onclick="submitApplication('work')">Подать заявку</button>
                         </div>
                     </div>
 
@@ -767,12 +861,13 @@
                             
                             <div class="form-label">СКРИНШОТ /ASTATS</div>
                             <div class="file-upload-area">
-                                📸 Нажмите, чтобы выбрать файл
-                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'promotionPreview')">
-                                <div class="upload-preview" id="promotionPreview"></div>
+                                📸 Прикрепить фото (1-10 фото)
+                                <input type="file" class="file-input" accept="image/*" multiple onchange="handlePhotos(this, 'promotion')">
+                                <div class="photo-counter" id="promotionPhotoCounter">0/10 фото</div>
+                                <div class="photo-previews" id="promotionPreviews"></div>
                             </div>
                             
-                            <button class="submit-btn" onclick="submitApplication('promotion')">Подать заявку</button>
+                            <button class="submit-btn" id="promotionSubmit" onclick="submitApplication('promotion')">Подать заявку</button>
                         </div>
                     </div>
 
@@ -803,12 +898,13 @@
                             
                             <div class="form-label">СКРИНШОТ /ASTATS</div>
                             <div class="file-upload-area">
-                                📸 Нажмите, чтобы выбрать файл
-                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'reportPreview')">
-                                <div class="upload-preview" id="reportPreview"></div>
+                                📸 Прикрепить фото (1-10 фото)
+                                <input type="file" class="file-input" accept="image/*" multiple onchange="handlePhotos(this, 'report')">
+                                <div class="photo-counter" id="reportPhotoCounter">0/10 фото</div>
+                                <div class="photo-previews" id="reportPreviews"></div>
                             </div>
                             
-                            <button class="submit-btn" onclick="submitApplication('report')">Отправить отчёт</button>
+                            <button class="submit-btn" id="reportSubmit" onclick="submitApplication('report')">Отправить отчёт</button>
                         </div>
                     </div>
                 </div>
@@ -817,7 +913,6 @@
                 <div class="nav-menu" id="navMenu">
                     <button class="nav-btn" onclick="showProfile()">Профиль</button>
                     <button class="nav-btn" onclick="showApplications()">Заявления</button>
-                    <!-- Кнопка админки будет добавляться сюда динамически для админов -->
                     <button class="nav-btn" onclick="logout()">Выйти</button>
                 </div>
 
@@ -848,6 +943,11 @@
                         <div class="admin-list" id="adminList"></div>
                     </div>
                 </div>
+
+                <!-- ДЕТАЛИ ЗАЯВКИ (для админа) -->
+                <div id="applicationDetail" style="display: none;">
+                    <div class="application-detail" id="applicationDetailContent"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -870,6 +970,7 @@
         let admins = ['5596589260'];
         let applications = [];
         let currentUser = null;
+        let currentPhotos = {};
 
         // Вход
         function login() {
@@ -881,9 +982,7 @@
                 return;
             }
 
-            // Проверяем существует ли пользователь
             if (!users[userId]) {
-                // Новый пользователь - создаем с введенным паролем
                 users[userId] = {
                     name: userId,
                     rank: 'Новичок',
@@ -895,7 +994,6 @@
                     password: password
                 };
             } else {
-                // Проверяем пароль для существующего пользователя
                 if (users[userId].password !== password) {
                     alert('Неверный пароль');
                     return;
@@ -908,22 +1006,19 @@
             document.getElementById('loginPage').classList.remove('active');
             document.getElementById('profilePage').classList.add('active');
             
-            // Обновляем навигацию (показываем/скрываем кнопку админа)
             updateNavigation();
             
-            // Показываем бейдж админа
             if (currentUser.isAdmin) {
                 document.getElementById('headerAdminBadge').style.display = 'block';
             }
         }
 
-        // Обновление навигации (скрываем кнопку админа для обычных пользователей)
+        // Обновление навигации
         function updateNavigation() {
             let navMenu = document.getElementById('navMenu');
             navMenu.innerHTML = '';
             
             if (currentUser && currentUser.isAdmin) {
-                // Для админов - 4 кнопки
                 navMenu.innerHTML = `
                     <button class="nav-btn" onclick="showProfile()">Профиль</button>
                     <button class="nav-btn" onclick="showApplications()">Заявления</button>
@@ -931,7 +1026,6 @@
                     <button class="nav-btn" onclick="logout()">Выйти</button>
                 `;
             } else {
-                // Для обычных пользователей - 3 кнопки (без админки)
                 navMenu.innerHTML = `
                     <button class="nav-btn" onclick="showProfile()">Профиль</button>
                     <button class="nav-btn" onclick="showApplications()">Заявления</button>
@@ -951,7 +1045,6 @@
             document.getElementById('statOnline').textContent = currentUser.online;
             document.getElementById('statPoints').textContent = currentUser.points;
 
-            // Обновляем все формы
             document.getElementById('inactiveAdmin').textContent = currentUser.name;
             document.getElementById('inactiveDept').textContent = currentUser.dept;
             document.getElementById('punishmentUser').textContent = currentUser.name;
@@ -966,11 +1059,76 @@
             document.getElementById('reportUser').textContent = currentUser.name;
             document.getElementById('reportRank').textContent = currentUser.rank;
 
-            // Создаем первую работу если список пуст
             let worksList = document.getElementById('worksList');
             if (worksList.children.length === 0) {
                 addWork();
             }
+        }
+
+        // Обработка фото (макс 10, мин 1)
+        function handlePhotos(input, formId) {
+            let files = Array.from(input.files);
+            let previewsDiv = document.getElementById(formId + 'Previews');
+            let counterDiv = document.getElementById(formId + 'PhotoCounter');
+            let submitBtn = document.getElementById(formId + 'Submit');
+            
+            if (!currentPhotos[formId]) {
+                currentPhotos[formId] = [];
+            }
+            
+            // Добавляем новые фото (не больше 10 всего)
+            let totalPhotos = currentPhotos[formId].length + files.length;
+            if (totalPhotos > 10) {
+                alert('Максимум можно загрузить 10 фото');
+                input.value = '';
+                return;
+            }
+            
+            files.forEach(file => {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPhotos[formId].push({
+                        data: e.target.result,
+                        name: file.name
+                    });
+                    
+                    updatePhotoPreviews(formId);
+                }
+                reader.readAsDataURL(file);
+            });
+            
+            input.value = '';
+        }
+
+        // Обновление превью фото
+        function updatePhotoPreviews(formId) {
+            let previewsDiv = document.getElementById(formId + 'Previews');
+            let counterDiv = document.getElementById(formId + 'PhotoCounter');
+            let submitBtn = document.getElementById(formId + 'Submit');
+            
+            previewsDiv.innerHTML = '';
+            
+            currentPhotos[formId].forEach((photo, index) => {
+                let preview = document.createElement('div');
+                preview.className = 'photo-preview';
+                preview.innerHTML = `
+                    <img src="${photo.data}" alt="Preview">
+                    <div class="remove-photo" onclick="removePhoto('${formId}', ${index})">✕</div>
+                `;
+                previewsDiv.appendChild(preview);
+            });
+            
+            let count = currentPhotos[formId].length;
+            counterDiv.textContent = `${count}/10 фото`;
+            
+            // Кнопка активна только если есть минимум 1 фото
+            submitBtn.disabled = count === 0;
+        }
+
+        // Удаление фото
+        function removePhoto(formId, index) {
+            currentPhotos[formId].splice(index, 1);
+            updatePhotoPreviews(formId);
         }
 
         // Показать профиль
@@ -978,6 +1136,7 @@
             document.getElementById('applicationsMenu').style.display = 'none';
             document.getElementById('applicationForms').style.display = 'none';
             document.getElementById('adminMain').style.display = 'none';
+            document.getElementById('applicationDetail').style.display = 'none';
             
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.nav-btn')[0].classList.add('active');
@@ -988,6 +1147,7 @@
             document.getElementById('applicationsMenu').style.display = 'block';
             document.getElementById('applicationForms').style.display = 'none';
             document.getElementById('adminMain').style.display = 'none';
+            document.getElementById('applicationDetail').style.display = 'none';
             
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.nav-btn')[1].classList.add('active');
@@ -998,15 +1158,14 @@
             document.getElementById('applicationsMenu').style.display = 'none';
             document.getElementById('applicationForms').style.display = 'block';
             document.getElementById('adminMain').style.display = 'none';
+            document.getElementById('applicationDetail').style.display = 'none';
             
-            // Скрываем все формы
             document.getElementById('formInactive').style.display = 'none';
             document.getElementById('formPunishment').style.display = 'none';
             document.getElementById('formWork').style.display = 'none';
             document.getElementById('formPromotion').style.display = 'none';
             document.getElementById('formReport').style.display = 'none';
             
-            // Показываем нужную
             document.getElementById('form' + type.charAt(0).toUpperCase() + type.slice(1)).style.display = 'block';
         }
 
@@ -1020,6 +1179,7 @@
             document.getElementById('applicationsMenu').style.display = 'none';
             document.getElementById('applicationForms').style.display = 'none';
             document.getElementById('adminMain').style.display = 'block';
+            document.getElementById('applicationDetail').style.display = 'none';
             
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.nav-btn')[2].classList.add('active');
@@ -1045,22 +1205,17 @@
             worksList.appendChild(workDiv);
         }
 
-        // Предпросмотр изображения
-        function previewImage(input, previewId) {
-            let preview = document.getElementById(previewId);
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
         // Отправка заявки
         function submitApplication(type) {
-            let application = {
+            let formId = type;
+            let photos = currentPhotos[formId] || [];
+            
+            if (photos.length === 0) {
+                alert('Нужно прикрепить минимум 1 фото');
+                return;
+            }
+            
+            let applicationData = {
                 id: Date.now(),
                 type: type,
                 user: currentUser.name,
@@ -1069,10 +1224,30 @@
                 dept: currentUser.dept,
                 time: new Date().toLocaleString(),
                 status: 'pending',
-                photos: []
+                photos: photos,
+                text: {}
             };
+            
+            // Добавляем текст из формы
+            if (type === 'inactive') {
+                applicationData.text.start = document.getElementById('inactiveStart').value;
+                applicationData.text.end = document.getElementById('inactiveEnd').value;
+                applicationData.text.reason = document.getElementById('inactiveReason').value;
+            } else if (type === 'punishment') {
+                applicationData.text.note = 'Запрос на снятие наказания';
+            } else if (type === 'work') {
+                applicationData.text.works = [];
+                document.querySelectorAll('.work-item').forEach((work, index) => {
+                    let text = work.querySelector('.work-input').value;
+                    applicationData.text.works.push(`Работа ${index + 1}: ${text}`);
+                });
+            }
 
-            applications.push(application);
+            applications.push(applicationData);
+            
+            // Очищаем фото
+            currentPhotos[formId] = [];
+            updatePhotoPreviews(formId);
             
             if (currentUser.isAdmin) {
                 updateAdminDisplay();
@@ -1080,6 +1255,59 @@
             
             alert(`Заявка "${type}" отправлена администраторам`);
             showApplications();
+        }
+
+        // Показать детали заявки (для админа)
+        function showApplicationDetails(app) {
+            let detailDiv = document.getElementById('applicationDetailContent');
+            
+            let photosHtml = '';
+            if (app.photos && app.photos.length > 0) {
+                photosHtml = '<div class="detail-label">ФОТОГРАФИИ</div><div class="detail-photos">';
+                app.photos.forEach(photo => {
+                    photosHtml += `<div class="detail-photo"><img src="${photo.data}" alt="Photo"></div>`;
+                });
+                photosHtml += '</div>';
+            }
+            
+            let textHtml = '';
+            if (app.text) {
+                textHtml = '<div class="detail-label">ТЕКСТ ЗАЯВКИ</div>';
+                if (app.type === 'inactive') {
+                    textHtml += `<div class="detail-text">Даты: ${app.text.start || 'не указано'} - ${app.text.end || 'не указано'}\nПричина: ${app.text.reason || 'не указана'}</div>`;
+                } else if (app.type === 'punishment') {
+                    textHtml += `<div class="detail-text">Запрос на снятие наказания</div>`;
+                } else if (app.type === 'work' && app.text.works) {
+                    textHtml += `<div class="detail-text">${app.text.works.join('\n\n')}</div>`;
+                } else {
+                    textHtml += `<div class="detail-text">Заявка на ${app.type}</div>`;
+                }
+            }
+            
+            detailDiv.innerHTML = `
+                <div class="detail-header">
+                    <span class="detail-title">${app.type.toUpperCase()}</span>
+                    <span class="detail-user">${app.user}</span>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-label">ДОЛЖНОСТЬ</div>
+                    <div class="detail-text">${app.rank} | ${app.dept}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-label">ВРЕМЯ ПОДАЧИ</div>
+                    <div class="detail-text">${app.time}</div>
+                </div>
+                ${textHtml}
+                ${photosHtml}
+                <div class="detail-actions">
+                    <button class="action-btn approve" onclick="handleApplication(${app.id}, 'approve')">✓ ОДОБРИТЬ</button>
+                    <button class="action-btn reject" onclick="handleApplication(${app.id}, 'reject')">✗ ОТКЛОНИТЬ</button>
+                    <button class="action-btn back" onclick="showAdminMain()">← НАЗАД</button>
+                </div>
+            `;
+            
+            document.getElementById('adminMain').style.display = 'none';
+            document.getElementById('applicationDetail').style.display = 'block';
         }
 
         // Обновить админ панель
@@ -1097,21 +1325,18 @@
                 if (app.status === 'pending') {
                     let appDiv = document.createElement('div');
                     appDiv.className = `app-request pending`;
+                    appDiv.onclick = () => showApplicationDetails(app);
                     appDiv.innerHTML = `
                         <div class="app-type">${app.type.toUpperCase()}</div>
                         <div class="app-user">${app.user}</div>
                         <div>${app.rank} | ${app.dept}</div>
                         <div style="color: #999; font-size: 12px;">${app.time}</div>
-                        <div class="app-actions">
-                            <button class="app-btn approve" onclick="handleApplication(${app.id}, 'approve')">✓ Одобрить</button>
-                            <button class="app-btn reject" onclick="handleApplication(${app.id}, 'reject')">✗ Отклонить</button>
-                        </div>
+                        <div style="color: #ffd700; font-size: 11px;">📸 ${app.photos ? app.photos.length : 0} фото</div>
                     `;
                     queue.appendChild(appDiv);
                 }
             });
             
-            // Обновляем список админов
             let adminList = document.getElementById('adminList');
             adminList.innerHTML = '';
             admins.forEach(admin => {
@@ -1132,6 +1357,7 @@
                 app.status = action === 'approve' ? 'approved' : 'rejected';
                 updateAdminDisplay();
                 alert(`Заявка ${action === 'approve' ? 'одобрена' : 'отклонена'}`);
+                showAdminMain();
             }
         }
 
