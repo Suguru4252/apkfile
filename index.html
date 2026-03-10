@@ -113,13 +113,14 @@
             color: #666666;
         }
 
-        .select-field {
+        .password-field {
             width: 100%;
             padding: 12px 16px;
             font-size: 15px;
             border: 2px solid #8b0000;
             background: #1a1a1a;
             color: #ffffff;
+            -webkit-text-security: disc;
         }
 
         .login-btn {
@@ -267,7 +268,7 @@
             background: #8b0000;
         }
 
-        /* АДМИН ПАНЕЛЬ (ГЛАВНАЯ) */
+        /* АДМИН ПАНЕЛЬ */
         .admin-main {
             background: #1a1a1a;
             border: 3px solid #8b0000;
@@ -388,6 +389,40 @@
         .admin-stat-label {
             color: #999;
             font-size: 12px;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 2px solid #8b0000;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 12px;
+            background: #8b0000;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .admin-list {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .admin-item {
+            padding: 10px;
+            background: #000;
+            margin-bottom: 5px;
+            border-left: 3px solid #8b0000;
+            display: flex;
+            justify-content: space-between;
         }
 
         /* МЕНЮ ЗАЯВЛЕНИЙ */
@@ -571,7 +606,7 @@
                 <div class="subtitle">СИСТЕМА УПРАВЛЕНИЯ</div>
             </div>
             <div id="headerAdminBadge" style="display: none;">
-                <span class="admin-badge">АДМИН</span>
+                <span class="admin-badge">ГЛАВНЫЙ АДМИН</span>
             </div>
         </div>
 
@@ -590,10 +625,7 @@
 
                 <div class="form-group">
                     <label>ПАРОЛЬ</label>
-                    <select class="select-field" id="loginPassword">
-                        <option value="" disabled selected>Введите пароль...</option>
-                        <option value="user">Пользователь</option>
-                    </select>
+                    <input type="password" class="password-field" placeholder="Введите пароль..." id="loginPassword">
                 </div>
 
                 <button class="login-btn" onclick="login()">Войти</button>
@@ -665,6 +697,12 @@
                             <div class="form-label">ПРИЧИНА</div>
                             <textarea class="reason-input" placeholder="Укажите причину неактива..." id="inactiveReason"></textarea>
                             
+                            <div class="file-upload-area">
+                                📎 Прикрепить фото (необязательно)
+                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'inactivePreview')">
+                                <div class="upload-preview" id="inactivePreview"></div>
+                            </div>
+                            
                             <button class="submit-btn" onclick="submitApplication('inactive')">Подать заявку</button>
                         </div>
                     </div>
@@ -680,6 +718,12 @@
                                 <div class="punishment-item" style="color: #4CAF50;">
                                     ✅ Активных наказаний нет
                                 </div>
+                            </div>
+                            
+                            <div class="file-upload-area">
+                                📎 Прикрепить фото (необязательно)
+                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'punishmentPreview')">
+                                <div class="upload-preview" id="punishmentPreview"></div>
                             </div>
                             
                             <button class="submit-btn" onclick="submitApplication('punishment')">Подать заявку</button>
@@ -722,7 +766,7 @@
                             </div>
                             
                             <div class="form-label">СКРИНШОТ /ASTATS</div>
-                            <div class="file-upload-area" id="promotionUpload">
+                            <div class="file-upload-area">
                                 📸 Нажмите, чтобы выбрать файл
                                 <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'promotionPreview')">
                                 <div class="upload-preview" id="promotionPreview"></div>
@@ -758,7 +802,7 @@
                             </div>
                             
                             <div class="form-label">СКРИНШОТ /ASTATS</div>
-                            <div class="file-upload-area" id="reportUpload">
+                            <div class="file-upload-area">
                                 📸 Нажмите, чтобы выбрать файл
                                 <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'reportPreview')">
                                 <div class="upload-preview" id="reportPreview"></div>
@@ -770,23 +814,21 @@
                 </div>
 
                 <!-- КНОПКИ НАВИГАЦИИ -->
-                <div class="nav-menu">
+                <div class="nav-menu" id="navMenu">
                     <button class="nav-btn" onclick="showProfile()">Профиль</button>
                     <button class="nav-btn" onclick="showApplications()">Заявления</button>
-                    <button class="nav-btn" onclick="showAdminMain()">Админка</button>
+                    <!-- Кнопка админки будет добавляться сюда динамически для админов -->
                     <button class="nav-btn" onclick="logout()">Выйти</button>
                 </div>
 
-                <!-- АДМИН ПАНЕЛЬ (ГЛАВНАЯ) -->
+                <!-- АДМИН ПАНЕЛЬ -->
                 <div id="adminMain" style="display: none;">
                     <div class="admin-main">
                         <div class="admin-main-title">👑 ГЛАВНАЯ АДМИН ПАНЕЛЬ</div>
                         
-                        <!-- Очередь заявок -->
                         <div class="admin-title">ЗАЯВКИ НА РАССМОТРЕНИИ</div>
                         <div class="applications-queue" id="applicationsQueue"></div>
                         
-                        <!-- Статистика админа -->
                         <div class="admin-stats">
                             <div class="admin-stat-card">
                                 <div class="admin-stat-number" id="pendingCount">0</div>
@@ -798,7 +840,6 @@
                             </div>
                         </div>
                         
-                        <!-- Назначение админов -->
                         <div class="admin-title" style="margin-top: 20px;">НАЗНАЧИТЬ АДМИНА</div>
                         <input type="text" class="admin-input" placeholder="Telegram ID" id="newAdminId">
                         <button class="admin-btn" onclick="addAdmin()">Назначить</button>
@@ -812,32 +853,37 @@
     </div>
 
     <script>
-        // База данных
+        // База данных пользователей
         let users = {
-            'Artem_Suguru': {
+            '5596589260': {
                 name: 'Artem_Suguru',
-                rank: 'Младший Модератор',
+                rank: 'Главный Администратор',
                 dept: 'Администрация',
                 reports: 2658,
                 online: 2902,
                 points: 51,
-                isAdmin: true
+                isAdmin: true,
+                password: 'admin123'
             }
         };
 
-        let admins = ['Artem_Suguru'];
+        let admins = ['5596589260'];
         let applications = [];
         let currentUser = null;
 
         // Вход
         function login() {
             let userId = document.getElementById('loginId').value.trim();
-            if (!userId) {
-                alert('Введите Telegram ID');
+            let password = document.getElementById('loginPassword').value.trim();
+            
+            if (!userId || !password) {
+                alert('Введите Telegram ID и пароль');
                 return;
             }
 
+            // Проверяем существует ли пользователь
             if (!users[userId]) {
+                // Новый пользователь - создаем с введенным паролем
                 users[userId] = {
                     name: userId,
                     rank: 'Новичок',
@@ -845,8 +891,15 @@
                     reports: 0,
                     online: 0,
                     points: 0,
-                    isAdmin: false
+                    isAdmin: false,
+                    password: password
                 };
+            } else {
+                // Проверяем пароль для существующего пользователя
+                if (users[userId].password !== password) {
+                    alert('Неверный пароль');
+                    return;
+                }
             }
 
             currentUser = users[userId];
@@ -855,9 +908,35 @@
             document.getElementById('loginPage').classList.remove('active');
             document.getElementById('profilePage').classList.add('active');
             
+            // Обновляем навигацию (показываем/скрываем кнопку админа)
+            updateNavigation();
+            
             // Показываем бейдж админа
             if (currentUser.isAdmin) {
                 document.getElementById('headerAdminBadge').style.display = 'block';
+            }
+        }
+
+        // Обновление навигации (скрываем кнопку админа для обычных пользователей)
+        function updateNavigation() {
+            let navMenu = document.getElementById('navMenu');
+            navMenu.innerHTML = '';
+            
+            if (currentUser && currentUser.isAdmin) {
+                // Для админов - 4 кнопки
+                navMenu.innerHTML = `
+                    <button class="nav-btn" onclick="showProfile()">Профиль</button>
+                    <button class="nav-btn" onclick="showApplications()">Заявления</button>
+                    <button class="nav-btn" onclick="showAdminMain()">Админка</button>
+                    <button class="nav-btn" onclick="logout()">Выйти</button>
+                `;
+            } else {
+                // Для обычных пользователей - 3 кнопки (без админки)
+                navMenu.innerHTML = `
+                    <button class="nav-btn" onclick="showProfile()">Профиль</button>
+                    <button class="nav-btn" onclick="showApplications()">Заявления</button>
+                    <button class="nav-btn" onclick="logout()">Выйти</button>
+                `;
             }
         }
 
@@ -960,7 +1039,7 @@
                 <textarea class="work-input" placeholder="Опишите выполненную работу..."></textarea>
                 <div class="file-upload-area">
                     📎 Прикрепить скриншоты
-                    <input type="file" class="file-input" accept="image/*" multiple onchange="handleWorkPhotos(this, ${workCount})">
+                    <input type="file" class="file-input" accept="image/*" multiple>
                 </div>
             `;
             worksList.appendChild(workDiv);
@@ -985,6 +1064,7 @@
                 id: Date.now(),
                 type: type,
                 user: currentUser.name,
+                userId: currentUser.name,
                 rank: currentUser.rank,
                 dept: currentUser.dept,
                 time: new Date().toLocaleString(),
@@ -1035,10 +1115,11 @@
             let adminList = document.getElementById('adminList');
             adminList.innerHTML = '';
             admins.forEach(admin => {
+                let adminName = users[admin] ? users[admin].name : admin;
                 adminList.innerHTML += `
                     <div class="admin-item">
-                        <span>${admin}</span>
-                        <span style="color: #8b0000;">${admin === 'Artem_Suguru' ? 'Главный' : 'Админ'}</span>
+                        <span>${adminName}</span>
+                        <span style="color: #8b0000;">${admin === '5596589260' ? 'Главный' : 'Админ'}</span>
                     </div>
                 `;
             });
@@ -1070,7 +1151,8 @@
                     reports: 0,
                     online: 0,
                     points: 0,
-                    isAdmin: true
+                    isAdmin: true,
+                    password: 'default123'
                 };
             }
 
@@ -1090,6 +1172,7 @@
             document.getElementById('profilePage').classList.remove('active');
             document.getElementById('loginPage').classList.add('active');
             document.getElementById('loginId').value = '';
+            document.getElementById('loginPassword').value = '';
             document.getElementById('headerAdminBadge').style.display = 'none';
         }
 
