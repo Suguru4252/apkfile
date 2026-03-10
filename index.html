@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BR Management · система</title>
+    <title>BR Management · полная система</title>
     <style>
         * {
             margin: 0;
@@ -34,18 +34,28 @@
             color: white;
             padding: 16px 24px;
             border-bottom: 2px solid #4a0000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 24px;
             font-weight: 600;
-            margin-bottom: 2px;
         }
 
         .header .subtitle {
             font-size: 13px;
             color: #ffcccc;
-            text-transform: uppercase;
+        }
+
+        .admin-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
         }
 
         .content {
@@ -63,7 +73,7 @@
             display: block;
         }
 
-        /* СТРАНИЦА 1 - ВХОД (точная копия первого фото) */
+        /* СТРАНИЦА ВХОДА */
         .welcome h2 {
             font-size: 22px;
             font-weight: 600;
@@ -110,12 +120,6 @@
             border: 2px solid #8b0000;
             background: #1a1a1a;
             color: #ffffff;
-            appearance: auto;
-        }
-
-        .select-field option {
-            background: #1a1a1a;
-            color: #ffffff;
         }
 
         .login-btn {
@@ -138,7 +142,6 @@
         .system-block {
             border-top: 2px solid #8b0000;
             padding-top: 25px;
-            margin-top: 5px;
         }
 
         .system-title {
@@ -178,7 +181,7 @@
             border-top: 1px dashed #8b0000;
         }
 
-        /* ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ */
+        /* ПРОФИЛЬ */
         .user-info {
             margin-bottom: 20px;
             padding: 15px;
@@ -190,14 +193,12 @@
             font-size: 28px;
             font-weight: 700;
             color: white;
-            margin-bottom: 5px;
         }
 
         .user-rank {
             font-size: 18px;
             color: #8b0000;
             font-weight: 600;
-            margin-bottom: 5px;
         }
 
         .user-dept {
@@ -228,7 +229,6 @@
             font-size: 32px;
             font-weight: 700;
             color: #8b0000;
-            line-height: 1;
         }
 
         .stat-card:hover .stat-number {
@@ -239,14 +239,9 @@
             font-size: 12px;
             color: #999;
             text-transform: uppercase;
-            margin-top: 5px;
         }
 
-        .stat-card:hover .stat-label {
-            color: white;
-        }
-
-        /* КНОПКИ НАВИГАЦИИ */
+        /* НАВИГАЦИЯ */
         .nav-menu {
             display: flex;
             gap: 10px;
@@ -268,67 +263,131 @@
             text-align: center;
         }
 
-        .nav-btn:hover {
+        .nav-btn:hover, .nav-btn.active {
             background: #8b0000;
         }
 
-        .nav-btn.active {
-            background: #8b0000;
-        }
-
-        /* АДМИН ПАНЕЛЬ */
-        .admin-section {
-            margin-top: 20px;
-            border: 2px solid #8b0000;
+        /* АДМИН ПАНЕЛЬ (ГЛАВНАЯ) */
+        .admin-main {
             background: #1a1a1a;
-            padding: 15px;
+            border: 3px solid #8b0000;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .admin-title {
-            color: #8b0000;
-            font-size: 18px;
+        .admin-main-title {
+            color: #ffd700;
+            font-size: 24px;
             font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 15px;
             text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #8b0000;
         }
 
-        .admin-input {
-            width: 100%;
-            padding: 12px;
+        .applications-queue {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .app-request {
             background: #000;
             border: 2px solid #8b0000;
-            color: white;
+            padding: 15px;
             margin-bottom: 10px;
+            position: relative;
         }
 
-        .admin-btn {
-            width: 100%;
-            padding: 12px;
-            background: #8b0000;
-            border: none;
+        .app-request.pending {
+            border-left: 5px solid #ffd700;
+        }
+
+        .app-request.approved {
+            border-left: 5px solid #00ff00;
+            opacity: 0.7;
+        }
+
+        .app-request.rejected {
+            border-left: 5px solid #ff0000;
+            opacity: 0.7;
+        }
+
+        .app-type {
+            color: #8b0000;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .app-user {
             color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .app-photo {
+            margin: 10px 0;
+            max-width: 100%;
+            border: 2px solid #8b0000;
+        }
+
+        .app-photo img {
+            max-width: 100%;
+            max-height: 150px;
+            display: block;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .app-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
             font-weight: 600;
             cursor: pointer;
         }
 
-        .admin-btn:hover {
-            background: #a52a2a;
+        .app-btn.approve {
+            background: #00aa00;
+            color: white;
         }
 
-        .admin-list {
+        .app-btn.reject {
+            background: #aa0000;
+            color: white;
+        }
+
+        .app-btn:hover {
+            opacity: 0.8;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
             margin-top: 15px;
-            max-height: 200px;
-            overflow-y: auto;
         }
 
-        .admin-item {
-            padding: 10px;
+        .admin-stat-card {
             background: #000;
-            margin-bottom: 5px;
-            border-left: 3px solid #8b0000;
-            display: flex;
-            justify-content: space-between;
+            border: 2px solid #8b0000;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .admin-stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #8b0000;
+        }
+
+        .admin-stat-label {
+            color: #999;
+            font-size: 12px;
         }
 
         /* МЕНЮ ЗАЯВЛЕНИЙ */
@@ -345,7 +404,6 @@
             padding: 20px 5px;
             text-align: center;
             cursor: pointer;
-            font-size: 14px;
             font-weight: 600;
             color: white;
         }
@@ -366,7 +424,7 @@
             color: #ff9999;
             font-size: 12px;
             text-transform: uppercase;
-            margin: 10px 0 5px 0;
+            margin: 10px 0 5px;
         }
 
         .date-input {
@@ -393,17 +451,40 @@
             min-height: 80px;
         }
 
-        .file-upload {
+        .file-upload-area {
             border: 2px dashed #8b0000;
             padding: 20px;
             text-align: center;
             margin: 10px 0;
             cursor: pointer;
-            color: #999;
+            position: relative;
         }
 
-        .file-upload:hover {
+        .file-upload-area:hover {
             background: rgba(139,0,0,0.2);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-preview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .upload-preview img {
+            max-width: 100%;
+            max-height: 150px;
+            border: 2px solid #8b0000;
         }
 
         .submit-btn {
@@ -421,17 +502,6 @@
 
         .submit-btn:hover {
             background: #a52a2a;
-        }
-
-        .history-list {
-            margin: 20px 0;
-        }
-
-        .history-item {
-            padding: 10px;
-            background: #000;
-            border-left: 3px solid #8b0000;
-            margin-bottom: 5px;
         }
 
         .work-item {
@@ -464,13 +534,6 @@
             background: #8b0000;
         }
 
-        .punishment-item {
-            padding: 10px;
-            background: #000;
-            border-left: 3px solid #8b0000;
-            margin-bottom: 5px;
-        }
-
         .normative-block {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -491,11 +554,6 @@
             color: #8b0000;
         }
 
-        .normative-label {
-            font-size: 12px;
-            color: #999;
-        }
-
         .time-display {
             text-align: right;
             font-size: 24px;
@@ -508,11 +566,16 @@
 <body>
     <div class="app">
         <div class="header">
-            <h1>BR Management</h1>
-            <div class="subtitle">СИСТЕМА УПРАВЛЕНИЯ</div>
+            <div>
+                <h1>BR Management</h1>
+                <div class="subtitle">СИСТЕМА УПРАВЛЕНИЯ</div>
+            </div>
+            <div id="headerAdminBadge" style="display: none;">
+                <span class="admin-badge">АДМИН</span>
+            </div>
         </div>
 
-        <!-- СТРАНИЦА 1: ВХОД (активна по умолчанию) -->
+        <!-- СТРАНИЦА ВХОДА -->
         <div id="loginPage" class="page active">
             <div class="content">
                 <div class="welcome">
@@ -550,7 +613,7 @@
             </div>
         </div>
 
-        <!-- СТРАНИЦА 2: ПРОФИЛЬ -->
+        <!-- СТРАНИЦА ПРОФИЛЯ -->
         <div id="profilePage" class="page">
             <div class="content">
                 <div class="user-info">
@@ -574,7 +637,7 @@
                     </div>
                 </div>
 
-                <!-- МЕНЮ ЗАЯВЛЕНИЙ (появляется при нажатии "Заявления") -->
+                <!-- МЕНЮ ЗАЯВЛЕНИЙ -->
                 <div id="applicationsMenu" style="display: none;">
                     <div class="apps-menu">
                         <div class="app-icon" onclick="showApplicationForm('inactive')">НЕАКТИВ</div>
@@ -591,8 +654,8 @@
                     <div id="formInactive" style="display: none;">
                         <div class="app-form">
                             <div class="admin-title">ПЕРИОД НЕАКТИВА</div>
-                            <div class="form-label">Администратор: <span id="inactiveAdmin">Artem_Suguru</span></div>
-                            <div class="form-label">Отдел: <span id="inactiveDept">Администрация</span></div>
+                            <div class="form-label">Администратор: <span id="inactiveAdmin"></span></div>
+                            <div class="form-label">Отдел: <span id="inactiveDept"></span></div>
                             
                             <div class="date-input">
                                 <input type="date" class="date-field" id="inactiveStart">
@@ -610,8 +673,8 @@
                     <div id="formPunishment" style="display: none;">
                         <div class="app-form">
                             <div class="admin-title">СНЯТИЕ НАКАЗАНИЯ</div>
-                            <div class="form-label">Пользователь: <span id="punishmentUser">Artem_Suguru</span></div>
-                            <div class="form-label">Отдел: <span id="punishmentDept">Администрация</span></div>
+                            <div class="form-label">Пользователь: <span id="punishmentUser"></span></div>
+                            <div class="form-label">Отдел: <span id="punishmentDept"></span></div>
                             
                             <div id="punishmentsList">
                                 <div class="punishment-item" style="color: #4CAF50;">
@@ -619,7 +682,7 @@
                                 </div>
                             </div>
                             
-                            <button class="submit-btn" style="margin-top: 20px;" onclick="submitApplication('punishment')">Подать заявку</button>
+                            <button class="submit-btn" onclick="submitApplication('punishment')">Подать заявку</button>
                         </div>
                     </div>
 
@@ -627,25 +690,13 @@
                     <div id="formWork" style="display: none;">
                         <div class="app-form">
                             <div class="admin-title">ДОПОЛНИТЕЛЬНАЯ РАБОТА</div>
-                            <div class="form-label">Пользователь: <span id="workUser">Artem_Suguru</span></div>
-                            <div class="form-label">Должность: <span id="workRank">Младший Модератор</span></div>
-                            <div class="form-label">Отдел: <span id="workDept">Администрация</span></div>
+                            <div class="form-label">Пользователь: <span id="workUser"></span></div>
+                            <div class="form-label">Должность: <span id="workRank"></span></div>
+                            <div class="form-label">Отдел: <span id="workDept"></span></div>
                             
-                            <div id="worksList">
-                                <div class="work-item">
-                                    <div class="form-label">РАБОТА №1</div>
-                                    <textarea class="work-input" placeholder="Опишите выполненную работу..."></textarea>
-                                    <div class="file-upload">
-                                        📎 Прикрепить скриншоты
-                                    </div>
-                                </div>
-                            </div>
+                            <div id="worksList"></div>
                             
                             <button class="add-work-btn" onclick="addWork()">+ Добавить ещё работу</button>
-                            
-                            <div class="history-list">
-                                <div class="admin-title">История заявок</div>
-                            </div>
                             
                             <button class="submit-btn" onclick="submitApplication('work')">Подать заявку</button>
                         </div>
@@ -656,27 +707,25 @@
                         <div class="app-form">
                             <div class="admin-title">ЗАЯВКА НА ПОВЫШЕНИЕ</div>
                             
-                            <div class="form-label">Администратор: <span id="promotionUser">Artem_Suguru</span></div>
-                            <div class="form-label">Текущая должность: <span id="promotionRank">Младший Модератор</span></div>
+                            <div class="form-label">Администратор: <span id="promotionUser"></span></div>
+                            <div class="form-label">Текущая должность: <span id="promotionRank"></span></div>
                             
                             <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
                                 <div class="stat-card">
-                                    <div class="stat-number" id="promotionReports">2658</div>
+                                    <div class="stat-number" id="promotionReports">0</div>
                                     <div class="stat-label">Репортов</div>
                                 </div>
                                 <div class="stat-card">
-                                    <div class="stat-number" id="promotionOnline">2902</div>
+                                    <div class="stat-number" id="promotionOnline">0</div>
                                     <div class="stat-label">Онлайн</div>
                                 </div>
                             </div>
                             
                             <div class="form-label">СКРИНШОТ /ASTATS</div>
-                            <div class="file-upload">
+                            <div class="file-upload-area" id="promotionUpload">
                                 📸 Нажмите, чтобы выбрать файл
-                            </div>
-                            
-                            <div class="history-list">
-                                <div class="admin-title">История заявок на повышение</div>
+                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'promotionPreview')">
+                                <div class="upload-preview" id="promotionPreview"></div>
                             </div>
                             
                             <button class="submit-btn" onclick="submitApplication('promotion')">Подать заявку</button>
@@ -686,10 +735,10 @@
                     <!-- ОТЧЕТ -->
                     <div id="formReport" style="display: none;">
                         <div class="app-form">
-                            <div class="time-display" id="currentTime">20:32</div>
+                            <div class="time-display" id="currentTime"></div>
                             
-                            <div class="form-label">Администратор: <span id="reportUser">Artem_Suguru</span></div>
-                            <div class="form-label">Должность: <span id="reportRank">Младший Модератор</span></div>
+                            <div class="form-label">Администратор: <span id="reportUser"></span></div>
+                            <div class="form-label">Должность: <span id="reportRank"></span></div>
                             
                             <div class="admin-title">ВАШ НОРМАТИВ</div>
                             
@@ -709,13 +758,10 @@
                             </div>
                             
                             <div class="form-label">СКРИНШОТ /ASTATS</div>
-                            <div class="file-upload">
-                                📸 Нажмите, чтобы выбрать файл<br>
-                                <small style="color: #666;">Данные будут считаны автоматически</small>
-                            </div>
-                            
-                            <div class="history-list">
-                                <div class="admin-title">История отчётов</div>
+                            <div class="file-upload-area" id="reportUpload">
+                                📸 Нажмите, чтобы выбрать файл
+                                <input type="file" class="file-input" accept="image/*" onchange="previewImage(this, 'reportPreview')">
+                                <div class="upload-preview" id="reportPreview"></div>
                             </div>
                             
                             <button class="submit-btn" onclick="submitApplication('report')">Отправить отчёт</button>
@@ -725,26 +771,40 @@
 
                 <!-- КНОПКИ НАВИГАЦИИ -->
                 <div class="nav-menu">
-                    <button class="nav-btn active" onclick="showProfile()">Профиль</button>
+                    <button class="nav-btn" onclick="showProfile()">Профиль</button>
                     <button class="nav-btn" onclick="showApplications()">Заявления</button>
-                    <button class="nav-btn" onclick="toggleAdminPanel()">Админ</button>
+                    <button class="nav-btn" onclick="showAdminMain()">Админка</button>
                     <button class="nav-btn" onclick="logout()">Выйти</button>
                 </div>
 
-                <!-- АДМИН ПАНЕЛЬ -->
-                <div id="adminPanel" style="display: none;">
-                    <div class="admin-section">
-                        <div class="admin-title">👑 АДМИН ПАНЕЛЬ</div>
-                        <input type="text" class="admin-input" placeholder="Telegram ID нового админа" id="newAdminId">
-                        <button class="admin-btn" onclick="addAdmin()">Назначить админом</button>
+                <!-- АДМИН ПАНЕЛЬ (ГЛАВНАЯ) -->
+                <div id="adminMain" style="display: none;">
+                    <div class="admin-main">
+                        <div class="admin-main-title">👑 ГЛАВНАЯ АДМИН ПАНЕЛЬ</div>
                         
-                        <div class="admin-title" style="margin-top: 20px;">Администраторы сайта</div>
-                        <div class="admin-list" id="adminList">
-                            <div class="admin-item">
-                                <span>Artem_Suguru</span>
-                                <span style="color: #8b0000;">Главный</span>
+                        <!-- Очередь заявок -->
+                        <div class="admin-title">ЗАЯВКИ НА РАССМОТРЕНИИ</div>
+                        <div class="applications-queue" id="applicationsQueue"></div>
+                        
+                        <!-- Статистика админа -->
+                        <div class="admin-stats">
+                            <div class="admin-stat-card">
+                                <div class="admin-stat-number" id="pendingCount">0</div>
+                                <div class="admin-stat-label">Ожидают</div>
+                            </div>
+                            <div class="admin-stat-card">
+                                <div class="admin-stat-number" id="approvedCount">0</div>
+                                <div class="admin-stat-label">Одобрено</div>
                             </div>
                         </div>
+                        
+                        <!-- Назначение админов -->
+                        <div class="admin-title" style="margin-top: 20px;">НАЗНАЧИТЬ АДМИНА</div>
+                        <input type="text" class="admin-input" placeholder="Telegram ID" id="newAdminId">
+                        <button class="admin-btn" onclick="addAdmin()">Назначить</button>
+                        
+                        <div class="admin-title" style="margin-top: 20px;">АДМИНИСТРАТОРЫ</div>
+                        <div class="admin-list" id="adminList"></div>
                     </div>
                 </div>
             </div>
@@ -752,7 +812,7 @@
     </div>
 
     <script>
-        // База данных пользователей
+        // База данных
         let users = {
             'Artem_Suguru': {
                 name: 'Artem_Suguru',
@@ -766,20 +826,18 @@
         };
 
         let admins = ['Artem_Suguru'];
+        let applications = [];
         let currentUser = null;
 
-        // Вход в систему
+        // Вход
         function login() {
             let userId = document.getElementById('loginId').value.trim();
-            
-            if (userId === '') {
+            if (!userId) {
                 alert('Введите Telegram ID');
                 return;
             }
 
-            // Проверяем, есть ли пользователь
             if (!users[userId]) {
-                // Новый пользователь - статистика 0
                 users[userId] = {
                     name: userId,
                     rank: 'Новичок',
@@ -794,9 +852,13 @@
             currentUser = users[userId];
             updateProfileDisplay();
             
-            // Переключаемся на страницу профиля
             document.getElementById('loginPage').classList.remove('active');
             document.getElementById('profilePage').classList.add('active');
+            
+            // Показываем бейдж админа
+            if (currentUser.isAdmin) {
+                document.getElementById('headerAdminBadge').style.display = 'block';
+            }
         }
 
         // Обновление профиля
@@ -810,7 +872,7 @@
             document.getElementById('statOnline').textContent = currentUser.online;
             document.getElementById('statPoints').textContent = currentUser.points;
 
-            // Обновляем данные во всех формах
+            // Обновляем все формы
             document.getElementById('inactiveAdmin').textContent = currentUser.name;
             document.getElementById('inactiveDept').textContent = currentUser.dept;
             document.getElementById('punishmentUser').textContent = currentUser.name;
@@ -824,29 +886,31 @@
             document.getElementById('promotionOnline').textContent = currentUser.online;
             document.getElementById('reportUser').textContent = currentUser.name;
             document.getElementById('reportRank').textContent = currentUser.rank;
+
+            // Создаем первую работу если список пуст
+            let worksList = document.getElementById('worksList');
+            if (worksList.children.length === 0) {
+                addWork();
+            }
         }
 
-        // Показать профиль (скрыть заявления)
+        // Показать профиль
         function showProfile() {
             document.getElementById('applicationsMenu').style.display = 'none';
             document.getElementById('applicationForms').style.display = 'none';
+            document.getElementById('adminMain').style.display = 'none';
             
-            // Обновляем активные кнопки
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector('.nav-btn').classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-btn')[0].classList.add('active');
         }
 
         // Показать меню заявлений
         function showApplications() {
             document.getElementById('applicationsMenu').style.display = 'block';
             document.getElementById('applicationForms').style.display = 'none';
+            document.getElementById('adminMain').style.display = 'none';
             
-            // Обновляем активные кнопки
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.nav-btn')[1].classList.add('active');
         }
 
@@ -854,6 +918,7 @@
         function showApplicationForm(type) {
             document.getElementById('applicationsMenu').style.display = 'none';
             document.getElementById('applicationForms').style.display = 'block';
+            document.getElementById('adminMain').style.display = 'none';
             
             // Скрываем все формы
             document.getElementById('formInactive').style.display = 'none';
@@ -866,47 +931,133 @@
             document.getElementById('form' + type.charAt(0).toUpperCase() + type.slice(1)).style.display = 'block';
         }
 
+        // Показать админ панель
+        function showAdminMain() {
+            if (!currentUser || !currentUser.isAdmin) {
+                alert('У вас нет прав администратора');
+                return;
+            }
+
+            document.getElementById('applicationsMenu').style.display = 'none';
+            document.getElementById('applicationForms').style.display = 'none';
+            document.getElementById('adminMain').style.display = 'block';
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-btn')[2].classList.add('active');
+            
+            updateAdminDisplay();
+        }
+
         // Добавить работу
         function addWork() {
             let worksList = document.getElementById('worksList');
             let workCount = worksList.children.length + 1;
             
-            let newWork = document.createElement('div');
-            newWork.className = 'work-item';
-            newWork.innerHTML = `
+            let workDiv = document.createElement('div');
+            workDiv.className = 'work-item';
+            workDiv.innerHTML = `
                 <div class="form-label">РАБОТА №${workCount}</div>
                 <textarea class="work-input" placeholder="Опишите выполненную работу..."></textarea>
-                <div class="file-upload">
+                <div class="file-upload-area">
                     📎 Прикрепить скриншоты
+                    <input type="file" class="file-input" accept="image/*" multiple onchange="handleWorkPhotos(this, ${workCount})">
                 </div>
             `;
-            worksList.appendChild(newWork);
+            worksList.appendChild(workDiv);
         }
 
-        // Отправить заявку
-        function submitApplication(type) {
-            alert(`Заявка "${type}" отправлена администраторам`);
-        }
-
-        // Показать/скрыть админ панель
-        function toggleAdminPanel() {
-            let adminPanel = document.getElementById('adminPanel');
-            if (adminPanel.style.display === 'none') {
-                if (currentUser && currentUser.isAdmin) {
-                    adminPanel.style.display = 'block';
-                } else {
-                    alert('У вас нет прав администратора');
+        // Предпросмотр изображения
+        function previewImage(input, previewId) {
+            let preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    preview.style.display = 'block';
                 }
-            } else {
-                adminPanel.style.display = 'none';
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Отправка заявки
+        function submitApplication(type) {
+            let application = {
+                id: Date.now(),
+                type: type,
+                user: currentUser.name,
+                rank: currentUser.rank,
+                dept: currentUser.dept,
+                time: new Date().toLocaleString(),
+                status: 'pending',
+                photos: []
+            };
+
+            applications.push(application);
+            
+            if (currentUser.isAdmin) {
+                updateAdminDisplay();
+            }
+            
+            alert(`Заявка "${type}" отправлена администраторам`);
+            showApplications();
+        }
+
+        // Обновить админ панель
+        function updateAdminDisplay() {
+            let queue = document.getElementById('applicationsQueue');
+            queue.innerHTML = '';
+            
+            let pending = applications.filter(a => a.status === 'pending').length;
+            let approved = applications.filter(a => a.status === 'approved').length;
+            
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            
+            applications.forEach(app => {
+                if (app.status === 'pending') {
+                    let appDiv = document.createElement('div');
+                    appDiv.className = `app-request pending`;
+                    appDiv.innerHTML = `
+                        <div class="app-type">${app.type.toUpperCase()}</div>
+                        <div class="app-user">${app.user}</div>
+                        <div>${app.rank} | ${app.dept}</div>
+                        <div style="color: #999; font-size: 12px;">${app.time}</div>
+                        <div class="app-actions">
+                            <button class="app-btn approve" onclick="handleApplication(${app.id}, 'approve')">✓ Одобрить</button>
+                            <button class="app-btn reject" onclick="handleApplication(${app.id}, 'reject')">✗ Отклонить</button>
+                        </div>
+                    `;
+                    queue.appendChild(appDiv);
+                }
+            });
+            
+            // Обновляем список админов
+            let adminList = document.getElementById('adminList');
+            adminList.innerHTML = '';
+            admins.forEach(admin => {
+                adminList.innerHTML += `
+                    <div class="admin-item">
+                        <span>${admin}</span>
+                        <span style="color: #8b0000;">${admin === 'Artem_Suguru' ? 'Главный' : 'Админ'}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Обработка заявки админом
+        function handleApplication(id, action) {
+            let app = applications.find(a => a.id === id);
+            if (app) {
+                app.status = action === 'approve' ? 'approved' : 'rejected';
+                updateAdminDisplay();
+                alert(`Заявка ${action === 'approve' ? 'одобрена' : 'отклонена'}`);
             }
         }
 
         // Добавить админа
         function addAdmin() {
             let newAdminId = document.getElementById('newAdminId').value.trim();
-            
-            if (newAdminId === '') {
+            if (!newAdminId) {
                 alert('Введите Telegram ID');
                 return;
             }
@@ -928,24 +1079,9 @@
                 admins.push(newAdminId);
             }
 
-            updateAdminList();
+            updateAdminDisplay();
             document.getElementById('newAdminId').value = '';
             alert(`Пользователь ${newAdminId} назначен администратором`);
-        }
-
-        // Обновить список админов
-        function updateAdminList() {
-            let adminListDiv = document.getElementById('adminList');
-            adminListDiv.innerHTML = '';
-            
-            admins.forEach(admin => {
-                adminListDiv.innerHTML += `
-                    <div class="admin-item">
-                        <span>${admin}</span>
-                        <span style="color: #8b0000;">${admin === 'Artem_Suguru' ? 'Главный' : 'Админ'}</span>
-                    </div>
-                `;
-            });
         }
 
         // Выход
@@ -954,11 +1090,7 @@
             document.getElementById('profilePage').classList.remove('active');
             document.getElementById('loginPage').classList.add('active');
             document.getElementById('loginId').value = '';
-            
-            // Скрываем все меню
-            document.getElementById('applicationsMenu').style.display = 'none';
-            document.getElementById('applicationForms').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('headerAdminBadge').style.display = 'none';
         }
 
         // Обновление времени
