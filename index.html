@@ -227,6 +227,7 @@
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
+            position: relative;
         }
 
         .world-btn.active {
@@ -235,7 +236,17 @@
             transform: scale(1.05);
         }
 
-        .world-btn:hover { transform: translateY(-2px); }
+        .world-btn.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .world-btn:hover:not(.locked) { transform: translateY(-2px); }
+        .world-lock-info {
+            font-size: 10px;
+            color: #ff8888;
+            margin-top: 5px;
+        }
 
         .boost-timer {
             background: rgba(0,0,0,0.5);
@@ -513,7 +524,7 @@
             const locations = [];
             for (let i = 1; i <= 99; i++) {
                 let multiplier = 1 + (i - 1) * 0.05;
-                let unlockCost = Math.floor(500 * Math.pow(1.1, i - 1));
+                let unlockCost = Math.floor(500 * Math.pow(1.08, i - 1));
                 locations.push({
                     id: i,
                     name: `Локация ${i}`,
@@ -582,7 +593,6 @@
                 this.activeSlots = 1;
                 this.maxSlots = 99;
                 this.slotPets = [null];
-                this.slotPrices = [0, 1000, 5000, 25000, 100000, 500000, 2500000, 10000000, 50000000, 100000000];
                 
                 // Upgrades
                 this.upgrades = [
@@ -646,7 +656,7 @@
                     this.showRandomEffect(`💎 +${diamondsEarned}💎`, event.clientX, event.clientY, '#ff88ff');
                 }
                 
-                // Шанс 10% на критический удар (появляется рядом)
+                // Шанс 10% на критический удар
                 const isCrit = Math.random() < 0.1;
                 if (isCrit) {
                     earned *= 2;
@@ -705,16 +715,64 @@
             
             assignPetToSlot(slotIndex, pet) {
                 if (slotIndex < this.activeSlots) {
+                    // Проверяем, не занят ли уже этот питомец в другом слоте
+                    for (let i = 0; i < this.activeSlots; i++) {
+                        if (this.slotPets[i] && this.slotPets[i].id === pet.id) {
+                            this.showMessage(`❌ Питомец уже в слоте ${i + 1}!`);
+                            return false;
+                        }
+                    }
                     this.slotPets[slotIndex] = pet;
                     this.renderSlots();
+                    this.updateClickPower();
                     this.saveGame();
+                    return true;
+                }
+                return false;
+            }
+            
+            removePetFromSlot(slotIndex) {
+                this.slotPets[slotIndex] = null;
+                this.renderSlots();
+                this.updateClickPower();
+                this.saveGame();
+            }
+            
+            // НОВАЯ ФУНКЦИЯ - найти первый свободный слот
+            findEmptySlot() {
+                for (let i = 0; i < this.activeSlots; i++) {
+                    if (!this.slotPets[i]) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            
+            // ИСПРАВЛЕНО: при нажатии на питомца - он НАЗНАЧАЕТСЯ в слот, а не убирается
+            selectPet(pet) {
+                // Проверяем, не занят ли питомец уже в каком-то слоте
+                for (let i = 0; i < this.activeSlots; i++) {
+                    if (this.slotPets[i] && this.slotPets[i].id === pet.id) {
+                        this.showMessage(`❌ Питомец уже в слоте ${i + 1}!`);
+                        return;
+                    }
+                }
+                
+                // Ищем свободный слот
+                const emptySlot = this.findEmptySlot();
+                if (emptySlot !== -1) {
+                    this.assignPetToSlot(emptySlot, pet);
+                    this.showMessage(`✅ ${pet.name} назначен в слот ${emptySlot + 1}!`);
+                } else {
+                    this.showMessage("❌ Нет свободных слотов! Купите больше слотов за алмазы!");
                 }
             }
             
             changeLocation(delta) {
                 const newLocation = this.currentLocation + delta;
-                if (newLocation >= 0 && newLocation < this.worlds[this.currentWorld].locations.length) {
-                    const location = this.worlds[this.currentWorld].locations[newLocation];
+                const locations = this.worlds[this.currentWorld].locations;
+                if (newLocation >= 0 && newLocation < locations.length) {
+                    const location = locations[newLocation];
                     if (location.unlocked) {
                         this.currentLocation = newLocation;
                         this.renderLocation();
@@ -731,9 +789,28 @@
                             this.updateUI();
                             this.saveGame();
                             this.showMessage(`🔓 Открыта ${location.name}! Множитель: x${location.multiplier.toFixed(2)}`);
+                            
+                            // Проверяем, все ли локации открыты в этом мире
+                            this.checkAllLocationsUnlocked();
                         } else {
                             this.showMessage(`❌ Нужно ${this.formatNumber(location.unlockCost)} монет для открытия!`);
                         }
+                    }
+                }
+            }
+            
+            // НОВАЯ ФУНКЦИЯ: проверка, все ли 99 локаций открыты
+            checkAllLocationsUnlocked() {
+                const currentWorldData = this.worlds[this.currentWorld];
+                const allUnlocked = currentWorldData.locations.every(loc => loc.unlocked === true);
+                
+                if (allUnlocked && this.currentWorld + 1 < this.worlds.length) {
+                    const nextWorld = this.worlds[this.currentWorld + 1];
+                    if (!nextWorld.unlocked) {
+                        nextWorld.unlocked = true;
+                        this.showMessage(`🎉 ВСЕ 99 ЛОКАЦИЙ ОТКРЫТЫ! 🌍 ОТКРЫТ НОВЫЙ МИР: ${nextWorld.name}! 🎉`);
+                        this.renderWorlds();
+                        this.saveGame();
                     }
                 }
             }
@@ -750,34 +827,15 @@
                 this.pets.push(newPet);
                 
                 // Автоматически назначить в пустой слот
-                for (let i = 0; i < this.activeSlots; i++) {
-                    if (!this.slotPets[i]) {
-                        this.assignPetToSlot(i, newPet);
-                        break;
-                    }
+                const emptySlot = this.findEmptySlot();
+                if (emptySlot !== -1) {
+                    this.assignPetToSlot(emptySlot, newPet);
                 }
                 
                 this.showMessage(`🎉 Вы получили ${newPet.name}! Сила: ${newPet.power} 🎉`);
                 this.renderPets();
                 this.renderSlots();
                 this.updateUI();
-                this.saveGame();
-            }
-            
-            selectPet(pet) {
-                // Найти первый пустой слот и назначить
-                for (let i = 0; i < this.activeSlots; i++) {
-                    if (!this.slotPets[i]) {
-                        this.assignPetToSlot(i, pet);
-                        return;
-                    }
-                }
-                this.showMessage("❌ Нет свободных слотов! Купите больше слотов за алмазы!");
-            }
-            
-            removePetFromSlot(slotIndex) {
-                this.slotPets[slotIndex] = null;
-                this.renderSlots();
                 this.saveGame();
             }
             
@@ -789,7 +847,7 @@
                 // Проверить, не в слоте ли питомец
                 for (let i = 0; i < this.activeSlots; i++) {
                     if (this.slotPets[i] && this.slotPets[i].id === petId) {
-                        this.showMessage("❌ Сначала уберите питомца из слота!");
+                        this.showMessage("❌ Сначала уберите питомца из слота (нажмите ✖ Убрать)!");
                         return;
                     }
                 }
@@ -864,6 +922,17 @@
             
             unlockWorld(worldIndex) {
                 const world = this.worlds[worldIndex];
+                // Проверяем, что предыдущий мир полностью пройден (все 99 локаций)
+                const prevWorld = this.worlds[worldIndex - 1];
+                if (worldIndex > 0 && prevWorld) {
+                    const allPrevLocationsUnlocked = prevWorld.locations.every(loc => loc.unlocked === true);
+                    if (!allPrevLocationsUnlocked) {
+                        const unlockedCount = prevWorld.locations.filter(loc => loc.unlocked).length;
+                        this.showMessage(`❌ Нужно открыть все 99 локаций в мире "${prevWorld.name}"! (${unlockedCount}/99)`);
+                        return;
+                    }
+                }
+                
                 if (!world.unlocked && this.coins >= world.cost) {
                     this.coins -= world.cost;
                     world.unlocked = true;
@@ -934,9 +1003,36 @@
                 container.innerHTML = '';
                 this.worlds.forEach((world, index) => {
                     const btn = document.createElement('div');
-                    btn.className = `world-btn ${index === this.currentWorld ? 'active' : ''}`;
-                    btn.innerHTML = `<div style="font-size: 24px;">${world.icon}</div><div style="font-size: 11px;">${world.name}</div><div style="font-size: 10px;">x${world.multiplier}</div>${!world.unlocked ? `<div style="font-size: 10px;">💰${this.formatNumber(world.cost)}</div>` : ''}`;
-                    btn.onclick = () => world.unlocked ? this.changeWorld(index) : this.unlockWorld(index);
+                    let canUnlock = true;
+                    let lockReason = '';
+                    
+                    if (index > 0) {
+                        const prevWorld = this.worlds[index - 1];
+                        const allPrevUnlocked = prevWorld.locations.every(loc => loc.unlocked === true);
+                        if (!allPrevUnlocked && !world.unlocked) {
+                            canUnlock = false;
+                            const unlockedCount = prevWorld.locations.filter(loc => loc.unlocked).length;
+                            lockReason = `🔒 Нужно ${99 - unlockedCount} локаций`;
+                        }
+                    }
+                    
+                    btn.className = `world-btn ${index === this.currentWorld ? 'active' : ''} ${!world.unlocked && !canUnlock ? 'locked' : ''}`;
+                    btn.innerHTML = `
+                        <div style="font-size: 24px;">${world.icon}</div>
+                        <div style="font-size: 11px;">${world.name}</div>
+                        <div style="font-size: 10px;">x${world.multiplier}</div>
+                        ${!world.unlocked ? `<div style="font-size: 10px;">💰${this.formatNumber(world.cost)}</div>` : ''}
+                        ${!world.unlocked && lockReason ? `<div class="world-lock-info">${lockReason}</div>` : ''}
+                    `;
+                    btn.onclick = () => {
+                        if (world.unlocked) {
+                            this.changeWorld(index);
+                        } else if (canUnlock) {
+                            this.unlockWorld(index);
+                        } else {
+                            this.showMessage(`❌ Сначала откройте все 99 локаций в мире "${this.worlds[index - 1].name}"!`);
+                        }
+                    };
                     container.appendChild(btn);
                 });
             }
@@ -988,7 +1084,11 @@
                         <div class="pet-card-rarity" style="background: ${rarityColors[pet.rarity] || '#95a5a6'}">${pet.rarity}</div>
                         ${!isActive ? `<button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${this.formatNumber(Math.floor(pet.power * 10))}💰</button>` : '<div style="font-size: 10px; color:#ffd700;">✅ В слоте</div>'}
                     `;
-                    card.onclick = (e) => { if(e.target !== card.querySelector('.sell-btn')) this.selectPet(pet); };
+                    card.onclick = (e) => { 
+                        if(e.target !== card.querySelector('.sell-btn')) {
+                            this.selectPet(pet);
+                        }
+                    };
                     container.appendChild(card);
                 });
                 document.getElementById('totalPets').textContent = this.pets.length;
@@ -1072,11 +1172,11 @@
                     upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
                     autoClickerLevel: this.autoClickerLevel, boostActive: this.boostActive, boostEndTime: this.boostEndTime
                 };
-                localStorage.setItem('petSimulatorMega', JSON.stringify(save));
+                localStorage.setItem('petSimulatorMegaFixed', JSON.stringify(save));
             }
             
             loadGame() {
-                const save = localStorage.getItem('petSimulatorMega');
+                const save = localStorage.getItem('petSimulatorMegaFixed');
                 if (save) {
                     const data = JSON.parse(save);
                     this.coins = data.coins; this.gems = data.gems; this.clickPower = data.clickPower;
