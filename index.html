@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Pet Simulator 99 | Админ панель</title>
+    <title>Pet Simulator 99 | Huge Update + Слоты</title>
     <style>
         * {
             margin: 0;
@@ -33,7 +33,49 @@
             transition: all 0.3s ease;
         }
 
-        /* Admin Panel */
+        /* Slots Header */
+        .slots-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .collapse-btn {
+            background: linear-gradient(135deg, #ffd700, #ff8800);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .collapse-btn.collapsed {
+            transform: rotate(180deg);
+        }
+
+        .slots-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .slots-grid.collapsed {
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .slots-grid:not(.collapsed) {
+            max-height: 1000px;
+        }
+
         .admin-panel {
             background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(30,0,30,0.9));
             border-radius: 20px;
@@ -47,64 +89,13 @@
             display: block;
         }
 
-        .admin-title {
-            color: #ff3366;
-            font-size: 20px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .admin-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .admin-input {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #ff3366;
-            border-radius: 12px;
-            padding: 10px;
-            color: white;
-            font-size: 14px;
-        }
-
-        .admin-select {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #ff3366;
-            border-radius: 12px;
-            padding: 10px;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .admin-select option {
-            background: #1a0f1c;
-        }
-
-        .admin-btn {
-            background: linear-gradient(135deg, #ff3366, #ff88ff);
-            border: none;
-            padding: 10px;
-            border-radius: 12px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .admin-btn:hover {
-            transform: scale(1.02);
-        }
-
         .nick-section {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             align-items: center;
             justify-content: flex-end;
+            flex-wrap: wrap;
         }
 
         .nick-input {
@@ -201,14 +192,6 @@
             margin-bottom: 20px;
         }
 
-        .slots-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-            justify-content: center;
-        }
-
         .slot-card {
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
             border: 2px solid rgba(255,215,0,0.3);
@@ -303,7 +286,6 @@
         .pet-emoji-small { font-size: 28px; }
         .chance-badge { background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 20px; font-size: 11px; color: #ffd700; }
         .huge-badge { background: linear-gradient(135deg, #ff3366, #ff88ff); color: white; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-left: 8px; }
-        .power-badge { background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 12px; font-size: 10px; color: #ffaa66; }
 
         .pets-stats {
             display: flex;
@@ -429,13 +411,10 @@
 
         .egg-opening-animation {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 80px;
+            pointer-events: none;
+            font-size: 60px;
             animation: eggShake 0.5s ease-in-out, eggPop 0.3s ease-out 0.5s forwards;
             z-index: 2000;
-            pointer-events: none;
         }
 
         @keyframes eggShake {
@@ -469,22 +448,22 @@
 
         <!-- Админ панель -->
         <div class="admin-panel" id="adminPanel">
-            <div class="admin-title">👑 АДМИН ПАНЕЛЬ 👑</div>
-            <div class="admin-controls">
+            <div class="admin-title" style="color: #ff3366; font-size: 20px; margin-bottom: 15px; text-align: center;">👑 АДМИН ПАНЕЛЬ 👑</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                 <div>
                     <div style="color: #ffd700; margin-bottom: 5px;">💰 Монеты</div>
-                    <input type="number" class="admin-input" id="adminCoins" placeholder="Количество">
-                    <button class="admin-btn" id="giveCoinsBtn" style="margin-top: 5px;">Выдать монеты</button>
+                    <input type="number" class="admin-input" id="adminCoins" placeholder="Количество" style="background: rgba(255,255,255,0.1); border: 1px solid #ff3366; border-radius: 12px; padding: 10px; color: white; width: 100%;">
+                    <button class="admin-btn" id="giveCoinsBtn" style="background: linear-gradient(135deg, #ff3366, #ff88ff); border: none; padding: 10px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%;">Выдать монеты</button>
                 </div>
                 <div>
                     <div style="color: #ffd700; margin-bottom: 5px;">💎 Алмазы</div>
-                    <input type="number" class="admin-input" id="adminGems" placeholder="Количество">
-                    <button class="admin-btn" id="giveGemsBtn" style="margin-top: 5px;">Выдать алмазы</button>
+                    <input type="number" class="admin-input" id="adminGems" placeholder="Количество" style="background: rgba(255,255,255,0.1); border: 1px solid #ff3366; border-radius: 12px; padding: 10px; color: white; width: 100%;">
+                    <button class="admin-btn" id="giveGemsBtn" style="background: linear-gradient(135deg, #ff3366, #ff88ff); border: none; padding: 10px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%;">Выдать алмазы</button>
                 </div>
                 <div>
                     <div style="color: #ffd700; margin-bottom: 5px;">🐕 Выдать питомца</div>
-                    <select class="admin-select" id="adminPetSelect"></select>
-                    <button class="admin-btn" id="givePetBtn" style="margin-top: 5px;">Выдать питомца</button>
+                    <select class="admin-select" id="adminPetSelect" style="background: rgba(255,255,255,0.1); border: 1px solid #ff3366; border-radius: 12px; padding: 10px; color: white; width: 100%;"></select>
+                    <button class="admin-btn" id="givePetBtn" style="background: linear-gradient(135deg, #ff3366, #ff88ff); border: none; padding: 10px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%;">Выдать питомца</button>
                 </div>
             </div>
         </div>
@@ -506,9 +485,12 @@
                 </div>
 
                 <div class="slots-section">
-                    <h3 style="color: #ffd700;">📦 Активные питомцы</h3>
+                    <div class="slots-header">
+                        <h3 style="color: #ffd700;">📦 Активные питомцы</h3>
+                        <button class="collapse-btn" id="collapseSlotsBtn">▼</button>
+                    </div>
                     <div class="slots-grid" id="slotsContainer"></div>
-                    <button class="btn" id="buySlotBtn">🔓 Купить слот</button>
+                    <button class="btn" id="buySlotBtn">🔓 Купить слот (5.000💎)</button>
                 </div>
 
                 <div class="location-selector">
@@ -573,36 +555,19 @@
     </div>
 
     <script>
-        // ВСЕ ЖИВОТНЫЕ ИЗ ЭМОДЗИ
+        // ВСЕ ЖИВОТНЫЕ
         const ALL_ANIMALS = {
-            common: [
-                { emoji: "🐣", name: "Цыпленок" }, { emoji: "🐥", name: "Утенок" }, { emoji: "🐦", name: "Птичка" },
-                { emoji: "🐤", name: "Птенец" }, { emoji: "🐧", name: "Пингвин" }, { emoji: "🕊️", name: "Голубь" }
-            ],
-            rare: [
-                { emoji: "🐱", name: "Котенок" }, { emoji: "🐶", name: "Щенок" }, { emoji: "🐭", name: "Мышонок" },
-                { emoji: "🐹", name: "Хомяк" }, { emoji: "🐰", name: "Зайчик" }, { emoji: "🦊", name: "Лисенок" }
-            ],
-            epic: [
-                { emoji: "🦄", name: "Единорог" }, { emoji: "🐉", name: "Дракон" }, { emoji: "🐲", name: "Восточный дракон" },
-                { emoji: "🦅", name: "Орел" }, { emoji: "🐺", name: "Волк" }, { emoji: "🐘", name: "Слон" }
-            ],
-            legendary: [
-                { emoji: "🐉🔥", name: "Огненный дракон" }, { emoji: "🐉❄️", name: "Ледяной дракон" }, { emoji: "🐉⚡", name: "Громовой дракон" },
-                { emoji: "🦄✨", name: "Звездный единорог" }, { emoji: "🐺🌙", name: "Лунный волк" }, { emoji: "🦅🔥", name: "Феникс" }
-            ],
-            mythic: [
-                { emoji: "👑🐉", name: "Императорский дракон" }, { emoji: "⭐🦄", name: "Космический единорог" }, { emoji: "🌌🐺", name: "Звездный волк" },
-                { emoji: "🔥🦅", name: "Вечный феникс" }, { emoji: "💀🐉", name: "Некродракон" }, { emoji: "⚡🐉", name: "Бог грома" }
-            ]
+            common: [{ emoji: "🐣", name: "Цыпленок" }, { emoji: "🐥", name: "Утенок" }, { emoji: "🐦", name: "Птичка" }],
+            rare: [{ emoji: "🐱", name: "Котенок" }, { emoji: "🐶", name: "Щенок" }, { emoji: "🦊", name: "Лисенок" }],
+            epic: [{ emoji: "🦄", name: "Единорог" }, { emoji: "🐉", name: "Дракон" }, { emoji: "🐺", name: "Волк" }],
+            legendary: [{ emoji: "🐉🔥", name: "Огненный дракон" }, { emoji: "🐉❄️", name: "Ледяной дракон" }, { emoji: "🦅🔥", name: "Феникс" }],
+            mythic: [{ emoji: "👑🐉", name: "Императорский дракон" }, { emoji: "⭐🦄", name: "Космический единорог" }, { emoji: "⚡🐉", name: "Бог грома" }]
         };
 
         const HUGE_PETS = [
             { emoji: "🌟🐉", name: "Huge Космический Дракон", powerMultiplier: 130 },
             { emoji: "🔥🐦‍🔥", name: "Huge Бессмертный Феникс", powerMultiplier: 120 },
-            { emoji: "💎🦄", name: "Huge Алмазный Единорог", powerMultiplier: 110 },
-            { emoji: "⚡🐺", name: "Huge Громовой Волк", powerMultiplier: 105 },
-            { emoji: "🌟🐉", name: "Huge Золотой Дракон", powerMultiplier: 100 }
+            { emoji: "💎🦄", name: "Huge Алмазный Единорог", powerMultiplier: 110 }
         ];
 
         function generateLocations(worldMultiplier) {
@@ -610,59 +575,33 @@
             for (let i = 1; i <= 99; i++) {
                 let multiplier = 1 + (i - 1) * 0.05;
                 let unlockCost = Math.floor(5000 * Math.pow(1.08, i - 1) * worldMultiplier);
-                locations.push({
-                    id: i,
-                    name: `Локация ${i}`,
-                    multiplier: multiplier,
-                    unlockCost: unlockCost,
-                    unlocked: i === 1
-                });
+                locations.push({ id: i, name: `Локация ${i}`, multiplier: multiplier, unlockCost: unlockCost, unlocked: i === 1 });
             }
             return locations;
         }
 
-        function generateEggPets(eggType, locationId, worldMultiplier, worldTheme) {
+        function generateEggPets(eggType, locationId, worldMultiplier) {
             const basePower = Math.floor(locationId * worldMultiplier);
-            let powerMultiplier = 1;
-            
-            switch(eggType) {
-                case 'common': powerMultiplier = 1; break;
-                case 'rare': powerMultiplier = 3; break;
-                case 'epic': powerMultiplier = 8; break;
-                case 'legendary': powerMultiplier = 20; break;
-                case 'mythic': powerMultiplier = 50; break;
-            }
-            
+            let powerMultiplier = { common: 1, rare: 3, epic: 8, legendary: 20, mythic: 50 }[eggType] || 1;
             const pets = [];
             const animalList = ALL_ANIMALS[eggType] || ALL_ANIMALS.common;
             const chances = [35, 28, 22, 12, 3];
             
             for (let i = 0; i < 5; i++) {
-                const animal = animalList[Math.floor(Math.random() * animalList.length)];
-                let power = Math.floor(basePower * powerMultiplier * (i + 1));
-                if (power < 1) power = 1;
-                
+                const animal = animalList[i % animalList.length];
                 pets.push({
-                    emoji: animal.emoji,
-                    name: animal.name,
-                    power: power,
-                    chance: chances[i],
-                    isHuge: false
+                    emoji: animal.emoji, name: animal.name,
+                    power: Math.max(1, Math.floor(basePower * powerMultiplier * (i + 1))),
+                    chance: chances[i], isHuge: false
                 });
             }
             
-            const hugeIndex = (locationId + eggType.length) % HUGE_PETS.length;
-            const hugePet = HUGE_PETS[hugeIndex];
-            const hugePower = Math.floor(basePower * powerMultiplier * 50);
-            
+            const hugePet = HUGE_PETS[locationId % HUGE_PETS.length];
             pets.push({
-                emoji: hugePet.emoji,
-                name: hugePet.name,
-                power: hugePower,
-                chance: 0.2,
-                isHuge: true
+                emoji: hugePet.emoji, name: hugePet.name,
+                power: Math.floor(basePower * powerMultiplier * 50),
+                chance: 0.5, isHuge: true
             });
-            
             return pets;
         }
 
@@ -673,27 +612,23 @@
                 this.coins = 50000;
                 this.gems = 500;
                 this.clickPower = 1;
-                this.totalClicks = 0;
                 this.multiplier = 1;
                 this.boostActive = false;
                 this.boostEndTime = 0;
                 this.bulkAmount = 1;
                 this.prestigeLevel = 0;
                 this.prestigeBonus = 1;
+                this.slotsCollapsed = false;
                 
                 this.currentWorld = 0;
                 this.worlds = [
-                    { name: "🌳 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌳", theme: "forest", locations: [], currentLocation: 0 },
-                    { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 50000, icon: "🔥", theme: "volcano", locations: [], currentLocation: 0 },
-                    { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 200000, icon: "❄️", theme: "ice", locations: [], currentLocation: 0 },
-                    { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 800000, icon: "⚡", theme: "sky", locations: [], currentLocation: 0 },
-                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 2500000, icon: "💀", theme: "hell", locations: [], currentLocation: 0 },
-                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 10000000, icon: "👑", theme: "paradise", locations: [], currentLocation: 0 }
+                    { name: "🌳 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌳", theme: "forest", locations: generateLocations(1), currentLocation: 0 },
+                    { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 50000, icon: "🔥", theme: "volcano", locations: generateLocations(2), currentLocation: 0 },
+                    { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 200000, icon: "❄️", theme: "ice", locations: generateLocations(3), currentLocation: 0 },
+                    { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 800000, icon: "⚡", theme: "sky", locations: generateLocations(5), currentLocation: 0 },
+                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 2500000, icon: "💀", theme: "hell", locations: generateLocations(8), currentLocation: 0 },
+                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 10000000, icon: "👑", theme: "paradise", locations: generateLocations(12), currentLocation: 0 }
                 ];
-                
-                this.worlds.forEach(world => {
-                    world.locations = generateLocations(world.multiplier);
-                });
                 
                 this.pets = [];
                 this.activeSlots = 1;
@@ -708,7 +643,6 @@
                 
                 this.autoClickerLevel = 0;
                 this.autoInterval = null;
-                
                 this.init();
             }
             
@@ -726,79 +660,43 @@
                 return false;
             }
             
-            // Получить всех питомцев для админ панели (сортировка от сильного к слабому)
             getAllPetsForAdmin() {
                 const allPets = [];
-                // Добавляем Huge питомцев
-                HUGE_PETS.forEach(pet => {
-                    allPets.push({
-                        emoji: pet.emoji,
-                        name: pet.name,
-                        power: 1000000,
-                        isHuge: true,
-                        rarity: 'huge'
-                    });
-                });
-                // Добавляем мифических
-                ALL_ANIMALS.mythic.forEach(pet => {
-                    allPets.push({
-                        emoji: pet.emoji,
-                        name: pet.name,
-                        power: 50000,
-                        isHuge: false,
-                        rarity: 'mythic'
-                    });
-                });
-                // Добавляем легендарных
-                ALL_ANIMALS.legendary.forEach(pet => {
-                    allPets.push({
-                        emoji: pet.emoji,
-                        name: pet.name,
-                        power: 20000,
-                        isHuge: false,
-                        rarity: 'legendary'
-                    });
-                });
-                // Добавляем эпических
-                ALL_ANIMALS.epic.forEach(pet => {
-                    allPets.push({
-                        emoji: pet.emoji,
-                        name: pet.name,
-                        power: 5000,
-                        isHuge: false,
-                        rarity: 'epic'
-                    });
-                });
-                // Добавляем редких
-                ALL_ANIMALS.rare.forEach(pet => {
-                    allPets.push({
-                        emoji: pet.emoji,
-                        name: pet.name,
-                        power: 500,
-                        isHuge: false,
-                        rarity: 'rare'
-                    });
-                });
-                // Добавляем обычных
-                ALL_ANIMALS.common.forEach(pet => {
-                    allPets.push({
-                        emoji: pet.emoji,
-                        name: pet.name,
-                        power: 50,
-                        isHuge: false,
-                        rarity: 'common'
-                    });
-                });
-                // Сортируем по силе (от сильного к слабому)
+                HUGE_PETS.forEach(p => allPets.push({ emoji: p.emoji, name: p.name, power: 1000000, isHuge: true, rarity: 'huge' }));
+                ALL_ANIMALS.mythic.forEach(p => allPets.push({ emoji: p.emoji, name: p.name, power: 50000, isHuge: false, rarity: 'mythic' }));
+                ALL_ANIMALS.legendary.forEach(p => allPets.push({ emoji: p.emoji, name: p.name, power: 20000, isHuge: false, rarity: 'legendary' }));
+                ALL_ANIMALS.epic.forEach(p => allPets.push({ emoji: p.emoji, name: p.name, power: 5000, isHuge: false, rarity: 'epic' }));
+                ALL_ANIMALS.rare.forEach(p => allPets.push({ emoji: p.emoji, name: p.name, power: 500, isHuge: false, rarity: 'rare' }));
+                ALL_ANIMALS.common.forEach(p => allPets.push({ emoji: p.emoji, name: p.name, power: 50, isHuge: false, rarity: 'common' }));
                 return allPets.sort((a, b) => b.power - a.power);
+            }
+            
+            showMultipleEggAnimations(count, eggEmoji, callback) {
+                let completed = 0;
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * (window.innerWidth - 200) + 100;
+                        const y = Math.random() * (window.innerHeight - 200) + 100;
+                        const anim = document.createElement('div');
+                        anim.className = 'egg-opening-animation';
+                        anim.textContent = eggEmoji;
+                        anim.style.left = `${x}px`;
+                        anim.style.top = `${y}px`;
+                        anim.style.transform = 'translate(-50%, -50%)';
+                        document.body.appendChild(anim);
+                        setTimeout(() => anim.remove(), 800);
+                        setTimeout(() => {
+                            completed++;
+                            if (completed === count && callback) callback();
+                        }, 800);
+                    }, i * 200);
+                }
             }
             
             changeNick(newNick) {
                 if (newNick && newNick.trim()) {
                     this.playerName = newNick.trim();
                     document.getElementById('playerNameDisplay').innerHTML = this.playerName;
-                    
-                    // Проверка на админа
                     if (this.playerName.toLowerCase() === 'test') {
                         this.isAdmin = true;
                         document.getElementById('adminPanelBtn').style.display = 'inline-block';
@@ -808,7 +706,6 @@
                     } else {
                         this.isAdmin = false;
                         document.getElementById('adminPanelBtn').style.display = 'none';
-                        document.getElementById('playerNameDisplay').innerHTML = this.playerName;
                         document.getElementById('adminPanel').classList.remove('show');
                     }
                     this.saveGame();
@@ -818,8 +715,7 @@
             initAdminPanel() {
                 const select = document.getElementById('adminPetSelect');
                 select.innerHTML = '';
-                const allPets = this.getAllPetsForAdmin();
-                allPets.forEach(pet => {
+                this.getAllPetsForAdmin().forEach(pet => {
                     const option = document.createElement('option');
                     option.value = JSON.stringify(pet);
                     option.textContent = `${pet.emoji} ${pet.name} (${pet.rarity}) - ⚡${this.formatNumber(pet.power)}`;
@@ -827,97 +723,55 @@
                 });
             }
             
-            giveAdminCoins(amount) {
-                if (!this.isAdmin) return;
-                this.coins += amount;
-                this.updateUI();
-                this.saveGame();
-                this.showMessage(`💰 Выдано ${this.formatNumber(amount)} монет!`);
-            }
-            
-            giveAdminGems(amount) {
-                if (!this.isAdmin) return;
-                this.gems += amount;
-                this.updateUI();
-                this.saveGame();
-                this.showMessage(`💎 Выдано ${this.formatNumber(amount)} алмазов!`);
-            }
-            
+            giveAdminCoins(amount) { if (!this.isAdmin) return; this.coins += amount; this.updateUI(); this.saveGame(); this.showMessage(`💰 Выдано ${this.formatNumber(amount)} монет!`); }
+            giveAdminGems(amount) { if (!this.isAdmin) return; this.gems += amount; this.updateUI(); this.saveGame(); this.showMessage(`💎 Выдано ${this.formatNumber(amount)} алмазов!`); }
             giveAdminPet(petData) {
                 if (!this.isAdmin) return;
                 const pet = JSON.parse(petData);
-                const newPet = {
-                    id: Date.now() + Math.random(),
-                    emoji: pet.emoji,
-                    name: pet.name,
-                    power: pet.power,
-                    rarity: pet.rarity,
-                    isHuge: pet.isHuge || false
-                };
+                const newPet = { id: Date.now() + Math.random(), emoji: pet.emoji, name: pet.name, power: pet.power, rarity: pet.rarity, isHuge: pet.isHuge || false };
                 this.pets.push(newPet);
                 const emptySlot = this.findEmptySlot();
-                if (emptySlot !== -1) {
-                    this.assignPetToSlot(emptySlot, newPet);
-                }
-                this.renderPets();
-                this.renderSlots();
-                this.updateUI();
-                this.saveGame();
+                if (emptySlot !== -1) this.assignPetToSlot(emptySlot, newPet);
+                this.renderPets(); this.renderSlots(); this.updateUI(); this.saveGame();
                 this.showMessage(`🎉 Выдан питомец: ${pet.name}!`);
             }
             
-            toggleAdminPanel() {
-                if (!this.isAdmin) return;
-                const panel = document.getElementById('adminPanel');
-                panel.classList.toggle('show');
+            toggleAdminPanel() { if (!this.isAdmin) return; document.getElementById('adminPanel').classList.toggle('show'); }
+            
+            toggleSlots() {
+                this.slotsCollapsed = !this.slotsCollapsed;
+                const container = document.getElementById('slotsContainer');
+                const btn = document.getElementById('collapseSlotsBtn');
+                if (this.slotsCollapsed) {
+                    container.classList.add('collapsed');
+                    btn.classList.add('collapsed');
+                    btn.textContent = '▲';
+                } else {
+                    container.classList.remove('collapsed');
+                    btn.classList.remove('collapsed');
+                    btn.textContent = '▼';
+                }
             }
             
             equipStrongestPets() {
                 const sortedPets = [...this.pets].sort((a, b) => b.power - a.power);
-                for (let i = 0; i < this.activeSlots; i++) {
-                    this.slotPets[i] = null;
-                }
-                for (let i = 0; i < Math.min(sortedPets.length, this.activeSlots); i++) {
-                    this.slotPets[i] = sortedPets[i];
-                }
-                this.renderSlots();
-                this.renderPets();
-                this.updateClickPower();
-                this.updateUI();
-                this.saveGame();
+                for (let i = 0; i < this.activeSlots; i++) this.slotPets[i] = null;
+                for (let i = 0; i < Math.min(sortedPets.length, this.activeSlots); i++) this.slotPets[i] = sortedPets[i];
+                this.renderSlots(); this.renderPets(); this.updateClickPower(); this.updateUI(); this.saveGame();
                 this.showMessage(`⚡ Одеты ${Math.min(sortedPets.length, this.activeSlots)} самых сильных питомцев!`);
             }
             
             prestige() {
-                const canPrestige = (this.prestigeLevel === 0 && this.currentWorld >= 2) || 
-                                    (this.prestigeLevel === 1 && this.currentWorld >= 5);
-                
+                const canPrestige = (this.prestigeLevel === 0 && this.currentWorld >= 2) || (this.prestigeLevel === 1 && this.currentWorld >= 5);
                 if (!canPrestige) {
-                    if (this.prestigeLevel === 0) {
-                        this.showMessage("❌ Нужно пройти 3-й мир (открыть все локации) для первого перерождения!");
-                    } else if (this.prestigeLevel === 1) {
-                        this.showMessage("❌ Нужно пройти 6-й мир (открыть все локации) для второго перерождения!");
-                    } else {
-                        this.showMessage("❌ Вы уже достигли максимального перерождения!");
-                    }
+                    this.showMessage(this.prestigeLevel === 0 ? "❌ Нужно пройти 3-й мир!" : "❌ Нужно пройти 6-й мир!");
                     return;
                 }
-                
-                const confirmMsg = this.prestigeLevel === 0 ? 
-                    "🌟 ПЕРЕРОЖДЕНИЕ 1 🌟\n\nВы пройдете игру заново, но получите:\n• +50% к силе клика\n• +50% к множителю монет\n• Возможность открывать 4 яйца\n\nВСЕ ПИТОМЦЫ И ПРОГРЕСС БУДУТ СБРОШЕНЫ!\nПродолжить?" :
-                    "🌟 ПЕРЕРОЖДЕНИЕ 2 🌟\n\nВы пройдете игру заново, но получите:\n• +100% к силе клика\n• +100% к множителю монет\n• Возможность открывать 8 яиц\n\nВСЕ ПИТОМЦЫ И ПРОГРЕСС БУДУТ СБРОШЕНЫ!\nПродолжить?";
-                
-                if (confirm(confirmMsg)) {
+                if (confirm(this.prestigeLevel === 0 ? "🌟 ПЕРЕРОЖДЕНИЕ 1 🌟\n\n+50% силы, открытие 4 яиц" : "🌟 ПЕРЕРОЖДЕНИЕ 2 🌟\n\n+100% силы, открытие 8 яиц")) {
                     this.prestigeLevel++;
                     this.prestigeBonus = this.prestigeLevel === 1 ? 1.5 : 2.5;
-                    
-                    this.coins = 50000;
-                    this.gems = 500;
-                    this.clickPower = 1;
-                    this.multiplier = 1;
-                    this.pets = [];
-                    this.slotPets = Array(this.activeSlots).fill(null);
-                    
+                    this.coins = 50000; this.gems = 500; this.clickPower = 1; this.multiplier = 1;
+                    this.pets = []; this.slotPets = Array(this.activeSlots).fill(null);
                     this.currentWorld = 0;
                     this.worlds.forEach((world, idx) => {
                         world.unlocked = idx === 0;
@@ -925,18 +779,11 @@
                         world.currentLocation = 0;
                         if (idx === 0) world.locations[0].unlocked = true;
                     });
-                    
                     this.clickPower = Math.floor(1 * this.prestigeBonus);
                     this.multiplier = 1 * this.prestigeBonus;
-                    
-                    this.renderWorlds();
-                    this.renderLocation();
-                    this.renderEggs();
-                    this.renderPets();
-                    this.renderSlots();
-                    this.updateUI();
-                    this.saveGame();
-                    this.showMessage(`🌟 ПЕРЕРОЖДЕНИЕ ${this.prestigeLevel}! Бонус: +${Math.floor((this.prestigeBonus-1)*100)}% ко всему! 🌟`);
+                    this.renderWorlds(); this.renderLocation(); this.renderEggs(); this.renderPets(); this.renderSlots();
+                    this.updateUI(); this.saveGame();
+                    this.showMessage(`🌟 ПЕРЕРОЖДЕНИЕ ${this.prestigeLevel}! +${Math.floor((this.prestigeBonus-1)*100)}%!`);
                 }
             }
             
@@ -967,11 +814,11 @@
                 document.getElementById('prevLocationBtn').addEventListener('click', () => this.changeLocation(-1));
                 document.getElementById('nextLocationBtn').addEventListener('click', () => this.changeLocation(1));
                 document.getElementById('changeNickBtn').addEventListener('click', () => {
-                    const newNick = document.getElementById('nickInput').value;
-                    this.changeNick(newNick);
+                    this.changeNick(document.getElementById('nickInput').value);
                     document.getElementById('nickInput').value = '';
                 });
                 document.getElementById('adminPanelBtn').addEventListener('click', () => this.toggleAdminPanel());
+                document.getElementById('collapseSlotsBtn').addEventListener('click', () => this.toggleSlots());
                 document.getElementById('giveCoinsBtn').addEventListener('click', () => {
                     const amount = parseInt(document.getElementById('adminCoins').value);
                     if (amount) this.giveAdminCoins(amount);
@@ -992,166 +839,98 @@
                             this.bulkAmount = bulk;
                             document.querySelectorAll('.bulk-btn').forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
-                            this.showMessage(`✅ Режим открытия: ${bulk}x яиц`);
+                            this.showMessage(`✅ Режим: ${bulk}x яиц`);
                         } else {
-                            this.showMessage(`❌ Открытие ${bulk}x яиц доступно только после перерождения!`);
+                            this.showMessage(`❌ Открытие ${bulk}x яиц доступно после перерождения!`);
                         }
                     });
                 });
             }
             
-            canUseBulkAmount(amount) {
-                if (amount === 1) return true;
-                if (amount === 4) return this.prestigeLevel >= 1;
-                if (amount === 8) return this.prestigeLevel >= 2;
-                return false;
-            }
-            
+            canUseBulkAmount(amount) { return amount === 1 || (amount === 4 && this.prestigeLevel >= 1) || (amount === 8 && this.prestigeLevel >= 2); }
             updateBulkUnlock() {
-                const can4x = this.prestigeLevel >= 1;
-                const can8x = this.prestigeLevel >= 2;
-                
                 document.querySelectorAll('.bulk-btn').forEach(btn => {
                     const bulk = parseInt(btn.dataset.bulk);
-                    if (bulk === 4 && !can4x) btn.style.opacity = '0.5';
-                    else if (bulk === 8 && !can8x) btn.style.opacity = '0.5';
-                    else btn.style.opacity = '1';
+                    btn.style.opacity = (bulk === 4 && this.prestigeLevel < 1) || (bulk === 8 && this.prestigeLevel < 2) ? '0.5' : '1';
                 });
-            }
-            
-            showEggAnimation(eggEmoji, callback) {
-                const anim = document.createElement('div');
-                anim.className = 'egg-opening-animation';
-                anim.textContent = eggEmoji;
-                document.body.appendChild(anim);
-                setTimeout(() => {
-                    anim.remove();
-                    if (callback) callback();
-                }, 800);
             }
             
             openEgg(eggData, count = 1) {
                 const totalPrice = eggData.price * count;
-                if (this.coins >= totalPrice) {
-                    this.coins -= totalPrice;
-                } else {
-                    this.showMessage(`❌ Недостаточно монет! Нужно ${this.formatNumber(totalPrice)}`);
+                if (this.coins < totalPrice) {
+                    this.showMessage(`❌ Нужно ${this.formatNumber(totalPrice)} монет!`);
                     return false;
                 }
-                
-                this.showEggAnimation(eggData.icon, () => {
+                this.coins -= totalPrice;
+                this.showMultipleEggAnimations(count, eggData.icon, () => {
+                    let hugeDropped = false;
                     for (let c = 0; c < count; c++) {
                         const roll = Math.random() * 100;
-                        let cumulative = 0;
-                        let selectedPet = null;
-                        
+                        let cumulative = 0, selectedPet = null;
                         for (const pet of eggData.pets) {
                             cumulative += pet.chance;
-                            if (roll <= cumulative) {
-                                selectedPet = { ...pet };
-                                break;
-                            }
+                            if (roll <= cumulative) { selectedPet = { ...pet }; break; }
                         }
-                        
                         if (!selectedPet) selectedPet = { ...eggData.pets[0] };
-                        
+                        if (selectedPet.isHuge) hugeDropped = true;
                         const newPet = {
                             id: Date.now() + Math.random() + c,
-                            emoji: selectedPet.emoji,
-                            name: selectedPet.name,
+                            emoji: selectedPet.emoji, name: selectedPet.name,
                             power: Math.floor(selectedPet.power * (this.prestigeBonus || 1)),
-                            rarity: selectedPet.isHuge ? 'huge' : eggData.type,
-                            isHuge: selectedPet.isHuge || false
+                            rarity: selectedPet.isHuge ? 'huge' : eggData.type, isHuge: selectedPet.isHuge || false
                         };
-                        
                         this.pets.push(newPet);
-                        
                         const emptySlot = this.findEmptySlot();
-                        if (emptySlot !== -1) {
-                            this.assignPetToSlot(emptySlot, newPet);
-                        }
-                        
-                        this.showRandomEffect(`${selectedPet.isHuge ? '🌟 HUGE! 🌟 ' : '🎉'} +${newPet.name} (⚡${this.formatNumber(newPet.power)})`, window.innerWidth/2, window.innerHeight/2, selectedPet.isHuge ? '#ff66cc' : '#ffd700');
+                        if (emptySlot !== -1) this.assignPetToSlot(emptySlot, newPet);
+                        this.showRandomEffect(`${selectedPet.isHuge ? '🌟 HUGE! 🌟 ' : '🎉'} +${newPet.name}`, window.innerWidth/2, window.innerHeight/2, selectedPet.isHuge ? '#ff66cc' : '#ffd700');
                     }
-                    
+                    if (hugeDropped) this.showMessage(`🌟 ВЫПАЛ HUGE ПИТОМЕЦ! 🌟`);
                     this.showMessage(`🎉 Открыто ${count} яиц! Получено ${count} питомцев!`);
-                    this.renderPets();
-                    this.renderSlots();
-                    this.updateUI();
-                    this.saveGame();
+                    this.renderPets(); this.renderSlots(); this.updateUI(); this.saveGame();
                 });
-                
                 return true;
             }
             
             clickPet(event) {
-                const currentWorldData = this.worlds[this.currentWorld];
-                const locationBonus = currentWorldData.locations[currentWorldData.currentLocation].multiplier;
-                const worldBonus = currentWorldData.multiplier;
-                const boostBonus = this.boostActive ? 2 : 1;
-                const slotBonus = this.activeSlots;
-                let earned = Math.floor(this.clickPower * locationBonus * worldBonus * this.multiplier * boostBonus * slotBonus);
-                
+                const loc = this.worlds[this.currentWorld].locations[this.worlds[this.currentWorld].currentLocation];
+                let earned = Math.floor(this.clickPower * loc.multiplier * this.worlds[this.currentWorld].multiplier * this.multiplier * (this.boostActive ? 2 : 1) * this.activeSlots);
                 this.coins += earned;
-                this.totalClicks++;
-                
                 if (Math.random() < 0.05) {
-                    const diamondsEarned = Math.floor(Math.random() * 100) + 1;
-                    this.gems += diamondsEarned;
-                    this.showRandomEffect(`💎 +${diamondsEarned}💎`, event.clientX, event.clientY, '#ff88ff');
+                    const diamonds = Math.floor(Math.random() * 100) + 1;
+                    this.gems += diamonds;
+                    this.showRandomEffect(`💎 +${diamonds}💎`, event.clientX, event.clientY, '#ff88ff');
                 }
-                
-                const isCrit = Math.random() < 0.1;
-                if (isCrit) {
+                if (Math.random() < 0.1) {
                     earned *= 2;
                     this.coins += earned;
-                    this.showRandomEffect(`✨ КРИТИЧЕСКИЙ УДАР! x2 ✨`, event.clientX + 50, event.clientY - 30, '#ff3366');
+                    this.showRandomEffect(`✨ КРИТ! x2 ✨`, event.clientX + 50, event.clientY - 30, '#ff3366');
                 }
-                
                 this.showRandomEffect(`+${this.formatNumber(earned)}💰`, event.clientX, event.clientY, '#ffd700');
-                
-                const petArea = document.getElementById('petArea');
-                petArea.classList.add('shake');
-                setTimeout(() => petArea.classList.remove('shake'), 200);
-                
-                this.updateUI();
-                this.saveGame();
+                document.getElementById('petArea').classList.add('shake');
+                setTimeout(() => document.getElementById('petArea').classList.remove('shake'), 200);
+                this.updateUI(); this.saveGame();
             }
             
             showRandomEffect(text, x, y, color) {
-                const floating = document.createElement('div');
-                floating.className = 'floating-effect';
-                floating.textContent = text;
-                const randomX = (Math.random() - 0.5) * 100;
-                const randomY = (Math.random() - 0.5) * 80 - 20;
-                floating.style.left = `${x + randomX}px`;
-                floating.style.top = `${y + randomY}px`;
-                floating.style.color = color;
-                floating.style.setProperty('--dx', `${randomX + 50}px`);
-                floating.style.setProperty('--dy', `${randomY - 60}px`);
-                floating.style.fontSize = `${Math.floor(Math.random() * 10) + 20}px`;
-                document.body.appendChild(floating);
-                setTimeout(() => floating.remove(), 800);
+                const div = document.createElement('div');
+                div.className = 'floating-effect';
+                div.textContent = text;
+                const rx = (Math.random() - 0.5) * 100, ry = (Math.random() - 0.5) * 80 - 20;
+                div.style.left = `${x + rx}px`; div.style.top = `${y + ry}px`;
+                div.style.color = color; div.style.setProperty('--dx', `${rx + 50}px`); div.style.setProperty('--dy', `${ry - 60}px`);
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 800);
             }
             
             buySlot() {
-                const nextSlot = this.activeSlots;
-                if (nextSlot >= this.maxSlots) {
-                    this.showMessage("❌ Максимум слотов достигнут! (99)");
-                    return;
-                }
-                let price = 1000 * Math.pow(2, nextSlot - 1);
-                if (nextSlot > 10) price = 100000 * Math.pow(1.5, nextSlot - 10);
-                price = Math.floor(price);
-                
+                if (this.activeSlots >= this.maxSlots) { this.showMessage("❌ Максимум 99 слотов!"); return; }
+                const price = 5000; // Фиксированная цена 5000 алмазов за слот
                 if (this.gems >= price) {
                     this.gems -= price;
                     this.activeSlots++;
                     this.slotPets.push(null);
                     this.showMessage(`🔓 Открыт слот ${this.activeSlots}! Цена: ${this.formatNumber(price)}💎`);
-                    this.renderSlots();
-                    this.updateUI();
-                    this.saveGame();
+                    this.renderSlots(); this.updateUI(); this.saveGame();
                 } else {
                     this.showMessage(`❌ Нужно ${this.formatNumber(price)} алмазов!`);
                 }
@@ -1160,301 +939,184 @@
             assignPetToSlot(slotIndex, pet) {
                 if (slotIndex < this.activeSlots) {
                     for (let i = 0; i < this.activeSlots; i++) {
-                        if (this.slotPets[i] && this.slotPets[i].id === pet.id && i !== slotIndex) {
-                            return false;
-                        }
+                        if (this.slotPets[i] && this.slotPets[i].id === pet.id && i !== slotIndex) return false;
                     }
                     this.slotPets[slotIndex] = pet;
-                    this.renderSlots();
-                    this.renderPets();
-                    this.updateClickPower();
-                    this.updateUI();
-                    this.saveGame();
+                    this.renderSlots(); this.renderPets(); this.updateClickPower(); this.updateUI(); this.saveGame();
                     return true;
                 }
                 return false;
             }
             
-            removePetFromSlot(slotIndex) {
-                this.slotPets[slotIndex] = null;
-                this.renderSlots();
-                this.renderPets();
-                this.updateClickPower();
-                this.updateUI();
-                this.saveGame();
-            }
-            
-            findEmptySlot() {
-                for (let i = 0; i < this.activeSlots; i++) {
-                    if (!this.slotPets[i]) return i;
-                }
-                return -1;
-            }
-            
+            removePetFromSlot(slotIndex) { this.slotPets[slotIndex] = null; this.renderSlots(); this.renderPets(); this.updateClickPower(); this.updateUI(); this.saveGame(); }
+            findEmptySlot() { for (let i = 0; i < this.activeSlots; i++) if (!this.slotPets[i]) return i; return -1; }
             selectPet(pet) {
-                for (let i = 0; i < this.activeSlots; i++) {
-                    if (this.slotPets[i] && this.slotPets[i].id === pet.id) {
-                        this.showMessage(`❌ Питомец уже в слоте ${i + 1}!`);
-                        return;
-                    }
-                }
-                const emptySlot = this.findEmptySlot();
-                if (emptySlot !== -1) {
-                    this.assignPetToSlot(emptySlot, pet);
-                    this.showMessage(`✅ ${pet.name} назначен в слот ${emptySlot + 1}!`);
-                } else {
-                    this.showMessage("❌ Нет свободных слотов!");
-                }
+                for (let i = 0; i < this.activeSlots; i++) if (this.slotPets[i] && this.slotPets[i].id === pet.id) { this.showMessage(`❌ Питомец уже в слоте ${i+1}!`); return; }
+                const empty = this.findEmptySlot();
+                if (empty !== -1) { this.assignPetToSlot(empty, pet); this.showMessage(`✅ ${pet.name} в слот ${empty+1}!`); }
+                else this.showMessage("❌ Нет свободных слотов!");
             }
             
             changeLocation(delta) {
-                const currentWorldData = this.worlds[this.currentWorld];
-                const newLocation = currentWorldData.currentLocation + delta;
-                const locations = currentWorldData.locations;
-                if (newLocation >= 0 && newLocation < locations.length) {
-                    const location = locations[newLocation];
-                    if (location.unlocked) {
-                        currentWorldData.currentLocation = newLocation;
-                        this.renderLocation();
-                        this.renderEggs();
-                        this.updateBulkUnlock();
-                        this.updateUI();
-                        this.saveGame();
-                    } else {
-                        if (this.coins >= location.unlockCost) {
-                            this.coins -= location.unlockCost;
-                            location.unlocked = true;
-                            currentWorldData.currentLocation = newLocation;
-                            this.renderLocation();
-                            this.renderEggs();
-                            this.updateBulkUnlock();
-                            this.updateUI();
-                            this.saveGame();
-                            this.showMessage(`🔓 Открыта ${location.name}! Множитель: x${location.multiplier.toFixed(2)}`);
-                            this.checkAllLocationsUnlocked();
-                        } else {
-                            this.showMessage(`❌ Нужно ${this.formatNumber(location.unlockCost)} монет!`);
-                        }
-                    }
+                const world = this.worlds[this.currentWorld];
+                const newLoc = world.currentLocation + delta;
+                if (newLoc >= 0 && newLoc < world.locations.length) {
+                    const loc = world.locations[newLoc];
+                    if (loc.unlocked) {
+                        world.currentLocation = newLoc;
+                        this.renderLocation(); this.renderEggs(); this.updateBulkUnlock(); this.updateUI(); this.saveGame();
+                    } else if (this.coins >= loc.unlockCost) {
+                        this.coins -= loc.unlockCost;
+                        loc.unlocked = true;
+                        world.currentLocation = newLoc;
+                        this.renderLocation(); this.renderEggs(); this.updateBulkUnlock(); this.updateUI(); this.saveGame();
+                        this.showMessage(`🔓 ${loc.name}! x${loc.multiplier.toFixed(2)}`);
+                        this.checkAllLocationsUnlocked();
+                    } else this.showMessage(`❌ Нужно ${this.formatNumber(loc.unlockCost)} монет!`);
                 }
             }
             
             checkAllLocationsUnlocked() {
-                const currentWorldData = this.worlds[this.currentWorld];
-                const allUnlocked = currentWorldData.locations.every(loc => loc.unlocked === true);
-                if (allUnlocked && this.currentWorld + 1 < this.worlds.length) {
-                    const nextWorld = this.worlds[this.currentWorld + 1];
-                    if (!nextWorld.unlocked) {
-                        nextWorld.unlocked = true;
-                        this.showMessage(`🎉 ВСЕ 99 ЛОКАЦИЙ ОТКРЫТЫ! 🌍 ОТКРЫТ НОВЫЙ МИР: ${nextWorld.name}! 🎉`);
-                        this.renderWorlds();
-                        this.saveGame();
-                    }
+                const world = this.worlds[this.currentWorld];
+                if (world.locations.every(l => l.unlocked) && this.currentWorld + 1 < this.worlds.length) {
+                    const next = this.worlds[this.currentWorld + 1];
+                    if (!next.unlocked) { next.unlocked = true; this.showMessage(`🎉 ОТКРЫТ НОВЫЙ МИР: ${next.name}! 🎉`); this.renderWorlds(); this.saveGame(); }
                 }
             }
             
             sellPet(petId) {
-                const petIndex = this.pets.findIndex(p => p.id === petId);
-                if (petIndex === -1) return;
-                const pet = this.pets[petIndex];
-                for (let i = 0; i < this.activeSlots; i++) {
-                    if (this.slotPets[i] && this.slotPets[i].id === petId) {
-                        this.showMessage("❌ Сначала уберите питомца из слота!");
-                        return;
-                    }
-                }
-                const sellValue = Math.floor(pet.power * 10);
-                this.coins += sellValue;
-                this.pets.splice(petIndex, 1);
-                this.showMessage(`💰 Продано: ${pet.name} за ${this.formatNumber(sellValue)} монет!`);
-                this.renderPets();
-                this.updateUI();
-                this.saveGame();
+                const idx = this.pets.findIndex(p => p.id === petId);
+                if (idx === -1) return;
+                const pet = this.pets[idx];
+                for (let i = 0; i < this.activeSlots; i++) if (this.slotPets[i] && this.slotPets[i].id === petId) { this.showMessage("❌ Снимите питомца со слота!"); return; }
+                const value = Math.floor(pet.power * 10);
+                this.coins += value;
+                this.pets.splice(idx, 1);
+                this.showMessage(`💰 Продано: ${pet.name} за ${this.formatNumber(value)} монет!`);
+                this.renderPets(); this.updateUI(); this.saveGame();
             }
             
             sellAllPets() {
-                const activePetIds = this.slotPets.filter(p => p !== null).map(p => p.id);
-                const toSell = this.pets.filter(p => !activePetIds.includes(p.id));
-                if (toSell.length === 0) {
-                    this.showMessage("❌ Нет питомцев для продажи!");
-                    return;
-                }
-                let totalSell = 0;
-                for (const pet of toSell) totalSell += Math.floor(pet.power * 10);
-                this.coins += totalSell;
-                this.pets = this.pets.filter(p => activePetIds.includes(p.id));
-                this.showMessage(`💰 Продано ${toSell.length} питомцев! Получено: ${this.formatNumber(totalSell)} монет!`);
-                this.renderPets();
-                this.updateUI();
-                this.saveGame();
+                const activeIds = this.slotPets.filter(p => p !== null).map(p => p.id);
+                const toSell = this.pets.filter(p => !activeIds.includes(p.id));
+                if (!toSell.length) { this.showMessage("❌ Нет питомцев для продажи!"); return; }
+                let total = 0;
+                for (const p of toSell) total += Math.floor(p.power * 10);
+                this.coins += total;
+                this.pets = this.pets.filter(p => activeIds.includes(p.id));
+                this.showMessage(`💰 Продано ${toSell.length} питомцев за ${this.formatNumber(total)} монет!`);
+                this.renderPets(); this.updateUI(); this.saveGame();
             }
             
             updateClickPower() {
-                let totalPower = 0;
-                for (let i = 0; i < this.activeSlots; i++) {
-                    if (this.slotPets[i]) totalPower += this.slotPets[i].power;
-                }
-                this.clickPower = Math.max(1, totalPower);
+                let total = 0;
+                for (let i = 0; i < this.activeSlots; i++) if (this.slotPets[i]) total += this.slotPets[i].power;
+                this.clickPower = Math.max(1, total);
                 this.updateUI();
             }
             
-            buyUpgrade(upgrade) {
-                let cost = upgrade.price;
-                if (upgrade.priceType === "coins" && this.coins >= cost) {
-                    this.coins -= cost;
-                } else if (upgrade.priceType === "gems" && this.gems >= cost) {
-                    this.gems -= cost;
-                } else {
-                    this.showMessage("Недостаточно ресурсов!");
-                    return;
-                }
-                upgrade.effect();
-                upgrade.level++;
-                upgrade.price = Math.floor(upgrade.basePrice * Math.pow(1.5, upgrade.level));
-                this.updateUI();
-                this.renderUpgrades();
-                this.saveGame();
+            buyUpgrade(up) {
+                if ((up.priceType === "coins" && this.coins >= up.price) || (up.priceType === "gems" && this.gems >= up.price)) {
+                    if (up.priceType === "coins") this.coins -= up.price;
+                    else this.gems -= up.price;
+                    up.effect(); up.level++; up.price = Math.floor(up.basePrice * Math.pow(1.5, up.level));
+                    this.updateUI(); this.renderUpgrades(); this.saveGame();
+                } else this.showMessage("Недостаточно!");
             }
             
             buyBoost() {
-                if (this.gems >= 100) {
-                    this.gems -= 100;
-                    this.boostActive = true;
-                    this.boostEndTime = Date.now() + 300000;
-                    this.showMessage("⚡ Буст активирован на 5 минут! x2 к доходу ⚡");
-                    this.renderBoosts();
-                    this.saveGame();
-                } else {
-                    this.showMessage("Нужно 100 алмазов!");
-                }
+                if (this.gems >= 100) { this.gems -= 100; this.boostActive = true; this.boostEndTime = Date.now() + 300000; this.showMessage("⚡ Буст x2 на 5 мин!"); this.renderBoosts(); this.saveGame(); }
+                else this.showMessage("Нужно 100 алмазов!");
             }
             
-            unlockWorld(worldIndex) {
-                const world = this.worlds[worldIndex];
-                const prevWorld = this.worlds[worldIndex - 1];
-                if (worldIndex > 0 && prevWorld) {
-                    const allPrevUnlocked = prevWorld.locations.every(loc => loc.unlocked === true);
-                    if (!allPrevUnlocked) {
-                        const unlockedCount = prevWorld.locations.filter(loc => loc.unlocked).length;
-                        this.showMessage(`❌ Нужно открыть все 99 локаций в мире "${prevWorld.name}"! (${unlockedCount}/99)`);
-                        return;
-                    }
+            unlockWorld(idx) {
+                const w = this.worlds[idx];
+                const prev = this.worlds[idx - 1];
+                if (idx > 0 && prev && !prev.locations.every(l => l.unlocked)) {
+                    const unlocked = prev.locations.filter(l => l.unlocked).length;
+                    this.showMessage(`❌ Откройте все 99 локаций в "${prev.name}"! (${unlocked}/99)`);
+                    return;
                 }
-                if (!world.unlocked && this.coins >= world.cost) {
-                    this.coins -= world.cost;
-                    world.unlocked = true;
-                    this.showMessage(`🌍 Мир "${world.name}" открыт!`);
-                    this.renderWorlds();
-                    this.updateUI();
-                    this.saveGame();
-                } else if (!world.unlocked) {
-                    this.showMessage(`Нужно ${this.formatNumber(world.cost)} монет!`);
-                }
+                if (!w.unlocked && this.coins >= w.cost) { this.coins -= w.cost; w.unlocked = true; this.showMessage(`🌍 Мир "${w.name}" открыт!`); this.renderWorlds(); this.updateUI(); this.saveGame(); }
+                else if (!w.unlocked) this.showMessage(`Нужно ${this.formatNumber(w.cost)} монет!`);
             }
             
-            changeWorld(worldIndex) {
-                if (this.worlds[worldIndex].unlocked) {
-                    this.currentWorld = worldIndex;
-                    this.renderWorlds();
-                    this.renderLocation();
-                    this.renderEggs();
-                    this.updateBulkUnlock();
-                    this.updateTheme();
-                    this.updateUI();
-                    this.saveGame();
-                }
-            }
-            
+            changeWorld(idx) { if (this.worlds[idx].unlocked) { this.currentWorld = idx; this.renderWorlds(); this.renderLocation(); this.renderEggs(); this.updateBulkUnlock(); this.updateTheme(); this.updateUI(); this.saveGame(); } }
             updateTheme() {
                 const theme = this.worlds[this.currentWorld].theme;
                 document.getElementById('gameContainer').setAttribute('data-theme', theme);
-                const themes = {
-                    forest: 'linear-gradient(135deg, #0a2a0a 0%, #051005 100%)',
-                    volcano: 'linear-gradient(135deg, #4a1a0a 0%, #2a0a05 100%)',
-                    ice: 'linear-gradient(135deg, #1a3a5a 0%, #0a1a2a 100%)',
-                    sky: 'linear-gradient(135deg, #2a2a5a 0%, #0a0a2a 100%)',
-                    hell: 'linear-gradient(135deg, #4a0a2a 0%, #2a050a 100%)',
-                    paradise: 'linear-gradient(135deg, #4a2a6a 0%, #2a0a4a 100%)'
-                };
-                document.body.style.background = themes[theme] || 'linear-gradient(135deg, #1a0f1c 0%, #0a050c 100%)';
+                const themes = { forest: '#0a2a0a', volcano: '#4a1a0a', ice: '#1a3a5a', sky: '#2a2a5a', hell: '#4a0a2a', paradise: '#4a2a6a' };
+                document.body.style.background = `radial-gradient(ellipse at top, ${themes[theme]} 0%, #050510 100%)`;
             }
             
             renderSlots() {
                 const container = document.getElementById('slotsContainer');
                 container.innerHTML = '';
-                for (let i = 0; i < this.activeSlots; i++) {
+                const showCount = this.slotsCollapsed ? Math.min(5, this.activeSlots) : this.activeSlots;
+                for (let i = 0; i < showCount; i++) {
                     const pet = this.slotPets[i];
                     const card = document.createElement('div');
                     card.className = `slot-card ${pet ? 'unlocked' : ''}`;
                     card.innerHTML = `
-                        <div class="slot-number">Слот ${i + 1}</div>
+                        <div class="slot-number">Слот ${i+1}</div>
                         ${pet ? `<div class="slot-pet-emoji">${pet.emoji}</div><div style="font-size: 10px;">${pet.name}</div><div style="font-size: 9px; color:#ffd700;">⚡${this.formatNumber(pet.power)}</div>` : '<div style="font-size: 12px;">🔓 Пусто</div>'}
                         ${pet ? `<button class="btn" style="margin-top: 5px; padding: 3px 8px; font-size: 10px;" onclick="game.removePetFromSlot(${i})">✖ Убрать</button>` : ''}
                     `;
                     container.appendChild(card);
                 }
+                if (this.slotsCollapsed && this.activeSlots > 5) {
+                    const more = document.createElement('div');
+                    more.className = 'slot-card';
+                    more.style.opacity = '0.7';
+                    more.innerHTML = `<div class="slot-number">+${this.activeSlots - 5}</div><div style="font-size: 10px;">еще слотов</div>`;
+                    container.appendChild(more);
+                }
                 this.updateClickPower();
             }
             
             renderLocation() {
-                const currentWorldData = this.worlds[this.currentWorld];
-                const location = currentWorldData.locations[currentWorldData.currentLocation];
-                document.getElementById('locationName').textContent = location.name;
-                document.getElementById('locationMultiplier').textContent = `Множитель: x${location.multiplier.toFixed(2)} | Стоимость: ${this.formatNumber(location.unlockCost)}💰`;
-                const progress = ((currentWorldData.currentLocation + 1) / 99) * 100;
-                document.getElementById('locationProgress').style.width = `${progress}%`;
+                const loc = this.worlds[this.currentWorld].locations[this.worlds[this.currentWorld].currentLocation];
+                document.getElementById('locationName').textContent = loc.name;
+                document.getElementById('locationMultiplier').textContent = `Множитель: x${loc.multiplier.toFixed(2)} | Стоимость: ${this.formatNumber(loc.unlockCost)}💰`;
+                document.getElementById('locationProgress').style.width = `${((this.worlds[this.currentWorld].currentLocation + 1) / 99) * 100}%`;
             }
             
             renderWorlds() {
                 const container = document.getElementById('worldsContainer');
                 container.innerHTML = '';
-                this.worlds.forEach((world, index) => {
+                this.worlds.forEach((w, i) => {
                     const btn = document.createElement('div');
-                    btn.className = `world-btn ${index === this.currentWorld ? 'active' : ''}`;
-                    btn.innerHTML = `<div style="font-size: 24px;">${world.icon}</div><div>${world.name}</div><div>x${world.multiplier}</div>${!world.unlocked ? `<div>💰${this.formatNumber(world.cost)}</div>` : ''}`;
-                    btn.onclick = () => world.unlocked ? this.changeWorld(index) : this.unlockWorld(index);
+                    btn.className = `world-btn ${i === this.currentWorld ? 'active' : ''}`;
+                    btn.innerHTML = `<div style="font-size:24px;">${w.icon}</div><div>${w.name}</div><div>x${w.multiplier}</div>${!w.unlocked ? `<div>💰${this.formatNumber(w.cost)}</div>` : ''}`;
+                    btn.onclick = () => w.unlocked ? this.changeWorld(i) : this.unlockWorld(i);
                     container.appendChild(btn);
                 });
             }
             
             renderEggs() {
                 const container = document.getElementById('eggsContainer');
-                const currentWorldData = this.worlds[this.currentWorld];
-                const location = currentWorldData.locations[currentWorldData.currentLocation];
-                
-                const eggTypes = [
-                    { type: "common", name: "🥚 Обычное яйцо", price: 500 * location.id * currentWorldData.multiplier, icon: "🥚" },
-                    { type: "rare", name: "🔵 Редкое яйцо", price: 2500 * location.id * currentWorldData.multiplier, icon: "🔵🥚" },
-                    { type: "epic", name: "🟣 Эпическое яйцо", price: 10000 * location.id * currentWorldData.multiplier, icon: "🟣🥚" },
-                    { type: "legendary", name: "⭐ Легендарное яйцо", price: 50000 * location.id * currentWorldData.multiplier, icon: "⭐🥚" },
-                    { type: "mythic", name: "💎 Мифическое яйцо", price: 250000 * location.id * currentWorldData.multiplier, icon: "💎🥚" }
+                const loc = this.worlds[this.currentWorld].locations[this.worlds[this.currentWorld].currentLocation];
+                const types = [
+                    { type: "common", name: "🥚 Обычное яйцо", price: 500 * loc.id * this.worlds[this.currentWorld].multiplier, icon: "🥚" },
+                    { type: "rare", name: "🔵 Редкое яйцо", price: 2500 * loc.id * this.worlds[this.currentWorld].multiplier, icon: "🔵🥚" },
+                    { type: "epic", name: "🟣 Эпическое яйцо", price: 10000 * loc.id * this.worlds[this.currentWorld].multiplier, icon: "🟣🥚" },
+                    { type: "legendary", name: "⭐ Легендарное яйцо", price: 50000 * loc.id * this.worlds[this.currentWorld].multiplier, icon: "⭐🥚" },
+                    { type: "mythic", name: "💎 Мифическое яйцо", price: 250000 * loc.id * this.worlds[this.currentWorld].multiplier, icon: "💎🥚" }
                 ];
-                
                 container.innerHTML = '';
-                for (const eggType of eggTypes) {
-                    const pets = generateEggPets(eggType.type, location.id, currentWorldData.multiplier, currentWorldData.theme);
-                    
+                for (const t of types) {
+                    const pets = generateEggPets(t.type, loc.id, this.worlds[this.currentWorld].multiplier);
                     const card = document.createElement('div');
                     card.className = 'egg-card';
                     card.innerHTML = `
-                        <div class="egg-header"><div class="egg-emoji">${eggType.icon}</div><div class="egg-title">${eggType.name}</div></div>
-                        <div class="egg-price">💰 ${this.formatNumber(eggType.price)} монет</div>
+                        <div class="egg-header"><div class="egg-emoji">${t.icon}</div><div class="egg-title">${t.name}</div></div>
+                        <div class="egg-price">💰 ${this.formatNumber(t.price)} монет</div>
                         <div class="pet-list">
-                            <div style="font-size: 12px; color: #ffd700; margin-bottom: 8px;">📋 Питомцы и шансы:</div>
-                            ${pets.map(p => `
-                                <div class="pet-item">
-                                    <div class="pet-name-chance">
-                                        <span class="pet-emoji-small">${p.emoji}</span>
-                                        <span>${p.name}</span>
-                                        ${p.isHuge ? '<span class="huge-badge">🌟 HUGE</span>' : ''}
-                                        <span class="power-badge">⚡${this.formatNumber(Math.floor(p.power * (this.prestigeBonus || 1)))}</span>
-                                    </div>
-                                    <span class="chance-badge">${p.chance}%</span>
-                                </div>
-                            `).join('')}
+                            <div style="font-size:12px; color:#ffd700;">📋 Питомцы и шансы:</div>
+                            ${pets.map(p => `<div class="pet-item"><div class="pet-name-chance"><span class="pet-emoji-small">${p.emoji}</span><span>${p.name}</span>${p.isHuge ? '<span class="huge-badge">🌟 HUGE 0.5%</span>' : ''}<span class="power-badge">⚡${this.formatNumber(Math.floor(p.power * (this.prestigeBonus||1)))}</span></div><span class="chance-badge">${p.chance}%</span></div>`).join('')}
                         </div>
                     `;
-                    card.onclick = () => this.openEgg({ ...eggType, pets: pets }, this.bulkAmount);
+                    card.onclick = () => this.openEgg({ ...t, pets }, this.bulkAmount);
                     container.appendChild(card);
                 }
             }
@@ -1462,33 +1124,28 @@
             renderPets() {
                 const container = document.getElementById('petsContainer');
                 container.innerHTML = '';
-                const sortedPets = [...this.pets].sort((a,b) => b.power - a.power);
-                let hugeCount = 0;
-                sortedPets.forEach(pet => {
-                    const isEquipped = this.isPetEquipped(pet.id);
-                    if (pet.isHuge) hugeCount++;
+                const sorted = [...this.pets].sort((a,b) => b.power - a.power);
+                let huge = 0;
+                sorted.forEach(pet => {
+                    const equipped = this.isPetEquipped(pet.id);
+                    if (pet.isHuge) huge++;
                     const card = document.createElement('div');
-                    card.className = `pet-card ${isEquipped ? 'active-pet' : ''} ${pet.isHuge ? 'huge-pet' : ''}`;
+                    card.className = `pet-card ${equipped ? 'active-pet' : ''} ${pet.isHuge ? 'huge-pet' : ''}`;
                     card.innerHTML = `
                         ${pet.isHuge ? '<div class="huge-tag">🌟 HUGE</div>' : ''}
-                        ${isEquipped ? '<div class="equipped-badge">✅</div>' : ''}
+                        ${equipped ? '<div class="equipped-badge">✅</div>' : ''}
                         <div class="pet-card-emoji">${pet.emoji}</div>
                         <div class="pet-card-name">${pet.name}</div>
                         <div class="pet-card-power">⚡${this.formatNumber(pet.power)}</div>
-                        ${!isEquipped ? `<button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${this.formatNumber(Math.floor(pet.power * 10))}💰</button>` : '<div style="font-size: 10px; color:#ffd700; margin-top: 5px;">В слоте</div>'}
+                        ${!equipped ? `<button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${this.formatNumber(Math.floor(pet.power*10))}💰</button>` : '<div style="font-size:10px; color:#ffd700;">В слоте</div>'}
                     `;
-                    card.onclick = (e) => { 
-                        if(e.target !== card.querySelector('.sell-btn')) {
-                            if (!isEquipped) this.selectPet(pet);
-                            else this.showMessage(`✅ ${pet.name} уже в слоте!`);
-                        }
-                    };
+                    card.onclick = (e) => { if(e.target !== card.querySelector('.sell-btn')) { if(!equipped) this.selectPet(pet); else this.showMessage(`✅ ${pet.name} уже в слоте!`); } };
                     container.appendChild(card);
                 });
                 document.getElementById('totalPets').textContent = this.pets.length;
                 document.getElementById('totalPower').textContent = this.formatNumber(this.pets.reduce((s,p) => s + p.power, 0));
-                document.getElementById('totalSellValue').textContent = this.formatNumber(this.pets.reduce((s,p) => s + Math.floor(p.power * 10), 0));
-                document.getElementById('hugeCount').textContent = hugeCount;
+                document.getElementById('totalSellValue').textContent = this.formatNumber(this.pets.reduce((s,p) => s + Math.floor(p.power*10), 0));
+                document.getElementById('hugeCount').textContent = huge;
                 document.getElementById('prestigeLevel').textContent = this.prestigeLevel;
             }
             
@@ -1498,13 +1155,8 @@
                 this.upgrades.forEach(up => {
                     const card = document.createElement('div');
                     card.className = 'upgrade-card';
-                    card.style.background = 'linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1))';
-                    card.style.border = '1px solid rgba(255,215,0,0.3)';
-                    card.style.borderRadius = '12px';
-                    card.style.padding = '12px';
-                    card.style.cursor = 'pointer';
-                    card.style.textAlign = 'center';
-                    card.innerHTML = `<div style="font-weight: bold;">${up.name}</div><div style="font-size: 12px;">${up.desc}</div><div style="color: #ffd700;">${up.priceType === 'coins' ? '💰' : '💎'} ${this.formatNumber(up.price)}</div><div>Уровень: ${up.level}</div>`;
+                    card.style.cssText = 'background:linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:12px;cursor:pointer;text-align:center';
+                    card.innerHTML = `<div style="font-weight:bold;">${up.name}</div><div style="font-size:12px;">${up.desc}</div><div style="color:#ffd700;">${up.priceType === 'coins' ? '💰' : '💎'} ${this.formatNumber(up.price)}</div><div>Ур.${up.level}</div>`;
                     card.onclick = () => this.buyUpgrade(up);
                     container.appendChild(card);
                 });
@@ -1513,13 +1165,9 @@
             renderBoosts() {
                 const container = document.getElementById('boostsContainer');
                 if (this.boostActive) {
-                    const remaining = Math.max(0, Math.ceil((this.boostEndTime - Date.now()) / 1000));
-                    const minutes = Math.floor(remaining / 60);
-                    const seconds = remaining % 60;
-                    container.innerHTML = `<div style="background: rgba(0,0,0,0.5); border-radius: 10px; padding: 10px; text-align: center;"><div style="color:#ffd700;">⚡ Активен x2 ⚡</div><div>Осталось: ${minutes}:${seconds.toString().padStart(2,'0')}</div></div>`;
-                } else {
-                    container.innerHTML = `<div style="background: rgba(0,0,0,0.5); border-radius: 10px; padding: 10px; text-align: center;"><div>💤 Нет бустов</div><div>Купи за 100💎</div></div>`;
-                }
+                    const rem = Math.max(0, Math.ceil((this.boostEndTime - Date.now()) / 1000));
+                    container.innerHTML = `<div style="background:rgba(0,0,0,0.5);border-radius:10px;padding:10px;text-align:center;"><div style="color:#ffd700;">⚡ Активен x2 ⚡</div><div>Осталось: ${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}</div></div>`;
+                } else container.innerHTML = `<div style="background:rgba(0,0,0,0.5);border-radius:10px;padding:10px;text-align:center;"><div>💤 Нет бустов</div><div>Купи за 100💎</div></div>`;
             }
             
             updateUI() {
@@ -1542,15 +1190,10 @@
                 if (this.autoInterval) clearInterval(this.autoInterval);
                 this.autoInterval = setInterval(() => {
                     if (this.autoClickerLevel > 0) {
-                        const currentWorldData = this.worlds[this.currentWorld];
-                        const locationBonus = currentWorldData.locations[currentWorldData.currentLocation].multiplier;
-                        const worldBonus = currentWorldData.multiplier;
-                        const boostBonus = this.boostActive ? 2 : 1;
-                        const slotBonus = this.activeSlots;
-                        let earned = Math.floor(this.autoClickerLevel * 8 * locationBonus * worldBonus * this.multiplier * boostBonus * slotBonus);
-                        this.coins += earned;
-                        this.updateUI();
-                        this.saveGame();
+                        const loc = this.worlds[this.currentWorld].locations[this.worlds[this.currentWorld].currentLocation];
+                        let earned = this.autoClickerLevel * 8 * loc.multiplier * this.worlds[this.currentWorld].multiplier * this.multiplier * (this.boostActive ? 2 : 1) * this.activeSlots;
+                        this.coins += Math.floor(earned);
+                        this.updateUI(); this.saveGame();
                     }
                 }, 1000);
             }
@@ -1560,78 +1203,41 @@
                     if (this.boostActive && Date.now() > this.boostEndTime) {
                         this.boostActive = false;
                         this.showMessage("⏰ Буст закончился!");
-                        this.renderBoosts();
-                        this.saveGame();
+                        this.renderBoosts(); this.saveGame();
                     }
                 }, 1000);
             }
             
             saveGame() {
-                const worldsSave = this.worlds.map(world => ({
-                    name: world.name,
-                    multiplier: world.multiplier,
-                    unlocked: world.unlocked,
-                    cost: world.cost,
-                    icon: world.icon,
-                    theme: world.theme,
-                    locations: world.locations,
-                    currentLocation: world.currentLocation
-                }));
-                
-                const save = {
-                    coins: this.coins, gems: this.gems, clickPower: this.clickPower, totalClicks: this.totalClicks,
-                    multiplier: this.multiplier, currentWorld: this.currentWorld,
-                    worlds: worldsSave,
-                    pets: this.pets, slotPets: this.slotPets, activeSlots: this.activeSlots,
-                    upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
+                localStorage.setItem('petSimulatorV2', JSON.stringify({
+                    coins: this.coins, gems: this.gems, clickPower: this.clickPower, multiplier: this.multiplier,
+                    currentWorld: this.currentWorld, worlds: this.worlds, pets: this.pets, slotPets: this.slotPets,
+                    activeSlots: this.activeSlots, upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
                     autoClickerLevel: this.autoClickerLevel, boostActive: this.boostActive, boostEndTime: this.boostEndTime,
-                    prestigeLevel: this.prestigeLevel, prestigeBonus: this.prestigeBonus,
-                    playerName: this.playerName, isAdmin: this.isAdmin
-                };
-                localStorage.setItem('petSimulatorFinal3', JSON.stringify(save));
+                    prestigeLevel: this.prestigeLevel, prestigeBonus: this.prestigeBonus, playerName: this.playerName, isAdmin: this.isAdmin
+                }));
             }
             
             loadGame() {
-                const save = localStorage.getItem('petSimulatorFinal3');
+                const save = localStorage.getItem('petSimulatorV2');
                 if (save) {
-                    const data = JSON.parse(save);
-                    this.coins = data.coins; this.gems = data.gems; this.clickPower = data.clickPower;
-                    this.totalClicks = data.totalClicks; this.multiplier = data.multiplier;
-                    this.currentWorld = data.currentWorld;
-                    this.pets = data.pets; this.slotPets = data.slotPets || [null];
-                    this.activeSlots = data.activeSlots || 1;
-                    this.autoClickerLevel = data.autoClickerLevel;
-                    this.boostActive = data.boostActive; this.boostEndTime = data.boostEndTime;
-                    this.prestigeLevel = data.prestigeLevel || 0;
-                    this.prestigeBonus = data.prestigeBonus || 1;
-                    this.playerName = data.playerName || "Игрок";
-                    this.isAdmin = data.isAdmin || false;
-                    
-                    if (data.worlds) {
-                        this.worlds = data.worlds;
-                    }
-                    
-                    if (data.upgrades) this.upgrades.forEach((u, i) => { if (data.upgrades[i]) { u.level = data.upgrades[i].level; u.price = data.upgrades[i].price; } });
+                    const d = JSON.parse(save);
+                    this.coins = d.coins; this.gems = d.gems; this.clickPower = d.clickPower; this.multiplier = d.multiplier;
+                    this.currentWorld = d.currentWorld; this.worlds = d.worlds; this.pets = d.pets; this.slotPets = d.slotPets || [null];
+                    this.activeSlots = d.activeSlots || 1; this.autoClickerLevel = d.autoClickerLevel;
+                    this.boostActive = d.boostActive; this.boostEndTime = d.boostEndTime;
+                    this.prestigeLevel = d.prestigeLevel || 0; this.prestigeBonus = d.prestigeBonus || 1;
+                    this.playerName = d.playerName || "Игрок"; this.isAdmin = d.isAdmin || false;
+                    if (d.upgrades) this.upgrades.forEach((u, i) => { if (d.upgrades[i]) { u.level = d.upgrades[i].level; u.price = d.upgrades[i].price; } });
                 }
-                
-                this.worlds.forEach(world => {
-                    if (world.currentLocation === undefined) world.currentLocation = 0;
-                    if (!world.locations || world.locations.length === 0) {
-                        world.locations = generateLocations(world.multiplier);
-                    }
-                });
-                
-                if (!this.slotPets || this.slotPets.length < this.activeSlots) {
-                    this.slotPets = Array(this.activeSlots).fill(null);
-                }
-                
+                this.worlds.forEach(w => { if (!w.locations) w.locations = generateLocations(w.multiplier); if (w.currentLocation === undefined) w.currentLocation = 0; });
+                if (!this.slotPets || this.slotPets.length < this.activeSlots) this.slotPets = Array(this.activeSlots).fill(null);
                 document.getElementById('playerNameDisplay').innerHTML = this.playerName;
                 if (this.isAdmin) {
                     document.getElementById('playerNameDisplay').innerHTML = this.playerName + ' <span class="admin-badge">👑 ADMIN</span>';
                     document.getElementById('adminPanelBtn').style.display = 'inline-block';
                     this.initAdminPanel();
                 }
-                
                 this.updateClickPower();
             }
         }
