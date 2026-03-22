@@ -519,12 +519,13 @@
     </div>
 
     <script>
-        // Генерация 99 локаций для каждого мира
-        function generateLocations() {
+        // Генерация 99 локаций для каждого мира с растущими ценами
+        function generateLocations(worldMultiplier) {
             const locations = [];
             for (let i = 1; i <= 99; i++) {
                 let multiplier = 1 + (i - 1) * 0.05;
-                let unlockCost = Math.floor(500 * Math.pow(1.08, i - 1));
+                // Цена зависит от номера локации И от множителя мира (чем выше мир, тем дороже)
+                let unlockCost = Math.floor(500 * Math.pow(1.08, i - 1) * worldMultiplier);
                 locations.push({
                     id: i,
                     name: `Локация ${i}`,
@@ -580,13 +581,18 @@
                 // World
                 this.currentWorld = 0;
                 this.worlds = [
-                    { name: "🌳 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌳", theme: "forest", locations: generateLocations() },
-                    { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 5000, icon: "🔥", theme: "volcano", locations: generateLocations() },
-                    { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 20000, icon: "❄️", theme: "ice", locations: generateLocations() },
-                    { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 80000, icon: "⚡", theme: "sky", locations: generateLocations() },
-                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 250000, icon: "💀", theme: "hell", locations: generateLocations() },
-                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 1000000, icon: "👑", theme: "paradise", locations: generateLocations() }
+                    { name: "🌳 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌳", theme: "forest", locations: [] },
+                    { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 5000, icon: "🔥", theme: "volcano", locations: [] },
+                    { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 20000, icon: "❄️", theme: "ice", locations: [] },
+                    { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 80000, icon: "⚡", theme: "sky", locations: [] },
+                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 250000, icon: "💀", theme: "hell", locations: [] },
+                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 1000000, icon: "👑", theme: "paradise", locations: [] }
                 ];
+                
+                // Генерируем локации для каждого мира с учетом его множителя
+                this.worlds.forEach(world => {
+                    world.locations = generateLocations(world.multiplier);
+                });
                 
                 this.currentLocation = 0;
                 this.pets = [];
@@ -596,9 +602,9 @@
                 
                 // Upgrades
                 this.upgrades = [
-                    { id: "click", name: "💪 Усиление клика", desc: "+5 к силе", price: 500, priceType: "coins", effect: () => { this.clickPower += 5; }, level: 0, basePrice: 500 },
+                    { id: "click", name: "💪 Усиление клика", desc: "+5 к силе", price: 500, priceType: "coins", effect: () => { this.clickPower += 5; this.updateUI(); }, level: 0, basePrice: 500 },
                     { id: "auto", name: "🤖 Авто-кликер", desc: "+1 клик/сек", price: 800, priceType: "coins", effect: () => { this.autoClickerLevel++; this.startAutoClicker(); }, level: 0, basePrice: 800 },
-                    { id: "multiplier", name: "✨ Множитель", desc: "+0.5x доход", price: 1500, priceType: "gems", effect: () => { this.multiplier += 0.5; }, level: 0, basePrice: 1500 }
+                    { id: "multiplier", name: "✨ Множитель", desc: "+0.5x доход", price: 1500, priceType: "gems", effect: () => { this.multiplier += 0.5; this.updateUI(); }, level: 0, basePrice: 1500 }
                 ];
                 
                 this.autoClickerLevel = 0;
@@ -649,7 +655,7 @@
                 this.coins += earned;
                 this.totalClicks++;
                 
-                // Шанс 5% на алмазы (появляются рядом с кликом)
+                // Шанс 5% на алмазы
                 if (Math.random() < 0.05) {
                     const diamondsEarned = Math.floor(Math.random() * 100) + 1;
                     this.gems += diamondsEarned;
@@ -717,14 +723,15 @@
                 if (slotIndex < this.activeSlots) {
                     // Проверяем, не занят ли уже этот питомец в другом слоте
                     for (let i = 0; i < this.activeSlots; i++) {
-                        if (this.slotPets[i] && this.slotPets[i].id === pet.id) {
+                        if (this.slotPets[i] && this.slotPets[i].id === pet.id && i !== slotIndex) {
                             this.showMessage(`❌ Питомец уже в слоте ${i + 1}!`);
                             return false;
                         }
                     }
                     this.slotPets[slotIndex] = pet;
                     this.renderSlots();
-                    this.updateClickPower();
+                    this.updateClickPower(); // МГНОВЕННОЕ ОБНОВЛЕНИЕ силы клика
+                    this.updateUI();
                     this.saveGame();
                     return true;
                 }
@@ -734,11 +741,11 @@
             removePetFromSlot(slotIndex) {
                 this.slotPets[slotIndex] = null;
                 this.renderSlots();
-                this.updateClickPower();
+                this.updateClickPower(); // МГНОВЕННОЕ ОБНОВЛЕНИЕ силы клика
+                this.updateUI();
                 this.saveGame();
             }
             
-            // НОВАЯ ФУНКЦИЯ - найти первый свободный слот
             findEmptySlot() {
                 for (let i = 0; i < this.activeSlots; i++) {
                     if (!this.slotPets[i]) {
@@ -748,7 +755,6 @@
                 return -1;
             }
             
-            // ИСПРАВЛЕНО: при нажатии на питомца - он НАЗНАЧАЕТСЯ в слот, а не убирается
             selectPet(pet) {
                 // Проверяем, не занят ли питомец уже в каком-то слоте
                 for (let i = 0; i < this.activeSlots; i++) {
@@ -758,7 +764,6 @@
                     }
                 }
                 
-                // Ищем свободный слот
                 const emptySlot = this.findEmptySlot();
                 if (emptySlot !== -1) {
                     this.assignPetToSlot(emptySlot, pet);
@@ -789,8 +794,6 @@
                             this.updateUI();
                             this.saveGame();
                             this.showMessage(`🔓 Открыта ${location.name}! Множитель: x${location.multiplier.toFixed(2)}`);
-                            
-                            // Проверяем, все ли локации открыты в этом мире
                             this.checkAllLocationsUnlocked();
                         } else {
                             this.showMessage(`❌ Нужно ${this.formatNumber(location.unlockCost)} монет для открытия!`);
@@ -799,7 +802,6 @@
                 }
             }
             
-            // НОВАЯ ФУНКЦИЯ: проверка, все ли 99 локаций открыты
             checkAllLocationsUnlocked() {
                 const currentWorldData = this.worlds[this.currentWorld];
                 const allUnlocked = currentWorldData.locations.every(loc => loc.unlocked === true);
@@ -826,7 +828,6 @@
                 const newPet = { ...egg.pets[Math.floor(Math.random() * egg.pets.length)], id: Date.now() + Math.random() };
                 this.pets.push(newPet);
                 
-                // Автоматически назначить в пустой слот
                 const emptySlot = this.findEmptySlot();
                 if (emptySlot !== -1) {
                     this.assignPetToSlot(emptySlot, newPet);
@@ -844,10 +845,9 @@
                 if (petIndex === -1) return;
                 const pet = this.pets[petIndex];
                 
-                // Проверить, не в слоте ли питомец
                 for (let i = 0; i < this.activeSlots; i++) {
                     if (this.slotPets[i] && this.slotPets[i].id === petId) {
-                        this.showMessage("❌ Сначала уберите питомца из слота (нажмите ✖ Убрать)!");
+                        this.showMessage("❌ Сначала уберите питомца из слота!");
                         return;
                     }
                 }
@@ -922,7 +922,6 @@
             
             unlockWorld(worldIndex) {
                 const world = this.worlds[worldIndex];
-                // Проверяем, что предыдущий мир полностью пройден (все 99 локаций)
                 const prevWorld = this.worlds[worldIndex - 1];
                 if (worldIndex > 0 && prevWorld) {
                     const allPrevLocationsUnlocked = prevWorld.locations.every(loc => loc.unlocked === true);
@@ -993,7 +992,7 @@
             renderLocation() {
                 const location = this.worlds[this.currentWorld].locations[this.currentLocation];
                 document.getElementById('locationName').textContent = location.name;
-                document.getElementById('locationMultiplier').textContent = `Множитель: x${location.multiplier.toFixed(2)}`;
+                document.getElementById('locationMultiplier').textContent = `Множитель: x${location.multiplier.toFixed(2)} | Стоимость: ${this.formatNumber(location.unlockCost)}💰`;
                 const progress = ((this.currentLocation + 1) / 99) * 100;
                 document.getElementById('locationProgress').style.width = `${progress}%`;
             }
@@ -1012,7 +1011,7 @@
                         if (!allPrevUnlocked && !world.unlocked) {
                             canUnlock = false;
                             const unlockedCount = prevWorld.locations.filter(loc => loc.unlocked).length;
-                            lockReason = `🔒 Нужно ${99 - unlockedCount} локаций`;
+                            lockReason = `🔒 ${99 - unlockedCount} локаций`;
                         }
                     }
                     
@@ -1127,6 +1126,11 @@
                 document.getElementById('gems').textContent = this.formatNumber(Math.floor(this.gems));
                 document.getElementById('clickPower').textContent = this.clickPower;
                 document.getElementById('multiplier').textContent = `${this.multiplier}x`;
+                
+                // Обновляем отображение силы питомца в области клика
+                if (this.clickPower > 0) {
+                    document.getElementById('currentPetPower').textContent = `Сила клика: ${this.clickPower}`;
+                }
             }
             
             showMessage(text) {
@@ -1172,11 +1176,11 @@
                     upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
                     autoClickerLevel: this.autoClickerLevel, boostActive: this.boostActive, boostEndTime: this.boostEndTime
                 };
-                localStorage.setItem('petSimulatorMegaFixed', JSON.stringify(save));
+                localStorage.setItem('petSimulatorMegaFixed2', JSON.stringify(save));
             }
             
             loadGame() {
-                const save = localStorage.getItem('petSimulatorMegaFixed');
+                const save = localStorage.getItem('petSimulatorMegaFixed2');
                 if (save) {
                     const data = JSON.parse(save);
                     this.coins = data.coins; this.gems = data.gems; this.clickPower = data.clickPower;
@@ -1188,12 +1192,17 @@
                     this.boostActive = data.boostActive; this.boostEndTime = data.boostEndTime;
                     if (data.upgrades) this.upgrades.forEach((u, i) => { if (data.upgrades[i]) { u.level = data.upgrades[i].level; u.price = data.upgrades[i].price; } });
                 }
-                if (!this.worlds[0].locations) {
-                    this.worlds.forEach(w => w.locations = generateLocations());
+                // Убеждаемся, что локации сгенерированы с правильными ценами
+                if (this.worlds[0].locations.length === 0) {
+                    this.worlds.forEach(world => {
+                        world.locations = generateLocations(world.multiplier);
+                    });
                 }
                 if (!this.slotPets || this.slotPets.length < this.activeSlots) {
                     this.slotPets = Array(this.activeSlots).fill(null);
                 }
+                // Обновляем силу клика после загрузки
+                this.updateClickPower();
             }
         }
         
