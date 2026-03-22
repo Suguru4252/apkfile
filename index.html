@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Pet Simulator 99 | Быстрые клики</title>
+    <title>Pet Simulator 99 | МАКСИМАЛЬНО БЫСТРЫЕ КЛИКИ</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
             font-family: 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
             padding: 15px;
             overflow-x: hidden;
-            transition: background 0.5s ease;
+            transition: background 0.3s ease;
         }
 
         /* Stars Animation */
@@ -31,8 +31,7 @@
             width: 100%;
             height: 100%;
             background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                              radial-gradient(3px 3px at 60px 80px, #ffd700, rgba(0,0,0,0)),
-                              radial-gradient(1px 1px at 120px 150px, #fff, rgba(0,0,0,0));
+                              radial-gradient(3px 3px at 60px 80px, #ffd700, rgba(0,0,0,0));
             background-size: 400px 400px;
             background-repeat: repeat;
             animation: starsMove 60s linear infinite;
@@ -53,11 +52,11 @@
             backdrop-filter: blur(10px);
             border-radius: 48px;
             padding: 25px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
             border: 1px solid rgba(100, 150, 255, 0.4);
             position: relative;
             z-index: 1;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
         /* World Themes */
@@ -85,14 +84,13 @@
             align-items: center;
             gap: 12px;
             border: 1px solid rgba(255,215,0,0.3);
-            transition: all 0.3s;
+            transition: 0.1s;
         }
 
-        .resource-card:hover { transform: translateY(-2px); border-color: #ffd700; }
         .resource-icon { font-size: 40px; }
         .resource-info { flex: 1; }
-        .resource-name { color: rgba(255,255,255,0.7); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .resource-value { color: #ffd700; font-size: 28px; font-weight: bold; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .resource-name { color: rgba(255,255,255,0.7); font-size: 11px; text-transform: uppercase; }
+        .resource-value { color: #ffd700; font-size: 28px; font-weight: bold; }
 
         /* Game Layout */
         .game-layout {
@@ -104,7 +102,7 @@
 
         @media (max-width: 1000px) { .game-layout { grid-template-columns: 1fr; } }
 
-        /* Pet Area - Оптимизировано для быстрых кликов */
+        /* Pet Area - МАКСИМАЛЬНО БЫСТРЫЙ КЛИК */
         .pet-area {
             background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,100,0,0.05));
             border-radius: 32px;
@@ -114,29 +112,12 @@
             position: relative;
             overflow: hidden;
             border: 2px solid rgba(255,215,0,0.5);
-            transition: transform 0.05s linear;
             backdrop-filter: blur(10px);
-            -webkit-tap-highlight-color: transparent;
+            will-change: transform;
         }
 
         .pet-area:active {
-            transform: scale(0.98);
-        }
-
-        .pet-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.2), transparent);
-            animation: rotateGlow 15s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes rotateGlow {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            transform: scale(0.99);
         }
 
         .current-pet {
@@ -150,7 +131,7 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
+            50% { transform: translateY(-8px); }
         }
 
         .pet-name {
@@ -167,7 +148,7 @@
         .pet-power { color: #ffd700; font-size: 18px; margin-top: 8px; pointer-events: none; }
 
         /* World Selector */
-        .world-selector {
+        .world-selector, .boost-section, .eggs-section, .pets-collection, .upgrades-section {
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -175,136 +156,38 @@
             border: 1px solid rgba(255,215,0,0.3);
         }
 
-        .world-buttons {
+        .world-buttons, .eggs-grid, .upgrades-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            margin-top: 12px;
         }
 
-        .world-btn {
+        .world-buttons { grid-template-columns: repeat(2, 1fr); margin-top: 12px; }
+        .eggs-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+        .upgrades-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 15px; }
+
+        .world-btn, .egg-card, .upgrade-card {
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
             border: 1px solid rgba(255,215,0,0.4);
             border-radius: 12px;
             padding: 10px;
             cursor: pointer;
-            transition: all 0.2s;
             text-align: center;
         }
 
         .world-btn.active {
             background: linear-gradient(135deg, #ffd700, #ff8800);
-            border-color: #fff;
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
-        .world-btn:hover { transform: translateY(-2px); border-color: #ffd700; }
-
-        /* Boost Section */
-        .boost-section {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 18px;
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-
-        .boost-timer {
-            background: rgba(0,0,0,0.5);
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        /* Eggs Section */
-        .eggs-section {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,215,0,0.3);
-            transition: all 0.3s;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .eggs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .egg-card {
-            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1));
-            border: 2px solid rgba(255,215,0,0.5);
-            border-radius: 20px;
-            padding: 18px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .egg-card:active { transform: scale(0.98); }
-        .egg-card:hover { transform: translateY(-3px); border-color: #ffd700; }
-
-        .egg-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .egg-emoji { font-size: 48px; }
-        .egg-title { font-size: 20px; font-weight: bold; color: #ffd700; }
-        .egg-price {
-            display: inline-block;
-            background: rgba(0,0,0,0.6);
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin: 8px 0;
-            font-weight: bold;
-        }
-
-        .pet-list {
-            margin-top: 12px;
-            border-top: 1px solid rgba(255,215,0,0.3);
-            padding-top: 12px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .pet-chance {
-            font-size: 11px;
-            padding: 4px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .pet-chance span:first-child { color: #ffd700; font-weight: bold; }
-        .chance-badge { background: rgba(255,215,0,0.2); padding: 2px 8px; border-radius: 12px; font-size: 10px; }
+        .egg-card { padding: 15px; }
+        .egg-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .egg-emoji { font-size: 40px; }
+        .egg-title { font-size: 18px; font-weight: bold; color: #ffd700; }
+        .egg-price { display: inline-block; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 20px; margin: 5px 0; font-size: 14px; }
+        .pet-list { margin-top: 10px; border-top: 1px solid rgba(255,215,0,0.3); padding-top: 10px; max-height: 180px; overflow-y: auto; }
+        .pet-chance { font-size: 11px; padding: 3px 0; display: flex; justify-content: space-between; }
 
         /* Pets Collection */
-        .pets-collection {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-
         .pets-stats {
             display: flex;
             justify-content: space-between;
@@ -322,7 +205,6 @@
             gap: 12px;
             max-height: 400px;
             overflow-y: auto;
-            padding-right: 5px;
         }
 
         .pet-card {
@@ -331,109 +213,88 @@
             padding: 12px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
             border: 1px solid rgba(255,215,0,0.3);
         }
 
-        .pet-card:active { transform: scale(0.98); }
         .pet-card.active-pet {
             border: 2px solid #ffd700;
             background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2));
-            box-shadow: 0 0 15px rgba(255,215,0,0.3);
         }
 
         .pet-card-emoji { font-size: 48px; }
-        .pet-card-name { font-size: 12px; color: white; font-weight: bold; margin: 5px 0; }
+        .pet-card-name { font-size: 12px; color: white; font-weight: bold; }
         .pet-card-power { font-size: 11px; color: #ffd700; }
         .pet-card-rarity { font-size: 10px; margin-top: 5px; padding: 2px 6px; border-radius: 10px; display: inline-block; }
 
         .sell-btn {
             background: linear-gradient(135deg, #ff4444, #cc0000);
             border: none;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
             color: white;
             font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 8px;
-            transition: all 0.1s;
             width: 100%;
         }
 
-        .sell-btn:active { transform: scale(0.95); }
-
-        /* Upgrades Section */
-        .upgrades-section {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-
-        .upgrades-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .upgrade-card {
-            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1));
-            border: 1px solid rgba(255,215,0,0.4);
-            border-radius: 16px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.1s;
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffd700;
             text-align: center;
+            margin-bottom: 15px;
         }
-
-        .upgrade-card:active { transform: scale(0.98); }
-        .upgrade-card:hover { transform: translateY(-2px); border-color: #ffd700; }
 
         .btn {
             background: linear-gradient(135deg, #ffd700, #ff8800);
             border: none;
-            padding: 10px 20px;
+            padding: 10px;
             border-radius: 40px;
             color: #1a0f24;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.1s;
-            margin-top: 10px;
             width: 100%;
+            margin-top: 10px;
         }
 
-        .btn:active { transform: scale(0.98); }
+        .boost-timer {
+            background: rgba(0,0,0,0.5);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            margin-top: 10px;
+        }
 
+        /* МАКСИМАЛЬНО БЫСТРЫЕ АНИМАЦИИ */
         .floating-number {
             position: fixed;
             pointer-events: none;
             font-size: 28px;
             font-weight: bold;
-            animation: floatUp 0.6s ease-out forwards;
+            animation: floatFast 0.4s ease-out forwards;
             z-index: 1000;
             text-shadow: 0 0 5px black;
         }
 
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(0.5); }
-            100% { opacity: 0; transform: translateY(-60px) scale(1); }
+        @keyframes floatFast {
+            0% { opacity: 1; transform: translateY(0) scale(0.8); }
+            100% { opacity: 0; transform: translateY(-40px) scale(1); }
         }
 
-        .click-effect {
+        .click-ripple {
             position: fixed;
             pointer-events: none;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(255,215,0,0.8), transparent);
-            animation: clickRipple 0.3s ease-out forwards;
+            animation: ripple 0.2s ease-out forwards;
             z-index: 999;
         }
 
-        @keyframes clickRipple {
+        @keyframes ripple {
             0% { transform: scale(0); opacity: 0.8; }
-            100% { transform: scale(2); opacity: 0; }
+            100% { transform: scale(1.5); opacity: 0; }
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -441,14 +302,13 @@
         ::-webkit-scrollbar-thumb { background: #ffd700; border-radius: 10px; }
 
         @keyframes fadeOut {
-            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
 <body>
     <div class="game-container" id="gameContainer" data-theme="forest">
-        <!-- Resources -->
         <div class="resources-bar">
             <div class="resource-card"><div class="resource-icon">💰</div><div class="resource-info"><div class="resource-name">Монеты</div><div class="resource-value" id="coins">0</div></div></div>
             <div class="resource-card"><div class="resource-icon">💎</div><div class="resource-info"><div class="resource-name">Алмазы</div><div class="resource-value" id="gems">0</div></div></div>
@@ -458,7 +318,6 @@
 
         <div class="game-layout">
             <div class="pet-area" id="petArea">
-                <div class="pet-glow"></div>
                 <div class="current-pet" id="currentPetEmoji">🐣</div>
                 <div class="pet-name" id="currentPetName">Маленький питомец</div>
                 <div class="pet-power" id="currentPetPower">⭐ Сила: 1 ⭐</div>
@@ -466,47 +325,42 @@
 
             <div class="side-panel">
                 <div class="world-selector">
-                    <div class="section-title" style="font-size: 18px;">🌍 МИРЫ 🌍</div>
+                    <div class="section-title" style="font-size: 18px;">🌍 МИРЫ</div>
                     <div class="world-buttons" id="worldsContainer"></div>
                 </div>
                 <div class="boost-section">
-                    <div class="section-title" style="font-size: 18px;">⚡ БУСТЫ ⚡</div>
+                    <div class="section-title" style="font-size: 18px;">⚡ БУСТЫ</div>
                     <div id="boostsContainer"></div>
                     <button class="btn" id="buyBoostBtn">💪 Купить буст x2 (100💎)</button>
                 </div>
             </div>
         </div>
 
-        <!-- Eggs -->
         <div class="eggs-section" id="eggsSection">
-            <div class="section-title">🥚 МАГИЧЕСКИЕ ЯЙЦА 🥚</div>
+            <div class="section-title">🥚 МАГИЧЕСКИЕ ЯЙЦА</div>
             <div class="eggs-grid" id="eggsContainer"></div>
         </div>
 
-        <!-- Pets Collection -->
         <div class="pets-collection">
-            <div class="section-title">🐕 МОИ ПИТОМЦЫ 🐈</div>
+            <div class="section-title">🐕 МОИ ПИТОМЦЫ</div>
             <div class="pets-stats">
                 <span>📊 Всего: <span id="totalPets">0</span></span>
-                <span>⭐ Общая сила: <span id="totalPower">0</span></span>
-                <span>💰 Стоимость продажи: <span id="totalSellValue">0</span>💰</span>
+                <span>⭐ Сила: <span id="totalPower">0</span></span>
+                <span>💰 Продажа: <span id="totalSellValue">0</span></span>
             </div>
             <div class="pets-grid" id="petsContainer"></div>
-            <button class="btn" id="sellAllBtn" style="background: linear-gradient(135deg, #ff4444, #aa2222); margin-top: 15px;">💰 ПРОДАТЬ ВСЕХ (КРОМЕ АКТИВНОГО) 💰</button>
+            <button class="btn" id="sellAllBtn" style="background: linear-gradient(135deg, #ff4444, #aa2222);">💰 ПРОДАТЬ ВСЕХ</button>
         </div>
 
-        <!-- Upgrades -->
         <div class="upgrades-section">
-            <div class="section-title">✨ УЛУЧШЕНИЯ ✨</div>
+            <div class="section-title">✨ УЛУЧШЕНИЯ</div>
             <div class="upgrades-grid" id="upgradesContainer"></div>
         </div>
     </div>
 
     <script>
-        // ==================== ПИТОМЦЫ ДЛЯ КАЖДОГО МИРА ====================
         const WORLD_EGGS = {
             forest: {
-                theme: "🌿 Лесной",
                 eggs: [
                     { id: "common", name: "🌿 Лесное яйцо", price: 100, icon: "🥚🌿", pets: ["🐣 Цыпленок(1)", "🐥 Утенок(2)", "🐦 Птичка(3)", "🐌 Улитка(1)", "🐿️ Белка(4)"] },
                     { id: "rare", name: "🍄 Волшебное яйцо", price: 500, icon: "🥚🍄", pets: ["🐱 Котенок(8)", "🐶 Щенок(10)", "🦊 Лисенок(12)", "🐰 Зайчик(15)"] },
@@ -516,53 +370,48 @@
                 ]
             },
             volcano: {
-                theme: "🔥 Вулканический",
                 eggs: [
-                    { id: "common", name: "🌋 Яйцо магмы", price: 200, icon: "🥚🌋", pets: ["🦎 Ящерица(3)", "🐍 Змейка(4)", "🪲 Жук-огневик(5)"] },
-                    { id: "rare", name: "🔥 Огненное яйцо", price: 800, icon: "🔥🥚", pets: ["🦊 Огненный лис(12)", "🐺 Магмовый волк(15)", "🐉 Огненный саламандр(18)"] },
-                    { id: "epic", name: "💥 Яйцо лавы", price: 3000, icon: "💥🥚", pets: ["🔥 Элементаль огня(35)", "🐲 Огненный дракон(40)", "🗿 Голем(38)"] },
-                    { id: "legendary", name: "🌋 Яйцо вулкана", price: 12000, icon: "🌋🥚", pets: ["🐉 Дракон лавы(90)", "🔥 Феникс(85)", "⚡ Вулканический титан(95)"] },
-                    { id: "mythic", name: "💀 Яйцо хаоса", price: 40000, icon: "💀🥚", pets: ["👑 Повелитель огня(250)", "🌋 Вулканический бог(280)", "🔥 Испепелитель(300)"] }
+                    { id: "common", name: "🌋 Яйцо магмы", price: 200, icon: "🥚🌋", pets: ["🦎 Ящерица(3)", "🐍 Змейка(4)", "🪲 Жук(5)"] },
+                    { id: "rare", name: "🔥 Огненное яйцо", price: 800, icon: "🔥🥚", pets: ["🦊 Огненный лис(12)", "🐺 Магмовый волк(15)", "🐉 Саламандра(18)"] },
+                    { id: "epic", name: "💥 Яйцо лавы", price: 3000, icon: "💥🥚", pets: ["🔥 Элементаль(35)", "🐲 Дракон(40)", "🗿 Голем(38)"] },
+                    { id: "legendary", name: "🌋 Яйцо вулкана", price: 12000, icon: "🌋🥚", pets: ["🐉 Дракон лавы(90)", "🔥 Феникс(85)", "⚡ Титан(95)"] },
+                    { id: "mythic", name: "💀 Яйцо хаоса", price: 40000, icon: "💀🥚", pets: ["👑 Повелитель(250)", "🌋 Бог огня(280)", "🔥 Испепелитель(300)"] }
                 ]
             },
             ice: {
-                theme: "❄️ Ледяной",
                 eggs: [
-                    { id: "common", name: "❄️ Ледяное яйцо", price: 150, icon: "❄️🥚", pets: ["🐧 Пингвин(4)", "🐻‍❄️ Белый мишка(5)", "🦊 Полярный лис(3)"] },
-                    { id: "rare", name: "⛄ Снежное яйцо", price: 700, icon: "⛄🥚", pets: ["🦌 Северный олень(14)", "🐺 Снежный волк(16)", "🦉 Белая сова(13)"] },
-                    { id: "epic", name: "🧊 Яйцо вечной мерзлоты", price: 2800, icon: "🧊🥚", pets: ["❄️ Ледяной элементаль(32)", "🐉 Ледяной дракон(38)", "🗻 Йети(35)"] },
-                    { id: "legendary", name: "💎 Кристальное яйцо", price: 10000, icon: "💎🥚", pets: ["✨ Ледяная фея(80)", "🐉 Ледяной виверн(88)", "❄️ Король снегов(85)"] },
-                    { id: "mythic", name: "🌙 Яйцо полярной ночи", price: 35000, icon: "🌙🥚", pets: ["👑 Ледяной титан(220)", "❄️ Повелитель метелей(250)", "⭐ Зимний дух(270)"] }
+                    { id: "common", name: "❄️ Ледяное яйцо", price: 150, icon: "❄️🥚", pets: ["🐧 Пингвин(4)", "🐻‍❄️ Мишка(5)", "🦊 Полярный лис(3)"] },
+                    { id: "rare", name: "⛄ Снежное яйцо", price: 700, icon: "⛄🥚", pets: ["🦌 Олень(14)", "🐺 Волк(16)", "🦉 Сова(13)"] },
+                    { id: "epic", name: "🧊 Яйцо мерзлоты", price: 2800, icon: "🧊🥚", pets: ["❄️ Элементаль(32)", "🐉 Дракон(38)", "🗻 Йети(35)"] },
+                    { id: "legendary", name: "💎 Кристальное яйцо", price: 10000, icon: "💎🥚", pets: ["✨ Фея(80)", "🐉 Виверн(88)", "❄️ Король(85)"] },
+                    { id: "mythic", name: "🌙 Яйцо ночи", price: 35000, icon: "🌙🥚", pets: ["👑 Титан(220)", "❄️ Повелитель(250)", "⭐ Дух(270)"] }
                 ]
             },
             sky: {
-                theme: "⚡ Небесный",
                 eggs: [
                     { id: "common", name: "☁️ Облачное яйцо", price: 250, icon: "☁️🥚", pets: ["🐦 Птица(5)", "🦋 Бабочка(4)", "🐝 Пчелка(6)"] },
-                    { id: "rare", name: "⚡ Грозовое яйцо", price: 1000, icon: "⚡🥚", pets: ["🦅 Орел(18)", "⚡ Электрическая птица(20)", "🕊️ Серебряный голубь(16)"] },
-                    { id: "epic", name: "🌈 Радужное яйцо", price: 4000, icon: "🌈🥚", pets: ["🦄 Пегас(45)", "🐉 Небесный дракон(48)", "✨ Световой элементаль(42)"] },
-                    { id: "legendary", name: "🌙 Лунное яйцо", price: 15000, icon: "🌙🥚", pets: ["⭐ Звездный дракон(100)", "🌙 Лунный феникс(95)", "☀️ Солнечный голем(105)"] },
-                    { id: "mythic", name: "🌟 Яйцо богов", price: 50000, icon: "🌟🥚", pets: ["👑 Небесный император(350)", "⚡ Громовержец(380)", "🌈 Радужный дракон(400)"] }
+                    { id: "rare", name: "⚡ Грозовое яйцо", price: 1000, icon: "⚡🥚", pets: ["🦅 Орел(18)", "⚡ Электрик(20)", "🕊️ Голубь(16)"] },
+                    { id: "epic", name: "🌈 Радужное яйцо", price: 4000, icon: "🌈🥚", pets: ["🦄 Пегас(45)", "🐉 Дракон(48)", "✨ Элементаль(42)"] },
+                    { id: "legendary", name: "🌙 Лунное яйцо", price: 15000, icon: "🌙🥚", pets: ["⭐ Звездный(100)", "🌙 Феникс(95)", "☀️ Голем(105)"] },
+                    { id: "mythic", name: "🌟 Яйцо богов", price: 50000, icon: "🌟🥚", pets: ["👑 Император(350)", "⚡ Громовержец(380)", "🌈 Дракон(400)"] }
                 ]
             },
             hell: {
-                theme: "💀 Адский",
                 eggs: [
-                    { id: "common", name: "💀 Тёмное яйцо", price: 300, icon: "💀🥚", pets: ["🦇 Летучая мышь(6)", "🕷️ Паук(5)", "🐍 Змей(7)"] },
-                    { id: "rare", name: "🔮 Проклятое яйцо", price: 1200, icon: "🔮🥚", pets: ["👻 Призрак(22)", "🧟 Зомби(20)", "🐺 Адский волк(25)"] },
-                    { id: "epic", name: "💀 Яйцо тьмы", price: 5000, icon: "💀🥚", pets: ["😈 Демон(55)", "🔥 Адский пес(52)", "🦴 Скелет-рыцарь(58)"] },
-                    { id: "legendary", name: "👁️ Яйцо ужаса", price: 20000, icon: "👁️🥚", pets: ["🐉 Некродракон(120)", "👑 Король демонов(115)", "💀 Жнец(125)"] },
-                    { id: "mythic", name: "🌑 Яйцо бездны", price: 70000, icon: "🌑🥚", pets: ["👁️ Древний ужас(450)", "💀 Повелитель бездны(480)", "🔥 Адский архангел(500)"] }
+                    { id: "common", name: "💀 Тёмное яйцо", price: 300, icon: "💀🥚", pets: ["🦇 Мышь(6)", "🕷️ Паук(5)", "🐍 Змей(7)"] },
+                    { id: "rare", name: "🔮 Проклятое яйцо", price: 1200, icon: "🔮🥚", pets: ["👻 Призрак(22)", "🧟 Зомби(20)", "🐺 Волк(25)"] },
+                    { id: "epic", name: "💀 Яйцо тьмы", price: 5000, icon: "💀🥚", pets: ["😈 Демон(55)", "🔥 Пес(52)", "🦴 Рыцарь(58)"] },
+                    { id: "legendary", name: "👁️ Яйцо ужаса", price: 20000, icon: "👁️🥚", pets: ["🐉 Некродракон(120)", "👑 Король(115)", "💀 Жнец(125)"] },
+                    { id: "mythic", name: "🌑 Яйцо бездны", price: 70000, icon: "🌑🥚", pets: ["👁️ Ужас(450)", "💀 Повелитель(480)", "🔥 Архангел(500)"] }
                 ]
             },
             paradise: {
-                theme: "👑 Райский",
                 eggs: [
-                    { id: "common", name: "✨ Святое яйцо", price: 400, icon: "✨🥚", pets: ["🕊️ Ангел(8)", "⭐ Золотая рыбка(7)", "🌸 Цветочный эльф(9)"] },
-                    { id: "rare", name: "💫 Яйцо чудес", price: 1500, icon: "💫🥚", pets: ["🦄 Золотой единорог(30)", "🧚 Светлая фея(28)", "✨ Святой зверь(32)"] },
-                    { id: "epic", name: "🌟 Яйцо света", price: 6000, icon: "🌟🥚", pets: ["🦁 Святой лев(70)", "🐉 Светлый дракон(75)", "⚜️ Хранитель(68)"] },
-                    { id: "legendary", name: "👑 Божественное яйцо", price: 25000, icon: "👑🥚", pets: ["😇 Архангел(150)", "🐉 Райский дракон(160)", "✨ Серафим(145)"] },
-                    { id: "mythic", name: "🌌 Космическое яйцо", price: 100000, icon: "🌌🥚", pets: ["🌌 Космический дракон(600)", "⭐ Звездный создатель(650)", "👑 Бог-император(700)"] }
+                    { id: "common", name: "✨ Святое яйцо", price: 400, icon: "✨🥚", pets: ["🕊️ Ангел(8)", "⭐ Рыбка(7)", "🌸 Эльф(9)"] },
+                    { id: "rare", name: "💫 Яйцо чудес", price: 1500, icon: "💫🥚", pets: ["🦄 Единорог(30)", "🧚 Фея(28)", "✨ Зверь(32)"] },
+                    { id: "epic", name: "🌟 Яйцо света", price: 6000, icon: "🌟🥚", pets: ["🦁 Лев(70)", "🐉 Дракон(75)", "⚜️ Хранитель(68)"] },
+                    { id: "legendary", name: "👑 Божественное", price: 25000, icon: "👑🥚", pets: ["😇 Архангел(150)", "🐉 Дракон(160)", "✨ Серафим(145)"] },
+                    { id: "mythic", name: "🌌 Космическое", price: 100000, icon: "🌌🥚", pets: ["🌌 Космический(600)", "⭐ Создатель(650)", "👑 Бог(700)"] }
                 ]
             }
         };
@@ -572,187 +421,164 @@
                 this.coins = 5000;
                 this.gems = 100;
                 this.clickPower = 1;
-                this.totalClicks = 0;
                 this.multiplier = 1;
                 this.boostActive = false;
                 this.boostEndTime = 0;
                 this.currentWorld = 0;
                 this.worlds = [
-                    { name: "🌿 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌿", theme: "forest" },
+                    { name: "🌿 Лес", multiplier: 1, unlocked: true, cost: 0, icon: "🌿", theme: "forest" },
                     { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 5000, icon: "🔥", theme: "volcano" },
                     { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 20000, icon: "❄️", theme: "ice" },
                     { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 80000, icon: "⚡", theme: "sky" },
-                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 250000, icon: "💀", theme: "hell" },
-                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 1000000, icon: "👑", theme: "paradise" }
+                    { name: "💀 Ад", multiplier: 8, unlocked: false, cost: 250000, icon: "💀", theme: "hell" },
+                    { name: "👑 Рай", multiplier: 12, unlocked: false, cost: 1000000, icon: "👑", theme: "paradise" }
                 ];
                 this.pets = [];
                 this.currentPet = null;
                 this.autoClickerLevel = 0;
                 this.autoInterval = null;
                 this.upgrades = [
-                    { id: "click", name: "💪 Усиление клика", desc: "+5 к силе", price: 500, priceType: "coins", effect: () => { this.clickPower += 5; }, level: 0, basePrice: 500 },
-                    { id: "auto", name: "🤖 Авто-кликер", desc: "+1 клик/сек", price: 800, priceType: "coins", effect: () => { this.autoClickerLevel++; this.startAutoClicker(); }, level: 0, basePrice: 800 },
-                    { id: "multiplier", name: "✨ Множитель", desc: "+0.5x доход", price: 1500, priceType: "gems", effect: () => { this.multiplier += 0.5; }, level: 0, basePrice: 1500 }
+                    { id: "click", name: "💪 Усиление", desc: "+5 силы", price: 500, type: "coins", effect: () => { this.clickPower += 5; }, level: 0, base: 500 },
+                    { id: "auto", name: "🤖 Авто-клик", desc: "+1/сек", price: 800, type: "coins", effect: () => { this.autoClickerLevel++; this.startAuto(); }, level: 0, base: 800 },
+                    { id: "multiplier", name: "✨ Множитель", desc: "+0.5x", price: 1500, type: "gems", effect: () => { this.multiplier += 0.5; }, level: 0, base: 1500 }
                 ];
                 this.init();
             }
 
             init() {
-                this.loadGame();
+                this.load();
                 this.renderWorlds();
                 this.renderEggs();
                 this.renderPets();
                 this.renderUpgrades();
                 this.renderBoosts();
                 this.updateUI();
-                this.startAutoClicker();
+                this.startAuto();
                 this.startBoostTimer();
-                this.setupEventListeners();
+                this.setupEvents();
                 this.updateTheme();
             }
 
-            setupEventListeners() {
+            setupEvents() {
                 const petArea = document.getElementById('petArea');
-                petArea.addEventListener('click', (e) => this.clickPet(e));
-                document.getElementById('buyBoostBtn').addEventListener('click', () => this.buyBoost());
-                document.getElementById('sellAllBtn').addEventListener('click', () => this.sellAllPets());
+                petArea.addEventListener('click', (e) => this.click(e));
+                document.getElementById('buyBoostBtn').onclick = () => this.buyBoost();
+                document.getElementById('sellAllBtn').onclick = () => this.sellAll();
             }
 
-            getRandomPetFromEgg(eggData) {
-                const petsList = eggData.pets;
-                const randomPet = petsList[Math.floor(Math.random() * petsList.length)];
-                const match = randomPet.match(/([^\d]+)\((\d+)\)/);
-                if (match) {
-                    return { emoji: match[1].charAt(0) + (match[1].charAt(1) || ""), name: match[1], power: parseInt(match[2]), rarity: eggData.id };
+            click(e) {
+                const worldBonus = this.worlds[this.currentWorld].multiplier;
+                const boostBonus = this.boostActive ? 2 : 1;
+                const earned = Math.floor(this.clickPower * worldBonus * this.multiplier * boostBonus);
+                this.coins += earned;
+                
+                if (Math.random() < 0.05) {
+                    const diamonds = Math.floor(Math.random() * 100) + 1;
+                    this.gems += diamonds;
+                    this.showFloat(`💎 +${diamonds}`, e.clientX, e.clientY, '#ff88ff');
                 }
-                return { emoji: "🐣", name: "Питомец", power: 1, rarity: eggData.id };
+                
+                this.showFloat(`+${earned}💰`, e.clientX, e.clientY, '#ffd700');
+                this.showRipple(e.clientX, e.clientY);
+                this.updateUI();
+                this.save();
             }
 
-            openEgg(eggData) {
-                if (this.coins >= eggData.price) {
-                    this.coins -= eggData.price;
+            showFloat(text, x, y, color) {
+                const div = document.createElement('div');
+                div.className = 'floating-number';
+                div.textContent = text;
+                div.style.left = `${x - 25}px`;
+                div.style.top = `${y - 30}px`;
+                div.style.color = color;
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 400);
+            }
+
+            showRipple(x, y) {
+                const ripple = document.createElement('div');
+                ripple.className = 'click-ripple';
+                ripple.style.left = `${x - 15}px`;
+                ripple.style.top = `${y - 15}px`;
+                ripple.style.width = '30px';
+                ripple.style.height = '30px';
+                document.body.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 200);
+            }
+
+            getRandomPet(egg) {
+                const petStr = egg.pets[Math.floor(Math.random() * egg.pets.length)];
+                const match = petStr.match(/(.+?)\((\d+)\)/);
+                return { emoji: match[1].charAt(0) + (match[1].charAt(1) || ""), name: match[1], power: parseInt(match[2]), rarity: egg.id };
+            }
+
+            openEgg(egg) {
+                if (this.coins >= egg.price) {
+                    this.coins -= egg.price;
                 } else {
-                    this.showMessage("❌ Недостаточно монет!");
+                    this.msg("❌ Нет монет!");
                     return;
                 }
-
-                const newPetData = this.getRandomPetFromEgg(eggData);
-                const newPet = { ...newPetData, id: Date.now() + Math.random() };
+                const pet = this.getRandomPet(egg);
+                const newPet = { ...pet, id: Date.now() + Math.random() };
                 this.pets.push(newPet);
-
                 if (!this.currentPet) this.selectPet(newPet);
                 else this.updateClickPower();
-
-                this.showMessage(`🎉 ВЫ ПОЛУЧИЛИ: ${newPet.name}! ⭐ Сила: ${newPet.power} ⭐`);
+                this.msg(`🎉 +${newPet.name}! Сила: ${newPet.power}`);
                 this.renderPets();
                 this.updateUI();
-                this.saveGame();
+                this.save();
             }
 
             selectPet(pet) {
                 this.currentPet = pet;
                 this.updateClickPower();
                 this.renderPets();
-                this.saveGame();
+                this.save();
             }
 
-            sellPet(petId) {
-                const petIndex = this.pets.findIndex(p => p.id === petId);
-                if (petIndex === -1) return;
-                const pet = this.pets[petIndex];
-                if (this.currentPet && this.currentPet.id === petId) {
-                    this.showMessage("❌ Нельзя продать активного питомца!");
-                    return;
-                }
-                const sellValue = Math.floor(pet.power * 10);
-                this.coins += sellValue;
-                this.pets.splice(petIndex, 1);
-                this.showMessage(`💰 Продано: ${pet.name} за ${sellValue} монет!`);
+            sellPet(id) {
+                const index = this.pets.findIndex(p => p.id === id);
+                if (index === -1) return;
+                const pet = this.pets[index];
+                if (this.currentPet?.id === id) { this.msg("❌ Нельзя продать активного!"); return; }
+                this.coins += Math.floor(pet.power * 10);
+                this.pets.splice(index, 1);
+                this.msg(`💰 Продал ${pet.name} за ${Math.floor(pet.power * 10)}💰`);
                 this.renderPets();
                 this.updateUI();
-                this.saveGame();
+                this.save();
             }
 
-            sellAllPets() {
-                if (this.pets.length <= 1) {
-                    this.showMessage("❌ Нет питомцев для продажи или только один активный!");
-                    return;
-                }
-                let totalSell = 0;
-                const toSell = this.pets.filter(p => !(this.currentPet && p.id === this.currentPet.id));
-                for (const pet of toSell) totalSell += Math.floor(pet.power * 10);
-                this.coins += totalSell;
-                this.pets = this.pets.filter(p => this.currentPet && p.id === this.currentPet.id);
-                this.showMessage(`💰 Продано ${toSell.length} питомцев! Получено: ${totalSell} монет!`);
+            sellAll() {
+                if (this.pets.length <= 1) { this.msg("❌ Некого продавать!"); return; }
+                let total = 0;
+                const toSell = this.pets.filter(p => this.currentPet?.id !== p.id);
+                toSell.forEach(p => total += Math.floor(p.power * 10));
+                this.coins += total;
+                this.pets = this.pets.filter(p => this.currentPet?.id === p.id);
+                this.msg(`💰 Продано ${toSell.length} питомцев за ${total}💰`);
                 this.renderPets();
                 this.updateUI();
-                this.saveGame();
+                this.save();
             }
 
             updateClickPower() {
-                if (this.currentPet) this.clickPower = 5 + this.currentPet.power;
-                else this.clickPower = 1;
+                this.clickPower = this.currentPet ? 5 + this.currentPet.power : 1;
                 this.updateUI();
             }
 
-            clickPet(event) {
-                const worldBonus = this.worlds[this.currentWorld].multiplier;
-                const boostBonus = this.boostActive ? 2 : 1;
-                let earned = Math.floor(this.clickPower * worldBonus * this.multiplier * boostBonus);
-                this.coins += earned;
-                this.totalClicks++;
-                
-                // Шанс 5% на получение алмазов (1-100)
-                const diamondChance = Math.random() * 100;
-                if (diamondChance <= 5) {
-                    const diamondsEarned = Math.floor(Math.random() * 100) + 1;
-                    this.gems += diamondsEarned;
-                    this.showFloatingText(`💎 +${diamondsEarned} АЛМАЗОВ! 💎`, event.clientX, event.clientY, '#ff88ff');
-                }
-                
-                this.showFloatingNumber(`+${earned}💰`, event.clientX, event.clientY);
-                
-                // Визуальный эффект клика
-                this.showClickEffect(event.clientX, event.clientY);
-                
-                this.updateUI();
-                this.saveGame();
-            }
-            
-            showClickEffect(x, y) {
-                const effect = document.createElement('div');
-                effect.className = 'click-effect';
-                effect.style.left = `${x - 20}px`;
-                effect.style.top = `${y - 20}px`;
-                effect.style.width = '40px';
-                effect.style.height = '40px';
-                document.body.appendChild(effect);
-                setTimeout(() => effect.remove(), 300);
-            }
-
-            showFloatingText(text, x, y, color = '#ffd700') {
-                const div = document.createElement('div');
-                div.className = 'floating-number';
-                div.textContent = text;
-                div.style.left = `${x - 60}px`;
-                div.style.top = `${y - 50}px`;
-                div.style.color = color;
-                div.style.fontSize = '24px';
-                div.style.whiteSpace = 'nowrap';
-                document.body.appendChild(div);
-                setTimeout(() => div.remove(), 800);
-            }
-
-            buyUpgrade(upgrade) {
-                if (upgrade.priceType === "coins" && this.coins >= upgrade.price) this.coins -= upgrade.price;
-                else if (upgrade.priceType === "gems" && this.gems >= upgrade.price) this.gems -= upgrade.price;
-                else { this.showMessage("Недостаточно!"); return; }
-                upgrade.effect();
-                upgrade.level++;
-                upgrade.price = Math.floor(upgrade.basePrice * Math.pow(1.5, upgrade.level));
-                this.updateUI();
-                this.renderUpgrades();
-                this.saveGame();
+            buyUpgrade(up) {
+                if ((up.type === "coins" && this.coins >= up.price) || (up.type === "gems" && this.gems >= up.price)) {
+                    if (up.type === "coins") this.coins -= up.price;
+                    else this.gems -= up.price;
+                    up.effect();
+                    up.level++;
+                    up.price = Math.floor(up.base * Math.pow(1.5, up.level));
+                    this.renderUpgrades();
+                    this.updateUI();
+                    this.save();
+                } else this.msg("❌ Недостаточно!");
             }
 
             buyBoost() {
@@ -760,132 +586,110 @@
                     this.gems -= 100;
                     this.boostActive = true;
                     this.boostEndTime = Date.now() + 300000;
-                    this.showMessage("⚡ БУСТ АКТИВИРОВАН! x2 доход на 5 минут!");
+                    this.msg("⚡ Буст x2 на 5 минут!");
                     this.renderBoosts();
-                    this.saveGame();
-                } else this.showMessage("Нужно 100 алмазов!");
+                    this.save();
+                } else this.msg("❌ Нужно 100 алмазов!");
             }
 
-            unlockWorld(index) {
-                const world = this.worlds[index];
-                if (!world.unlocked && this.coins >= world.cost) {
-                    this.coins -= world.cost;
-                    world.unlocked = true;
-                    this.showMessage(`🌍 Открыт мир: ${world.name}!`);
+            unlockWorld(i) {
+                const w = this.worlds[i];
+                if (!w.unlocked && this.coins >= w.cost) {
+                    this.coins -= w.cost;
+                    w.unlocked = true;
+                    this.msg(`🌍 Открыт мир: ${w.name}!`);
                     this.renderWorlds();
                     this.updateUI();
-                    this.saveGame();
-                } else if (!world.unlocked) this.showMessage(`Нужно ${world.cost} монет!`);
+                    this.save();
+                } else if (!w.unlocked) this.msg(`❌ Нужно ${w.cost} монет!`);
             }
 
-            changeWorld(index) {
-                if (this.worlds[index].unlocked) {
-                    this.currentWorld = index;
+            changeWorld(i) {
+                if (this.worlds[i].unlocked) {
+                    this.currentWorld = i;
                     this.renderWorlds();
                     this.renderEggs();
                     this.updateTheme();
-                    this.updateUI();
-                    this.saveGame();
+                    this.save();
                 }
             }
 
             updateTheme() {
-                const world = this.worlds[this.currentWorld];
-                const container = document.getElementById('gameContainer');
-                container.setAttribute('data-theme', world.theme);
-                
-                const themes = {
-                    forest: 'radial-gradient(ellipse at top, #0a2a0a 0%, #051005 100%)',
-                    volcano: 'radial-gradient(ellipse at top, #4a1a0a 0%, #2a0a05 100%)',
-                    ice: 'radial-gradient(ellipse at top, #1a3a5a 0%, #0a1a2a 100%)',
-                    sky: 'radial-gradient(ellipse at top, #2a2a5a 0%, #0a0a2a 100%)',
-                    hell: 'radial-gradient(ellipse at top, #4a0a2a 0%, #2a050a 100%)',
-                    paradise: 'radial-gradient(ellipse at top, #4a2a6a 0%, #2a0a4a 100%)'
-                };
-                document.body.style.background = themes[world.theme] || themes.forest;
+                const theme = this.worlds[this.currentWorld].theme;
+                document.getElementById('gameContainer').setAttribute('data-theme', theme);
+                const themes = { forest: '#0a2a0a', volcano: '#4a1a0a', ice: '#1a3a5a', sky: '#2a2a5a', hell: '#4a0a2a', paradise: '#4a2a6a' };
+                document.body.style.background = `radial-gradient(ellipse at top, ${themes[theme]} 0%, #050510 100%)`;
             }
 
             renderWorlds() {
-                const container = document.getElementById('worldsContainer');
-                container.innerHTML = '';
-                this.worlds.forEach((world, i) => {
+                const cont = document.getElementById('worldsContainer');
+                cont.innerHTML = '';
+                this.worlds.forEach((w, i) => {
                     const btn = document.createElement('div');
                     btn.className = `world-btn ${i === this.currentWorld ? 'active' : ''}`;
-                    btn.innerHTML = `<div style="font-size: 24px;">${world.icon}</div><div style="font-size: 11px;">${world.name}</div><div style="font-size: 10px;">x${world.multiplier}</div>${!world.unlocked ? `<div style="font-size: 10px; color:#ffd700;">💰${world.cost}</div>` : ''}`;
-                    btn.onclick = () => world.unlocked ? this.changeWorld(i) : this.unlockWorld(i);
-                    container.appendChild(btn);
+                    btn.innerHTML = `<div style="font-size:24px;">${w.icon}</div><div>${w.name}</div><div>x${w.multiplier}</div>${!w.unlocked ? `<div>💰${w.cost}</div>` : ''}`;
+                    btn.onclick = () => w.unlocked ? this.changeWorld(i) : this.unlockWorld(i);
+                    cont.appendChild(btn);
                 });
             }
 
             renderEggs() {
-                const container = document.getElementById('eggsContainer');
-                const world = this.worlds[this.currentWorld];
-                const eggsData = WORLD_EGGS[world.theme].eggs;
-                
-                container.innerHTML = '';
-                eggsData.forEach(egg => {
+                const cont = document.getElementById('eggsContainer');
+                const eggs = WORLD_EGGS[this.worlds[this.currentWorld].theme].eggs;
+                cont.innerHTML = '';
+                eggs.forEach(egg => {
                     const card = document.createElement('div');
                     card.className = 'egg-card';
                     card.innerHTML = `
                         <div class="egg-header"><div class="egg-emoji">${egg.icon}</div><div class="egg-title">${egg.name}</div></div>
-                        <div class="egg-price">💰 ${egg.price} монет</div>
-                        <div class="pet-list"><div class="pet-list-title">📋 Кто может выпасть:</div>
-                        ${egg.pets.map(p => `<div class="pet-chance"><span>${p}</span></div>`).join('')}
-                        </div>
+                        <div class="egg-price">💰 ${egg.price}</div>
+                        <div class="pet-list">${egg.pets.map(p => `<div class="pet-chance"><span>${p}</span></div>`).join('')}</div>
                     `;
                     card.onclick = () => this.openEgg(egg);
-                    container.appendChild(card);
+                    cont.appendChild(card);
                 });
-                
-                const eggsSection = document.getElementById('eggsSection');
-                const title = eggsSection.querySelector('.section-title');
-                if (title) title.innerHTML = `🥚 ${world.name} ЯЙЦА 🥚`;
+                document.getElementById('eggsSection').querySelector('.section-title').innerHTML = `🥚 ${this.worlds[this.currentWorld].name} ЯЙЦА`;
             }
 
             renderPets() {
-                const container = document.getElementById('petsContainer');
-                container.innerHTML = '';
-                const sortedPets = [...this.pets].sort((a,b) => b.power - a.power);
-                sortedPets.forEach(pet => {
+                const cont = document.getElementById('petsContainer');
+                cont.innerHTML = '';
+                [...this.pets].sort((a,b) => b.power - a.power).forEach(pet => {
                     const card = document.createElement('div');
-                    card.className = `pet-card ${this.currentPet && this.currentPet.id === pet.id ? 'active-pet' : ''}`;
+                    card.className = `pet-card ${this.currentPet?.id === pet.id ? 'active-pet' : ''}`;
                     card.innerHTML = `
                         <div class="pet-card-emoji">${pet.emoji}</div>
                         <div class="pet-card-name">${pet.name}</div>
-                        <div class="pet-card-power">⚡ ${pet.power}</div>
-                        <div class="pet-card-rarity" style="background: ${pet.rarity === 'mythic' ? '#e91e63' : pet.rarity === 'legendary' ? '#f39c12' : pet.rarity === 'epic' ? '#9b59b6' : pet.rarity === 'rare' ? '#3498db' : '#95a5a6'}">${pet.rarity.toUpperCase()}</div>
-                        <button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 Продать за ${Math.floor(pet.power * 10)}💰</button>
+                        <div class="pet-card-power">⚡${pet.power}</div>
+                        <div class="pet-card-rarity" style="background:${pet.rarity === 'mythic' ? '#e91e63' : pet.rarity === 'legendary' ? '#f39c12' : pet.rarity === 'epic' ? '#9b59b6' : pet.rarity === 'rare' ? '#3498db' : '#95a5a6'}">${pet.rarity}</div>
+                        <button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${Math.floor(pet.power * 10)}💰</button>
                     `;
                     card.onclick = (e) => { if(e.target !== card.querySelector('.sell-btn')) this.selectPet(pet); };
-                    container.appendChild(card);
+                    cont.appendChild(card);
                 });
                 document.getElementById('totalPets').textContent = this.pets.length;
-                const totalPower = this.pets.reduce((sum, p) => sum + p.power, 0);
-                document.getElementById('totalPower').textContent = totalPower;
-                const totalSell = this.pets.reduce((sum, p) => sum + Math.floor(p.power * 10), 0);
-                document.getElementById('totalSellValue').textContent = totalSell;
+                document.getElementById('totalPower').textContent = this.pets.reduce((s,p) => s + p.power, 0);
+                document.getElementById('totalSellValue').textContent = this.pets.reduce((s,p) => s + Math.floor(p.power * 10), 0);
             }
 
             renderUpgrades() {
-                const container = document.getElementById('upgradesContainer');
-                container.innerHTML = '';
+                const cont = document.getElementById('upgradesContainer');
+                cont.innerHTML = '';
                 this.upgrades.forEach(up => {
                     const card = document.createElement('div');
                     card.className = 'upgrade-card';
-                    card.innerHTML = `<div class="upgrade-name">${up.name}</div><div class="upgrade-desc">${up.desc}</div><div class="upgrade-price">${up.priceType === 'coins' ? '💰' : '💎'} ${up.price}</div><div>Уровень: ${up.level}</div>`;
+                    card.innerHTML = `<div class="upgrade-name">${up.name}</div><div>${up.desc}</div><div>${up.type === 'coins' ? '💰' : '💎'} ${up.price}</div><div>Ур.${up.level}</div>`;
                     card.onclick = () => this.buyUpgrade(up);
-                    container.appendChild(card);
+                    cont.appendChild(card);
                 });
             }
 
             renderBoosts() {
-                const container = document.getElementById('boostsContainer');
+                const cont = document.getElementById('boostsContainer');
                 if (this.boostActive) {
-                    const remaining = Math.max(0, Math.ceil((this.boostEndTime - Date.now()) / 1000));
-                    const minutes = Math.floor(remaining / 60);
-                    const seconds = remaining % 60;
-                    container.innerHTML = `<div class="boost-timer"><div style="color:#ffd700;">⚡ АКТИВЕН x2 ⚡</div><div>Осталось: ${minutes}:${seconds.toString().padStart(2,'0')}</div></div>`;
-                } else container.innerHTML = `<div class="boost-timer"><div style="color:#b87cff;">💤 Нет бустов</div><div style="font-size:12px;">Купи за 100💎</div></div>`;
+                    const rem = Math.max(0, Math.ceil((this.boostEndTime - Date.now()) / 1000));
+                    cont.innerHTML = `<div class="boost-timer"><div style="color:#ffd700;">⚡ АКТИВЕН x2</div><div>${Math.floor(rem/60)}:${(rem%60).toString().padStart(2,'0')}</div></div>`;
+                } else cont.innerHTML = `<div class="boost-timer"><div>💤 Нет бустов</div><div>Купи за 100💎</div></div>`;
             }
 
             updateUI() {
@@ -900,35 +704,22 @@
                 }
             }
 
-            showFloatingNumber(text, x, y) {
-                const div = document.createElement('div');
-                div.className = 'floating-number';
-                div.textContent = text;
-                div.style.left = `${x - 30}px`;
-                div.style.top = `${y - 40}px`;
-                div.style.color = '#ffd700';
-                document.body.appendChild(div);
-                setTimeout(() => div.remove(), 600);
+            msg(text) {
+                const m = document.createElement('div');
+                m.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#000c;color:#ffd700;padding:10px 20px;border-radius:40px;z-index:1000;animation:fadeOut 1.5s forwards;border:1px solid #ffd700;`;
+                m.textContent = text;
+                document.body.appendChild(m);
+                setTimeout(() => m.remove(), 1500);
             }
 
-            showMessage(text) {
-                const msg = document.createElement('div');
-                msg.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#ffd700;padding:12px 24px;border-radius:40px;z-index:1000;animation:fadeOut 2s forwards;font-weight:bold;border:1px solid #ffd700;`;
-                msg.textContent = text;
-                document.body.appendChild(msg);
-                setTimeout(() => msg.remove(), 2000);
-            }
-
-            startAutoClicker() {
+            startAuto() {
                 if (this.autoInterval) clearInterval(this.autoInterval);
                 this.autoInterval = setInterval(() => {
                     if (this.autoClickerLevel > 0) {
-                        const worldBonus = this.worlds[this.currentWorld].multiplier;
-                        const boostBonus = this.boostActive ? 2 : 1;
-                        const earned = Math.floor(this.autoClickerLevel * 8 * worldBonus * this.multiplier * boostBonus);
+                        const earned = Math.floor(this.autoClickerLevel * 8 * this.worlds[this.currentWorld].multiplier * this.multiplier * (this.boostActive ? 2 : 1));
                         this.coins += earned;
                         this.updateUI();
-                        this.saveGame();
+                        this.save();
                     }
                 }, 1000);
             }
@@ -937,36 +728,32 @@
                 setInterval(() => {
                     if (this.boostActive && Date.now() > this.boostEndTime) {
                         this.boostActive = false;
-                        this.showMessage("⏰ Буст закончился!");
+                        this.msg("⏰ Буст закончился!");
                         this.renderBoosts();
-                        this.saveGame();
+                        this.save();
                     }
-                    this.updateUI();
                 }, 1000);
             }
 
-            saveGame() {
-                const save = { 
-                    coins: this.coins, gems: this.gems, clickPower: this.clickPower, totalClicks: this.totalClicks, 
-                    multiplier: this.multiplier, currentWorld: this.currentWorld, worlds: this.worlds, 
-                    pets: this.pets, currentPet: this.currentPet, autoClickerLevel: this.autoClickerLevel, 
+            save() {
+                localStorage.setItem('petFast', JSON.stringify({
+                    coins: this.coins, gems: this.gems, clickPower: this.clickPower,
+                    multiplier: this.multiplier, currentWorld: this.currentWorld, worlds: this.worlds,
+                    pets: this.pets, currentPet: this.currentPet, autoClickerLevel: this.autoClickerLevel,
                     boostActive: this.boostActive, boostEndTime: this.boostEndTime,
                     upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price }))
-                };
-                localStorage.setItem('petSimulatorUltimateV3', JSON.stringify(save));
+                }));
             }
 
-            loadGame() {
-                const save = localStorage.getItem('petSimulatorUltimateV3');
-                if (save) {
-                    const data = JSON.parse(save);
-                    this.coins = data.coins; this.gems = data.gems; this.clickPower = data.clickPower;
-                    this.totalClicks = data.totalClicks; this.multiplier = data.multiplier;
-                    this.currentWorld = data.currentWorld; this.worlds = data.worlds;
-                    this.pets = data.pets; this.currentPet = data.currentPet;
-                    this.autoClickerLevel = data.autoClickerLevel;
-                    this.boostActive = data.boostActive; this.boostEndTime = data.boostEndTime;
-                    if (data.upgrades) this.upgrades.forEach((u, i) => { if (data.upgrades[i]) { u.level = data.upgrades[i].level; u.price = data.upgrades[i].price; } });
+            load() {
+                const s = localStorage.getItem('petFast');
+                if (s) {
+                    const d = JSON.parse(s);
+                    this.coins = d.coins; this.gems = d.gems; this.clickPower = d.clickPower;
+                    this.multiplier = d.multiplier; this.currentWorld = d.currentWorld; this.worlds = d.worlds;
+                    this.pets = d.pets; this.currentPet = d.currentPet; this.autoClickerLevel = d.autoClickerLevel;
+                    this.boostActive = d.boostActive; this.boostEndTime = d.boostEndTime;
+                    if (d.upgrades) this.upgrades.forEach((u, i) => { if (d.upgrades[i]) { u.level = d.upgrades[i].level; u.price = d.upgrades[i].price; } });
                 }
             }
         }
