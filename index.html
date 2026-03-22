@@ -327,18 +327,31 @@
             cursor: pointer;
             transition: all 0.3s;
             border: 1px solid rgba(255,215,0,0.2);
+            position: relative;
         }
 
         .pet-card.active-pet {
             border: 2px solid #ffd700;
             background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2));
             transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255,215,0,0.5);
         }
 
         .pet-card-emoji { font-size: 40px; }
         .pet-card-name { font-size: 11px; color: white; font-weight: bold; }
         .pet-card-power { font-size: 10px; color: #ffd700; }
         .pet-card-rarity { font-size: 9px; margin-top: 4px; padding: 2px 6px; border-radius: 10px; display: inline-block; }
+        .equipped-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ffd700;
+            color: #2a1a3a;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
 
         .sell-btn {
             background: linear-gradient(135deg, #ff4444, #cc0000);
@@ -524,7 +537,6 @@
             const locations = [];
             for (let i = 1; i <= 99; i++) {
                 let multiplier = 1 + (i - 1) * 0.05;
-                // Цена зависит от номера локации И от множителя мира (чем выше мир, тем дороже)
                 let unlockCost = Math.floor(500 * Math.pow(1.08, i - 1) * worldMultiplier);
                 locations.push({
                     id: i,
@@ -537,7 +549,7 @@
             return locations;
         }
 
-        // Питомцы для каждой локации (уникальные)
+        // Питомцы для каждой локации
         function generatePetsForLocation(worldTheme, locationId) {
             const basePower = Math.floor(locationId * 1.5);
             const rarities = ['common', 'rare', 'epic', 'legendary', 'mythic'];
@@ -589,7 +601,7 @@
                     { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 1000000, icon: "👑", theme: "paradise", locations: [] }
                 ];
                 
-                // Генерируем локации для каждого мира с учетом его множителя
+                // Генерируем локации для каждого мира
                 this.worlds.forEach(world => {
                     world.locations = generateLocations(world.multiplier);
                 });
@@ -618,6 +630,16 @@
                 if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
                 if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
                 return num.toString();
+            }
+            
+            // Функция для проверки, одет ли питомец
+            isPetEquipped(petId) {
+                for (let i = 0; i < this.activeSlots; i++) {
+                    if (this.slotPets[i] && this.slotPets[i].id === petId) {
+                        return true;
+                    }
+                }
+                return false;
             }
             
             init() {
@@ -655,14 +677,12 @@
                 this.coins += earned;
                 this.totalClicks++;
                 
-                // Шанс 5% на алмазы
                 if (Math.random() < 0.05) {
                     const diamondsEarned = Math.floor(Math.random() * 100) + 1;
                     this.gems += diamondsEarned;
                     this.showRandomEffect(`💎 +${diamondsEarned}💎`, event.clientX, event.clientY, '#ff88ff');
                 }
                 
-                // Шанс 10% на критический удар
                 const isCrit = Math.random() < 0.1;
                 if (isCrit) {
                     earned *= 2;
@@ -721,7 +741,6 @@
             
             assignPetToSlot(slotIndex, pet) {
                 if (slotIndex < this.activeSlots) {
-                    // Проверяем, не занят ли уже этот питомец в другом слоте
                     for (let i = 0; i < this.activeSlots; i++) {
                         if (this.slotPets[i] && this.slotPets[i].id === pet.id && i !== slotIndex) {
                             this.showMessage(`❌ Питомец уже в слоте ${i + 1}!`);
@@ -730,7 +749,8 @@
                     }
                     this.slotPets[slotIndex] = pet;
                     this.renderSlots();
-                    this.updateClickPower(); // МГНОВЕННОЕ ОБНОВЛЕНИЕ силы клика
+                    this.renderPets(); // Обновляем инвентарь, чтобы показать/скрыть значок "одет"
+                    this.updateClickPower();
                     this.updateUI();
                     this.saveGame();
                     return true;
@@ -738,10 +758,12 @@
                 return false;
             }
             
+            // ИСПРАВЛЕНО: при снятии питомца правильно обновляется инвентарь
             removePetFromSlot(slotIndex) {
                 this.slotPets[slotIndex] = null;
                 this.renderSlots();
-                this.updateClickPower(); // МГНОВЕННОЕ ОБНОВЛЕНИЕ силы клика
+                this.renderPets(); // ВАЖНО: обновляем инвентарь, чтобы убрать значок "одет"
+                this.updateClickPower();
                 this.updateUI();
                 this.saveGame();
             }
@@ -756,7 +778,6 @@
             }
             
             selectPet(pet) {
-                // Проверяем, не занят ли питомец уже в каком-то слоте
                 for (let i = 0; i < this.activeSlots; i++) {
                     if (this.slotPets[i] && this.slotPets[i].id === pet.id) {
                         this.showMessage(`❌ Питомец уже в слоте ${i + 1}!`);
@@ -1066,26 +1087,30 @@
                 document.getElementById('eggsTitle').innerHTML = `🥚 ${location.name} ЯЙЦА 🥚`;
             }
             
+            // ИСПРАВЛЕНО: рендер инвентаря с правильным отображением одетых питомцев
             renderPets() {
                 const container = document.getElementById('petsContainer');
                 container.innerHTML = '';
-                const activeIds = this.slotPets.filter(p => p !== null).map(p => p.id);
                 const sortedPets = [...this.pets].sort((a,b) => b.power - a.power);
                 sortedPets.forEach(pet => {
-                    const isActive = activeIds.includes(pet.id);
+                    const isEquipped = this.isPetEquipped(pet.id);
                     const card = document.createElement('div');
-                    card.className = `pet-card ${isActive ? 'active-pet' : ''}`;
+                    card.className = `pet-card ${isEquipped ? 'active-pet' : ''}`;
                     const rarityColors = { common: '#95a5a6', rare: '#3498db', epic: '#9b59b6', legendary: '#f39c12', mythic: '#e91e63' };
                     card.innerHTML = `
                         <div class="pet-card-emoji">${pet.emoji}</div>
                         <div class="pet-card-name">${pet.name}</div>
                         <div class="pet-card-power">⚡${pet.power}</div>
                         <div class="pet-card-rarity" style="background: ${rarityColors[pet.rarity] || '#95a5a6'}">${pet.rarity}</div>
-                        ${!isActive ? `<button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${this.formatNumber(Math.floor(pet.power * 10))}💰</button>` : '<div style="font-size: 10px; color:#ffd700;">✅ В слоте</div>'}
+                        ${isEquipped ? '<div class="equipped-badge">✅ В слоте</div>' : `<button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${this.formatNumber(Math.floor(pet.power * 10))}💰</button>`}
                     `;
                     card.onclick = (e) => { 
                         if(e.target !== card.querySelector('.sell-btn')) {
-                            this.selectPet(pet);
+                            if (!isEquipped) {
+                                this.selectPet(pet);
+                            } else {
+                                this.showMessage(`✅ ${pet.name} уже в слоте!`);
+                            }
                         }
                     };
                     container.appendChild(card);
@@ -1127,7 +1152,6 @@
                 document.getElementById('clickPower').textContent = this.clickPower;
                 document.getElementById('multiplier').textContent = `${this.multiplier}x`;
                 
-                // Обновляем отображение силы питомца в области клика
                 if (this.clickPower > 0) {
                     document.getElementById('currentPetPower').textContent = `Сила клика: ${this.clickPower}`;
                 }
@@ -1176,11 +1200,11 @@
                     upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
                     autoClickerLevel: this.autoClickerLevel, boostActive: this.boostActive, boostEndTime: this.boostEndTime
                 };
-                localStorage.setItem('petSimulatorMegaFixed2', JSON.stringify(save));
+                localStorage.setItem('petSimulatorMegaFixed3', JSON.stringify(save));
             }
             
             loadGame() {
-                const save = localStorage.getItem('petSimulatorMegaFixed2');
+                const save = localStorage.getItem('petSimulatorMegaFixed3');
                 if (save) {
                     const data = JSON.parse(save);
                     this.coins = data.coins; this.gems = data.gems; this.clickPower = data.clickPower;
@@ -1192,7 +1216,6 @@
                     this.boostActive = data.boostActive; this.boostEndTime = data.boostEndTime;
                     if (data.upgrades) this.upgrades.forEach((u, i) => { if (data.upgrades[i]) { u.level = data.upgrades[i].level; u.price = data.upgrades[i].price; } });
                 }
-                // Убеждаемся, что локации сгенерированы с правильными ценами
                 if (this.worlds[0].locations.length === 0) {
                     this.worlds.forEach(world => {
                         world.locations = generateLocations(world.multiplier);
@@ -1201,7 +1224,6 @@
                 if (!this.slotPets || this.slotPets.length < this.activeSlots) {
                     this.slotPets = Array(this.activeSlots).fill(null);
                 }
-                // Обновляем силу клика после загрузки
                 this.updateClickPower();
             }
         }
