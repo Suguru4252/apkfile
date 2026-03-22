@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Pet Simulator 99 | Huge Update + Слоты</title>
+    <title>Pet Simulator 99 | Исправленные слоты</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,6 @@
             font-family: 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
             padding: 10px;
             overflow-x: hidden;
-            transition: background 0.3s ease;
         }
 
         .game-container {
@@ -30,7 +29,6 @@
             padding: 15px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             border: 2px solid rgba(255,215,0,0.3);
-            transition: all 0.3s ease;
         }
 
         /* Slots Header */
@@ -44,13 +42,14 @@
         .collapse-btn {
             background: linear-gradient(135deg, #ffd700, #ff8800);
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             font-weight: bold;
             transition: transform 0.3s;
+            color: #2a1a3a;
         }
 
         .collapse-btn.collapsed {
@@ -64,17 +63,31 @@
             margin-top: 10px;
             justify-content: center;
             transition: all 0.3s ease;
-            overflow: hidden;
         }
 
         .slots-grid.collapsed {
-            max-height: 100px;
+            max-height: 120px;
             overflow-y: auto;
+            padding-bottom: 5px;
         }
 
         .slots-grid:not(.collapsed) {
-            max-height: 1000px;
+            max-height: none;
+            overflow-y: visible;
         }
+
+        .slot-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .slot-card.unlocked { border-color: #ffd700; background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2)); }
+        .slot-number { font-size: 24px; font-weight: bold; color: #ffd700; }
+        .slot-pet-emoji { font-size: 32px; margin-top: 5px; }
 
         .admin-panel {
             background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(30,0,30,0.9));
@@ -85,9 +98,7 @@
             display: none;
         }
 
-        .admin-panel.show {
-            display: block;
-        }
+        .admin-panel.show { display: block; }
 
         .nick-section {
             display: flex;
@@ -191,19 +202,6 @@
             padding: 15px;
             margin-bottom: 20px;
         }
-
-        .slot-card {
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
-            border: 2px solid rgba(255,215,0,0.3);
-            border-radius: 16px;
-            padding: 12px;
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .slot-card.unlocked { border-color: #ffd700; background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2)); }
-        .slot-number { font-size: 24px; font-weight: bold; color: #ffd700; }
-        .slot-pet-emoji { font-size: 32px; margin-top: 5px; }
 
         .location-controls {
             display: flex;
@@ -448,7 +446,7 @@
 
         <!-- Админ панель -->
         <div class="admin-panel" id="adminPanel">
-            <div class="admin-title" style="color: #ff3366; font-size: 20px; margin-bottom: 15px; text-align: center;">👑 АДМИН ПАНЕЛЬ 👑</div>
+            <div style="color: #ff3366; font-size: 20px; margin-bottom: 15px; text-align: center;">👑 АДМИН ПАНЕЛЬ 👑</div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                 <div>
                     <div style="color: #ffd700; margin-bottom: 5px;">💰 Монеты</div>
@@ -490,7 +488,7 @@
                         <button class="collapse-btn" id="collapseSlotsBtn">▼</button>
                     </div>
                     <div class="slots-grid" id="slotsContainer"></div>
-                    <button class="btn" id="buySlotBtn">🔓 Купить слот (5.000💎)</button>
+                    <button class="btn" id="buySlotBtn">🔓 Купить слот</button>
                 </div>
 
                 <div class="location-selector">
@@ -653,6 +651,12 @@
                 return num.toString();
             }
             
+            getSlotPrice() {
+                // Цена следующего слота = текущее количество слотов * 5000
+                // 1-й слот бесплатный, 2-й = 5000, 3-й = 10000, 4-й = 15000 и т.д.
+                return this.activeSlots * 5000;
+            }
+            
             isPetEquipped(petId) {
                 for (let i = 0; i < this.activeSlots; i++) {
                     if (this.slotPets[i] && this.slotPets[i].id === petId) return true;
@@ -745,11 +749,9 @@
                 if (this.slotsCollapsed) {
                     container.classList.add('collapsed');
                     btn.classList.add('collapsed');
-                    btn.textContent = '▲';
                 } else {
                     container.classList.remove('collapsed');
                     btn.classList.remove('collapsed');
-                    btn.textContent = '▼';
                 }
             }
             
@@ -924,12 +926,12 @@
             
             buySlot() {
                 if (this.activeSlots >= this.maxSlots) { this.showMessage("❌ Максимум 99 слотов!"); return; }
-                const price = 5000; // Фиксированная цена 5000 алмазов за слот
+                const price = this.getSlotPrice();
                 if (this.gems >= price) {
                     this.gems -= price;
                     this.activeSlots++;
                     this.slotPets.push(null);
-                    this.showMessage(`🔓 Открыт слот ${this.activeSlots}! Цена: ${this.formatNumber(price)}💎`);
+                    this.showMessage(`🔓 Открыт слот ${this.activeSlots}! Цена: ${this.formatNumber(price)}💎 (следующий: ${this.formatNumber(this.getSlotPrice())}💎)`);
                     this.renderSlots(); this.updateUI(); this.saveGame();
                 } else {
                     this.showMessage(`❌ Нужно ${this.formatNumber(price)} алмазов!`);
@@ -1071,6 +1073,9 @@
                     more.innerHTML = `<div class="slot-number">+${this.activeSlots - 5}</div><div style="font-size: 10px;">еще слотов</div>`;
                     container.appendChild(more);
                 }
+                // Обновляем текст кнопки с ценой
+                const price = this.getSlotPrice();
+                document.getElementById('buySlotBtn').innerHTML = `🔓 Купить слот (${this.formatNumber(price)}💎)`;
                 this.updateClickPower();
             }
             
@@ -1209,7 +1214,7 @@
             }
             
             saveGame() {
-                localStorage.setItem('petSimulatorV2', JSON.stringify({
+                localStorage.setItem('petSimulatorV3', JSON.stringify({
                     coins: this.coins, gems: this.gems, clickPower: this.clickPower, multiplier: this.multiplier,
                     currentWorld: this.currentWorld, worlds: this.worlds, pets: this.pets, slotPets: this.slotPets,
                     activeSlots: this.activeSlots, upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
@@ -1219,7 +1224,7 @@
             }
             
             loadGame() {
-                const save = localStorage.getItem('petSimulatorV2');
+                const save = localStorage.getItem('petSimulatorV3');
                 if (save) {
                     const d = JSON.parse(save);
                     this.coins = d.coins; this.gems = d.gems; this.clickPower = d.clickPower; this.multiplier = d.multiplier;
