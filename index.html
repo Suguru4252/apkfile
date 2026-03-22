@@ -1,20 +1,648 @@
-    <script>
-        // Telegram WebApp инициализация
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-        
-        // Показываем приветствие при первом запуске
-        if (!localStorage.getItem('init')) {
-            tg.showPopup({
-                title: '🎮 IMPERIA CLICKER',
-                message: 'Добро пожаловать!\n\nКликай, зарабатывай, прокачивайся!',
-                buttons: [{
-                    id: 'start',
-                    type: 'default',
-                    text: 'Начать игру'
-                }]
-            });
-            localStorage.setItem('init', 'true');
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pet Simulator 99 | Roblox Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Poppins', 'Roboto', sans-serif;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Roblox-style container */
+        .game-container {
+            background: linear-gradient(180deg, #2d1b3a 0%, #1a0f24 100%);
+            border-radius: 48px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,215,0,0.3);
+        }
+
+        .game-wrapper {
+            background: linear-gradient(135deg, #3a2a4a 0%, #2a1a3a 100%);
+            border-radius: 32px;
+            padding: 20px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Pet area */
+        .pet-area {
+            background: linear-gradient(135deg, #ffd89b 0%, #c7e9fb 100%);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .pet-area:active {
+            transform: scale(0.98);
+        }
+
+        .pet-emoji {
+            font-size: 120px;
+            text-align: center;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.3));
+            transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pet-area:active .pet-emoji {
+            transform: scale(0.9);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Floating numbers */
+        .floating-number {
+            position: absolute;
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 0 #ff6600;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-80px) scale(1.2);
+            }
+        }
+
+        /* Stats panel */
+        .stats-panel {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            color: #ffd700;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Shop and upgrades */
+        .shop-section {
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .upgrades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .upgrade-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
+            border: 1px solid rgba(255,215,0,0.4);
+            border-radius: 16px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .upgrade-card:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2));
+            border-color: #ffd700;
+        }
+
+        .upgrade-card:active {
+            transform: translateY(2px);
+        }
+
+        .upgrade-name {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-desc {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .upgrade-price {
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .upgrade-price small {
+            font-size: 12px;
+        }
+
+        /* Auto-clicker section */
+        .auto-section {
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .pet-owner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .owner-info {
+            flex: 1;
+        }
+
+        .pet-name {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .pet-level {
+            color: #ffd700;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #ffd700, #ff6600);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ffd700, #ff8800);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: #2a1a3a;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 0 #b45f06;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b45f06;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .pet-emoji { font-size: 80px; }
+            .stat-value { font-size: 20px; }
+            .upgrades-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-wrapper">
+            <!-- Pet Area -->
+            <div class="pet-area" id="petArea">
+                <div class="pet-emoji" id="petEmoji">🐉</div>
+            </div>
+
+            <!-- Stats Panel -->
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-label">💰 МОНЕТЫ</div>
+                    <div class="stat-value" id="coins">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">⚡ УРОВЕНЬ</div>
+                    <div class="stat-value" id="level">1</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">💪 СИЛА КЛИКА</div>
+                    <div class="stat-value" id="clickPower">1</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">🤖 АВТО-КЛИК</div>
+                    <div class="stat-value" id="autoClickers">0</div>
+                </div>
+            </div>
+
+            <!-- Shop Upgrades -->
+            <div class="shop-section">
+                <div class="section-title">✨ МАГАЗИН УЛУЧШЕНИЙ ✨</div>
+                <div class="upgrades-grid" id="upgradesGrid"></div>
+            </div>
+
+            <!-- Auto Clicker Section -->
+            <div class="auto-section">
+                <div class="pet-owner">
+                    <div class="owner-info">
+                        <div class="pet-name" id="petName">🔥 Огненный Дракон</div>
+                        <div class="pet-level">❤️ Любит: клики и монетки ❤️</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="levelProgress"></div>
+                        </div>
+                    </div>
+                    <button class="btn" id="prestigeBtn">🌟 ПРЕСТИЖ 🌟</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PetSimulator {
+            constructor() {
+                this.coins = 0;
+                this.clickPower = 1;
+                this.autoClickers = 0;
+                this.totalClicks = 0;
+                this.level = 1;
+                this.prestigeLevel = 0;
+                
+                this.upgrades = [
+                    { id: 'click', name: '💪 Усиление клика', desc: '+1 к силе клика', basePrice: 10, price: 10, value: 1, bought: 0 },
+                    { id: 'auto', name: '🤖 Робо-питомец', desc: '+1 авто-клик/сек', basePrice: 50, price: 50, value: 1, bought: 0 },
+                    { id: 'crit', name: '⭐ Критический удар', desc: 'Шанс x10 урона', basePrice: 200, price: 200, value: 0.1, bought: 0 }
+                ];
+                
+                this.critChance = 0;
+                this.autoInterval = null;
+                this.init();
+            }
+            
+            init() {
+                this.loadGame();
+                this.renderUpgrades();
+                this.updateUI();
+                this.startAutoClicker();
+                this.setupEventListeners();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('petArea').addEventListener('click', (e) => this.handleClick(e));
+                document.getElementById('prestigeBtn').addEventListener('click', () => this.prestige());
+            }
+            
+            handleClick(event) {
+                let earned = this.clickPower;
+                let isCrit = false;
+                
+                // Critical hit chance
+                if (this.critChance > 0 && Math.random() < this.critChance) {
+                    earned *= 10;
+                    isCrit = true;
+                    this.showFloatingText('💥 КРИТИЧЕСКИЙ УДАР! x10 💥', event.clientX, event.clientY);
+                }
+                
+                this.coins += earned;
+                this.totalClicks++;
+                
+                // Show floating number
+                this.showFloatingNumber(`+${Math.floor(earned)}`, event.clientX, event.clientY, isCrit);
+                
+                // Add click animation
+                const petArea = document.getElementById('petArea');
+                petArea.classList.add('shake');
+                setTimeout(() => petArea.classList.remove('shake'), 300);
+                
+                // Level up check
+                this.checkLevelUp();
+                this.updateUI();
+                this.saveGame();
+            }
+            
+            showFloatingNumber(text, x, y, isCrit = false) {
+                const floatingNum = document.createElement('div');
+                floatingNum.className = 'floating-number';
+                floatingNum.textContent = text;
+                floatingNum.style.left = `${x - 30}px`;
+                floatingNum.style.top = `${y - 30}px`;
+                floatingNum.style.color = isCrit ? '#ff3366' : '#ffd700';
+                floatingNum.style.fontSize = isCrit ? '48px' : '32px';
+                document.body.appendChild(floatingNum);
+                
+                setTimeout(() => floatingNum.remove(), 1000);
+            }
+            
+            showFloatingText(text, x, y) {
+                const floatingText = document.createElement('div');
+                floatingText.className = 'floating-number';
+                floatingText.textContent = text;
+                floatingText.style.left = `${x - 80}px`;
+                floatingText.style.top = `${y - 50}px`;
+                floatingText.style.fontSize = '24px';
+                floatingText.style.whiteSpace = 'nowrap';
+                floatingText.style.animation = 'floatUp 1s ease-out forwards';
+                document.body.appendChild(floatingText);
+                
+                setTimeout(() => floatingText.remove(), 1000);
+            }
+            
+            buyUpgrade(upgradeId) {
+                const upgrade = this.upgrades.find(u => u.id === upgradeId);
+                if (!upgrade) return;
+                
+                if (this.coins >= upgrade.price) {
+                    this.coins -= upgrade.price;
+                    upgrade.bought++;
+                    
+                    // Apply upgrade effect
+                    if (upgrade.id === 'click') {
+                        this.clickPower += upgrade.value;
+                        upgrade.price = Math.floor(upgrade.basePrice * Math.pow(1.5, upgrade.bought));
+                    } else if (upgrade.id === 'auto') {
+                        this.autoClickers += upgrade.value;
+                        upgrade.price = Math.floor(upgrade.basePrice * Math.pow(1.6, upgrade.bought));
+                        this.restartAutoClicker();
+                    } else if (upgrade.id === 'crit') {
+                        this.critChance = Math.min(0.5, upgrade.bought * upgrade.value);
+                        upgrade.price = Math.floor(upgrade.basePrice * Math.pow(1.8, upgrade.bought));
+                    }
+                    
+                    this.updateUI();
+                    this.saveGame();
+                    this.showUpgradeEffect(upgrade.name);
+                } else {
+                    this.showNotEnoughCoins();
+                }
+            }
+            
+            showUpgradeEffect(name) {
+                const petArea = document.getElementById('petArea');
+                const originalEmoji = document.getElementById('petEmoji').textContent;
+                document.getElementById('petEmoji').textContent = '✨';
+                setTimeout(() => {
+                    document.getElementById('petEmoji').textContent = originalEmoji;
+                }, 300);
+            }
+            
+            showNotEnoughCoins() {
+                const petArea = document.getElementById('petArea');
+                petArea.style.animation = 'shake 0.3s ease-in-out';
+                setTimeout(() => petArea.style.animation = '', 300);
+            }
+            
+            checkLevelUp() {
+                const neededClicks = this.level * 20;
+                if (this.totalClicks >= neededClicks) {
+                    this.level++;
+                    this.clickPower += 2;
+                    this.coins += this.level * 100;
+                    
+                    // Change pet emoji based on level
+                    this.updatePetEmoji();
+                    
+                    this.showLevelUpEffect();
+                }
+            }
+            
+            updatePetEmoji() {
+                const petEmoji = document.getElementById('petEmoji');
+                const petName = document.getElementById('petName');
+                
+                if (this.level >= 50) {
+                    petEmoji.textContent = '👑🐉';
+                    petName.textContent = '👑 Легендарный Король Драконов 👑';
+                } else if (this.level >= 30) {
+                    petEmoji.textContent = '⭐🐲';
+                    petName.textContent = '⭐ Мифический Звездный Дракон ⭐';
+                } else if (this.level >= 20) {
+                    petEmoji.textContent = '🌟🐉';
+                    petName.textContent = '🌟 Эпический Золотой Дракон 🌟';
+                } else if (this.level >= 10) {
+                    petEmoji.textContent = '✨🐲';
+                    petName.textContent = '✨ Магический Кристальный Дракон ✨';
+                } else if (this.level >= 5) {
+                    petEmoji.textContent = '🔥🐉';
+                    petName.textContent = '🔥 Огненный Дракон 🔥';
+                } else {
+                    petEmoji.textContent = '🐉';
+                    petName.textContent = '🐣 Маленький Дракончик 🐣';
+                }
+            }
+            
+            showLevelUpEffect() {
+                const petArea = document.getElementById('petArea');
+                const originalBg = petArea.style.background;
+                petArea.style.background = 'linear-gradient(135deg, #ffd700 0%, #ff6600 100%)';
+                setTimeout(() => {
+                    petArea.style.background = originalBg;
+                }, 500);
+                
+                this.showFloatingText(`🎉 УРОВЕНЬ ${this.level}! 🎉`, window.innerWidth/2, window.innerHeight/2);
+            }
+            
+            prestige() {
+                if (this.level >= 10) {
+                    const confirmPrestige = confirm(`🌟 ПРЕСТИЖ 🌟\n\nВы получите ${this.prestigeLevel + 1} престиж-очков и начнете заново с бонусом!\n\nТекущий уровень: ${this.level}\nВсего монет: ${Math.floor(this.coins)}\n\nПродолжить?`);
+                    
+                    if (confirmPrestige) {
+                        const bonus = this.prestigeLevel + 1;
+                        this.prestigeLevel++;
+                        this.coins = 1000 * this.prestigeLevel;
+                        this.clickPower = 1 + this.prestigeLevel;
+                        this.autoClickers = 0;
+                        this.totalClicks = 0;
+                        this.level = 1;
+                        this.critChance = 0;
+                        
+                        // Reset upgrades
+                        this.upgrades.forEach(upgrade => {
+                            upgrade.bought = 0;
+                            upgrade.price = upgrade.basePrice;
+                        });
+                        
+                        this.restartAutoClicker();
+                        this.updateUI();
+                        this.saveGame();
+                        
+                        this.showFloatingText(`✨ ПРЕСТИЖ ${this.prestigeLevel}! БОНУС +${bonus}✨`, window.innerWidth/2, window.innerHeight/2);
+                    }
+                } else {
+                    alert(`Нужен минимум 10 уровень! Сейчас: ${this.level}`);
+                }
+            }
+            
+            startAutoClicker() {
+                if (this.autoInterval) clearInterval(this.autoInterval);
+                this.autoInterval = setInterval(() => {
+                    if (this.autoClickers > 0) {
+                        const autoEarn = this.clickPower * this.autoClickers;
+                        this.coins += autoEarn;
+                        this.totalClicks += this.autoClickers;
+                        
+                        // Show auto-click effect
+                        const petArea = document.getElementById('petArea');
+                        const rect = petArea.getBoundingClientRect();
+                        this.showFloatingNumber(`🤖 +${autoEarn}`, rect.left + 50, rect.top + 50, false);
+                        
+                        this.checkLevelUp();
+                        this.updateUI();
+                        this.saveGame();
+                    }
+                }, 1000);
+            }
+            
+            restartAutoClicker() {
+                if (this.autoInterval) clearInterval(this.autoInterval);
+                this.startAutoClicker();
+            }
+            
+            renderUpgrades() {
+                const grid = document.getElementById('upgradesGrid');
+                grid.innerHTML = '';
+                
+                this.upgrades.forEach(upgrade => {
+                    const card = document.createElement('div');
+                    card.className = 'upgrade-card';
+                    card.onclick = () => this.buyUpgrade(upgrade.id);
+                    
+                    card.innerHTML = `
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-desc">${upgrade.desc}</div>
+                        <div class="upgrade-price">💰 ${Math.floor(upgrade.price)} <small>монет</small></div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #ffd700;">Уровень: ${upgrade.bought}</div>
+                    `;
+                    
+                    grid.appendChild(card);
+                });
+            }
+            
+            updateUI() {
+                document.getElementById('coins').textContent = Math.floor(this.coins);
+                document.getElementById('level').textContent = this.level;
+                document.getElementById('clickPower').textContent = this.clickPower;
+                document.getElementById('autoClickers').textContent = this.autoClickers;
+                
+                const neededClicks = this.level * 20;
+                const progress = (this.totalClicks / neededClicks) * 100;
+                document.getElementById('levelProgress').style.width = `${Math.min(100, progress)}%`;
+                
+                this.updatePetEmoji();
+                this.renderUpgrades();
+            }
+            
+            saveGame() {
+                const saveData = {
+                    coins: this.coins,
+                    clickPower: this.clickPower,
+                    autoClickers: this.autoClickers,
+                    totalClicks: this.totalClicks,
+                    level: this.level,
+                    prestigeLevel: this.prestigeLevel,
+                    critChance: this.critChance,
+                    upgrades: this.upgrades.map(u => ({ bought: u.bought, price: u.price }))
+                };
+                localStorage.setItem('petSimulatorSave', JSON.stringify(saveData));
+            }
+            
+            loadGame() {
+                const saveData = localStorage.getItem('petSimulatorSave');
+                if (saveData) {
+                    const data = JSON.parse(saveData);
+                    this.coins = data.coins;
+                    this.clickPower = data.clickPower;
+                    this.autoClickers = data.autoClickers;
+                    this.totalClicks = data.totalClicks;
+                    this.level = data.level;
+                    this.prestigeLevel = data.prestigeLevel || 0;
+                    this.critChance = data.critChance || 0;
+                    
+                    if (data.upgrades) {
+                        this.upgrades.forEach((upgrade, index) => {
+                            if (data.upgrades[index]) {
+                                upgrade.bought = data.upgrades[index].bought;
+                                upgrade.price = data.upgrades[index].price;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        
+        // Initialize game
+        const game = new PetSimulator();
     </script>
+</body>
+</html>
