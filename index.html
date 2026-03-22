@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Pet Simulator 99 | Huge Update</title>
+    <title>Pet Simulator 99 | Все животные + Huge</title>
     <style>
         * {
             margin: 0;
@@ -33,7 +33,6 @@
             transition: all 0.3s ease;
         }
 
-        /* World Themes */
         .game-container[data-theme="forest"] { background: linear-gradient(135deg, rgba(30, 50, 30, 0.95), rgba(15, 30, 15, 0.95)); border-color: #4caf50; }
         .game-container[data-theme="volcano"] { background: linear-gradient(135deg, rgba(70, 35, 20, 0.95), rgba(45, 20, 10, 0.95)); border-color: #ff5722; }
         .game-container[data-theme="ice"] { background: linear-gradient(135deg, rgba(30, 55, 75, 0.95), rgba(15, 35, 50, 0.95)); border-color: #00bcd4; }
@@ -41,7 +40,6 @@
         .game-container[data-theme="hell"] { background: linear-gradient(135deg, rgba(70, 25, 40, 0.95), rgba(45, 15, 25, 0.95)); border-color: #ff3366; }
         .game-container[data-theme="paradise"] { background: linear-gradient(135deg, rgba(80, 45, 100, 0.95), rgba(55, 30, 75, 0.95)); border-color: #ff88ff; }
 
-        /* Resources Bar */
         .resources-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -65,7 +63,6 @@
         .resource-name { color: rgba(255,255,255,0.7); font-size: 12px; text-transform: uppercase; }
         .resource-value { color: #ffd700; font-size: 24px; font-weight: bold; }
 
-        /* Main Layout */
         .main-layout {
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -75,7 +72,6 @@
 
         @media (max-width: 968px) { .main-layout { grid-template-columns: 1fr; } }
 
-        /* Pet Area */
         .pet-area {
             background: linear-gradient(135deg, #ffd89b, #c7e9fb);
             border-radius: 24px;
@@ -93,7 +89,6 @@
         .pet-name { font-size: 24px; font-weight: bold; color: #2a1a3a; margin-top: 10px; }
         .pet-power { color: #ff6600; font-size: 18px; margin-top: 5px; }
 
-        /* Slots Section */
         .slots-section {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
@@ -123,7 +118,6 @@
         .slot-number { font-size: 24px; font-weight: bold; color: #ffd700; }
         .slot-pet-emoji { font-size: 32px; margin-top: 5px; }
 
-        /* Location Selector */
         .location-selector {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
@@ -157,7 +151,6 @@
         .location-progress { width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; margin-top: 10px; overflow: hidden; }
         .location-progress-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ff8800); width: 0%; transition: width 0.3s; }
 
-        /* Eggs Section */
         .eggs-section {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
@@ -200,7 +193,7 @@
 
         .eggs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
 
@@ -218,14 +211,14 @@
         .egg-emoji { font-size: 56px; }
         .egg-title { font-size: 20px; font-weight: bold; color: #ffd700; }
         .egg-price { font-size: 18px; margin: 10px 0; display: inline-block; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 25px; }
-        .pet-list { margin-top: 15px; border-top: 1px solid rgba(255,215,0,0.3); padding-top: 15px; }
-        .pet-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,215,0,0.1); }
-        .pet-name-chance { display: flex; align-items: center; gap: 8px; }
-        .pet-emoji-small { font-size: 24px; }
+        .pet-list { margin-top: 15px; border-top: 1px solid rgba(255,215,0,0.3); padding-top: 15px; max-height: 300px; overflow-y: auto; }
+        .pet-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,215,0,0.1); }
+        .pet-name-chance { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .pet-emoji-small { font-size: 28px; }
         .chance-badge { background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 20px; font-size: 11px; color: #ffd700; }
         .huge-badge { background: linear-gradient(135deg, #ff3366, #ff88ff); color: white; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-left: 8px; }
+        .power-badge { background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 12px; font-size: 10px; color: #ffaa66; }
 
-        /* Pets Collection */
         .pets-collection {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
@@ -290,7 +283,6 @@
             width: 100%;
         }
 
-        /* World Selector */
         .world-selector, .boost-section {
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
@@ -377,7 +369,6 @@
 </head>
 <body>
     <div class="game-container" id="gameContainer">
-        <!-- Resources -->
         <div class="resources-bar">
             <div class="resource-card"><div class="resource-icon">💰</div><div class="resource-info"><div class="resource-name">Монеты</div><div class="resource-value" id="coins">0</div></div></div>
             <div class="resource-card"><div class="resource-icon">💎</div><div class="resource-info"><div class="resource-name">Алмазы</div><div class="resource-value" id="gems">0</div></div></div>
@@ -426,7 +417,6 @@
             </div>
         </div>
 
-        <!-- Eggs Section -->
         <div class="eggs-section">
             <div class="eggs-header">
                 <h2 style="color: #ffd700;">🥚 МАГИЧЕСКИЕ ЯЙЦА 🥚</h2>
@@ -439,7 +429,6 @@
             <div class="eggs-grid" id="eggsContainer"></div>
         </div>
 
-        <!-- Pets Collection -->
         <div class="pets-collection">
             <h2 style="color: #ffd700; text-align: center;">🐕 КОЛЛЕКЦИЯ ПИТОМЦЕВ 🐈</h2>
             <div class="pets-stats">
@@ -452,7 +441,6 @@
             <button class="btn" id="sellAllBtn" style="background: linear-gradient(135deg, #ff4444, #aa2222);">💰 ПРОДАТЬ ВСЕХ (КРОМЕ АКТИВНЫХ)</button>
         </div>
 
-        <!-- Upgrades -->
         <div class="upgrades-section" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px;">
             <h2 style="color: #ffd700; text-align: center;">✨ УЛУЧШЕНИЯ ✨</h2>
             <div class="upgrades-grid" id="upgradesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;"></div>
@@ -460,7 +448,53 @@
     </div>
 
     <script>
-        // Генерация локаций с ценами x10
+        // ВСЕ ЖИВОТНЫЕ ИЗ ЭМОДЗИ
+        const ALL_ANIMALS = {
+            common: [
+                { emoji: "🐣", name: "Цыпленок" }, { emoji: "🐥", name: "Утенок" }, { emoji: "🐦", name: "Птичка" },
+                { emoji: "🐤", name: "Птенец" }, { emoji: "🐧", name: "Пингвин" }, { emoji: "🕊️", name: "Голубь" },
+                { emoji: "🐔", name: "Курица" }, { emoji: "🐓", name: "Петух" }, { emoji: "🦆", name: "Утка" },
+                { emoji: "🐸", name: "Лягушка" }, { emoji: "🐌", name: "Улитка" }, { emoji: "🐛", name: "Гусеница" },
+                { emoji: "🐜", name: "Муравей" }, { emoji: "🐝", name: "Пчела" }, { emoji: "🐞", name: "Божья коровка" }
+            ],
+            rare: [
+                { emoji: "🐱", name: "Котенок" }, { emoji: "🐶", name: "Щенок" }, { emoji: "🐭", name: "Мышонок" },
+                { emoji: "🐹", name: "Хомяк" }, { emoji: "🐰", name: "Зайчик" }, { emoji: "🦊", name: "Лисенок" },
+                { emoji: "🐻", name: "Медвежонок" }, { emoji: "🐼", name: "Панда" }, { emoji: "🐨", name: "Коала" },
+                { emoji: "🐯", name: "Тигренок" }, { emoji: "🦁", name: "Львенок" }, { emoji: "🐮", name: "Теленок" },
+                { emoji: "🐷", name: "Поросенок" }, { emoji: "🐒", name: "Обезьянка" }, { emoji: "🦝", name: "Енот" }
+            ],
+            epic: [
+                { emoji: "🦄", name: "Единорог" }, { emoji: "🐉", name: "Дракон" }, { emoji: "🐲", name: "Восточный дракон" },
+                { emoji: "🦅", name: "Орел" }, { emoji: "🐺", name: "Волк" }, { emoji: "🐗", name: "Кабан" },
+                { emoji: "🦌", name: "Олень" }, { emoji: "🐴", name: "Конь" }, { emoji: "🦒", name: "Жираф" },
+                { emoji: "🐘", name: "Слон" }, { emoji: "🦏", name: "Носорог" }, { emoji: "🐪", name: "Верблюд" },
+                { emoji: "🦍", name: "Горилла" }, { emoji: "🐅", name: "Тигр" }, { emoji: "🐆", name: "Леопард" }
+            ],
+            legendary: [
+                { emoji: "🐉🔥", name: "Огненный дракон" }, { emoji: "🐉❄️", name: "Ледяной дракон" }, { emoji: "🐉⚡", name: "Громовой дракон" },
+                { emoji: "🦄✨", name: "Звездный единорог" }, { emoji: "🐺🌙", name: "Лунный волк" }, { emoji: "🦅🔥", name: "Феникс" },
+                { emoji: "🐉💎", name: "Кристальный дракон" }, { emoji: "🐉🌑", name: "Теневой дракон" }, { emoji: "🐉🌈", name: "Радужный дракон" },
+                { emoji: "🦁👑", name: "Король зверей" }, { emoji: "🐻‍❄️✨", name: "Ледяной медведь" }, { emoji: "🐺⚡", name: "Электрический волк" }
+            ],
+            mythic: [
+                { emoji: "👑🐉", name: "Императорский дракон" }, { emoji: "⭐🦄", name: "Космический единорог" }, { emoji: "🌌🐺", name: "Звездный волк" },
+                { emoji: "🔥🦅", name: "Вечный феникс" }, { emoji: "💀🐉", name: "Некродракон" }, { emoji: "⚡🐉", name: "Бог грома" },
+                { emoji: "❄️👑", name: "Король льдов" }, { emoji: "🌋🐉", name: "Повелитель вулканов" }, { emoji: "🌈🐉", name: "Радужный император" }
+            ]
+        };
+
+        const HUGE_PETS = [
+            { emoji: "🌟🐉", name: "Huge Золотой Дракон", powerMultiplier: 100 },
+            { emoji: "💎🦄", name: "Huge Алмазный Единорог", powerMultiplier: 110 },
+            { emoji: "⚡🐺", name: "Huge Громовой Волк", powerMultiplier: 105 },
+            { emoji: "🔥🐦‍🔥", name: "Huge Бессмертный Феникс", powerMultiplier: 120 },
+            { emoji: "👑🐻", name: "Huge Король Медведей", powerMultiplier: 95 },
+            { emoji: "🌌🐲", name: "Huge Космический Дракон", powerMultiplier: 130 },
+            { emoji: "❄️👑", name: "Huge Ледяной Король", powerMultiplier: 100 },
+            { emoji: "🌈🦄", name: "Huge Радужный Единорог", powerMultiplier: 115 }
+        ];
+
         function generateLocations(worldMultiplier) {
             const locations = [];
             for (let i = 1; i <= 99; i++) {
@@ -477,40 +511,54 @@
             return locations;
         }
 
-        // Генерация питомцев для яйца с шансами
-        function generateEggPets(worldTheme, locationId, worldMultiplier) {
-            const basePower = Math.floor(locationId * 2 * worldMultiplier);
-            const petEmojis = {
-                forest: ['🐣', '🐥', '🐦', '🐿️', '🐱', '🐶', '🦊', '🐼', '🐨', '🦌', '🐻', '🦄', '🐉'],
-                volcano: ['🦎', '🐍', '🔥', '🐉', '🌋', '💥', '🗿', '😈', '💀'],
-                ice: ['🐧', '🐻‍❄️', '❄️', '⛄', '🧊', '🗻', '💎'],
-                sky: ['🐦', '🦅', '⚡', '🌈', '🌙', '⭐', '🌟'],
-                hell: ['🦇', '👻', '😈', '💀', '👁️', '🌑'],
-                paradise: ['🕊️', '🦄', '✨', '🌟', '👑', '🌌']
-            };
-            const emojis = petEmojis[worldTheme] || petEmojis.forest;
+        // Генерация питомцев для конкретного яйца (все разные!)
+        function generateEggPets(eggType, locationId, worldMultiplier, worldTheme) {
+            const basePower = Math.floor(locationId * worldMultiplier);
+            let powerMultiplier = 1;
+            
+            // Чем дороже яйцо, тем сильнее питомцы
+            switch(eggType) {
+                case 'common': powerMultiplier = 1; break;
+                case 'rare': powerMultiplier = 3; break;
+                case 'epic': powerMultiplier = 8; break;
+                case 'legendary': powerMultiplier = 20; break;
+                case 'mythic': powerMultiplier = 50; break;
+                default: powerMultiplier = 1;
+            }
             
             const pets = [];
+            const animalList = ALL_ANIMALS[eggType] || ALL_ANIMALS.common;
+            
             // 5 обычных питомцев с разными шансами
+            const chances = [35, 28, 22, 12, 3];
+            
             for (let i = 0; i < 5; i++) {
-                let chance = 40 - i * 7; // 40%, 33%, 26%, 19%, 12%
-                let power = basePower * (i + 1);
+                const animal = animalList[Math.floor(Math.random() * animalList.length)];
+                let power = Math.floor(basePower * powerMultiplier * (i + 1));
+                if (power < 1) power = 1;
+                
                 pets.push({
-                    emoji: emojis[Math.floor(Math.random() * emojis.length)],
-                    name: `Питомец ${locationId}-${i + 1}`,
-                    power: Math.floor(power),
-                    chance: chance,
+                    emoji: animal.emoji,
+                    name: animal.name,
+                    power: power,
+                    chance: chances[i],
                     isHuge: false
                 });
             }
-            // Huge питомец с шансом 0.1%
+            
+            // Huge питомец (специальный для каждого яйца)
+            const hugeIndex = (locationId + eggType.length) % HUGE_PETS.length;
+            const hugePet = HUGE_PETS[hugeIndex];
+            const hugePower = Math.floor(basePower * powerMultiplier * 50);
+            
             pets.push({
-                emoji: '🌟',
-                name: `Huge ${worldTheme.toUpperCase()} Питомец`,
-                power: Math.floor(basePower * 50),
-                chance: 0.1,
+                emoji: hugePet.emoji,
+                name: hugePet.name,
+                power: hugePower,
+                chance: 0.2,
                 isHuge: true
             });
+            
             return pets;
         }
 
@@ -527,24 +575,22 @@
                 
                 this.currentWorld = 0;
                 this.worlds = [
-                    { name: "🌳 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌳", theme: "forest", locations: [] },
-                    { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 50000, icon: "🔥", theme: "volcano", locations: [] },
-                    { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 200000, icon: "❄️", theme: "ice", locations: [] },
-                    { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 800000, icon: "⚡", theme: "sky", locations: [] },
-                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 2500000, icon: "💀", theme: "hell", locations: [] },
-                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 10000000, icon: "👑", theme: "paradise", locations: [] }
+                    { name: "🌳 Лесная чаща", multiplier: 1, unlocked: true, cost: 0, icon: "🌳", theme: "forest", locations: [], currentLocation: 0 },
+                    { name: "🔥 Вулкан", multiplier: 2, unlocked: false, cost: 50000, icon: "🔥", theme: "volcano", locations: [], currentLocation: 0 },
+                    { name: "❄️ Ледник", multiplier: 3, unlocked: false, cost: 200000, icon: "❄️", theme: "ice", locations: [], currentLocation: 0 },
+                    { name: "⚡ Небеса", multiplier: 5, unlocked: false, cost: 800000, icon: "⚡", theme: "sky", locations: [], currentLocation: 0 },
+                    { name: "💀 Преисподняя", multiplier: 8, unlocked: false, cost: 2500000, icon: "💀", theme: "hell", locations: [], currentLocation: 0 },
+                    { name: "👑 Райский сад", multiplier: 12, unlocked: false, cost: 10000000, icon: "👑", theme: "paradise", locations: [], currentLocation: 0 }
                 ];
                 
                 this.worlds.forEach(world => {
                     world.locations = generateLocations(world.multiplier);
                 });
                 
-                this.currentLocation = 0;
                 this.pets = [];
                 this.activeSlots = 1;
                 this.maxSlots = 99;
                 this.slotPets = [null];
-                this.bulkUnlock = 1; // 1, 4 или 8
                 
                 this.upgrades = [
                     { id: "click", name: "💪 Усиление клика", desc: "+5 к силе", price: 500, priceType: "coins", effect: () => { this.clickPower += 5; }, level: 0, basePrice: 500 },
@@ -612,10 +658,10 @@
             }
             
             canUseBulkAmount(amount) {
-                const currentLocation = this.currentLocation + 1;
+                const currentLocation = this.worlds[this.currentWorld].currentLocation + 1;
                 if (amount === 1) return true;
-                if (amount === 4) return currentLocation >= 300; // 3-й мир (примерно)
-                if (amount === 8) return currentLocation >= 594; // 6-й мир, 99 локация
+                if (amount === 4) return currentLocation >= 300;
+                if (amount === 8) return currentLocation >= 594;
                 return false;
             }
             
@@ -626,7 +672,7 @@
             }
             
             updateBulkUnlock() {
-                const currentLocation = this.currentLocation + 1;
+                const currentLocation = this.worlds[this.currentWorld].currentLocation + 1;
                 const can4x = currentLocation >= 300;
                 const can8x = currentLocation >= 594;
                 
@@ -679,7 +725,7 @@
                             emoji: selectedPet.emoji,
                             name: selectedPet.name,
                             power: selectedPet.power,
-                            rarity: selectedPet.isHuge ? 'huge' : 'common',
+                            rarity: selectedPet.isHuge ? 'huge' : eggData.type,
                             isHuge: selectedPet.isHuge || false
                         };
                         
@@ -690,7 +736,7 @@
                             this.assignPetToSlot(emptySlot, newPet);
                         }
                         
-                        this.showRandomEffect(`${selectedPet.isHuge ? '🌟 HUGE! 🌟 ' : '🎉'} +${newPet.name} (⚡${newPet.power})`, window.innerWidth/2, window.innerHeight/2, selectedPet.isHuge ? '#ff66cc' : '#ffd700');
+                        this.showRandomEffect(`${selectedPet.isHuge ? '🌟 HUGE! 🌟 ' : '🎉'} +${newPet.name} (⚡${this.formatNumber(newPet.power)})`, window.innerWidth/2, window.innerHeight/2, selectedPet.isHuge ? '#ff66cc' : '#ffd700');
                     }
                     
                     this.showMessage(`🎉 Открыто ${count} яиц! Получено ${count} питомцев!`);
@@ -704,10 +750,11 @@
             }
             
             clickPet(event) {
-                let locationBonus = this.worlds[this.currentWorld].locations[this.currentLocation].multiplier;
-                let worldBonus = this.worlds[this.currentWorld].multiplier;
-                let boostBonus = this.boostActive ? 2 : 1;
-                let slotBonus = this.activeSlots;
+                const currentWorldData = this.worlds[this.currentWorld];
+                const locationBonus = currentWorldData.locations[currentWorldData.currentLocation].multiplier;
+                const worldBonus = currentWorldData.multiplier;
+                const boostBonus = this.boostActive ? 2 : 1;
+                const slotBonus = this.activeSlots;
                 let earned = Math.floor(this.clickPower * locationBonus * worldBonus * this.multiplier * boostBonus * slotBonus);
                 
                 this.coins += earned;
@@ -826,12 +873,13 @@
             }
             
             changeLocation(delta) {
-                const newLocation = this.currentLocation + delta;
-                const locations = this.worlds[this.currentWorld].locations;
+                const currentWorldData = this.worlds[this.currentWorld];
+                const newLocation = currentWorldData.currentLocation + delta;
+                const locations = currentWorldData.locations;
                 if (newLocation >= 0 && newLocation < locations.length) {
                     const location = locations[newLocation];
                     if (location.unlocked) {
-                        this.currentLocation = newLocation;
+                        currentWorldData.currentLocation = newLocation;
                         this.renderLocation();
                         this.renderEggs();
                         this.updateBulkUnlock();
@@ -841,7 +889,7 @@
                         if (this.coins >= location.unlockCost) {
                             this.coins -= location.unlockCost;
                             location.unlocked = true;
-                            this.currentLocation = newLocation;
+                            currentWorldData.currentLocation = newLocation;
                             this.renderLocation();
                             this.renderEggs();
                             this.updateBulkUnlock();
@@ -972,7 +1020,6 @@
             changeWorld(worldIndex) {
                 if (this.worlds[worldIndex].unlocked) {
                     this.currentWorld = worldIndex;
-                    this.currentLocation = 0;
                     this.renderWorlds();
                     this.renderLocation();
                     this.renderEggs();
@@ -1006,7 +1053,7 @@
                     card.className = `slot-card ${pet ? 'unlocked' : ''}`;
                     card.innerHTML = `
                         <div class="slot-number">Слот ${i + 1}</div>
-                        ${pet ? `<div class="slot-pet-emoji">${pet.emoji}</div><div style="font-size: 10px;">${pet.name}</div><div style="font-size: 9px; color:#ffd700;">⚡${pet.power}</div>` : '<div style="font-size: 12px;">🔓 Пусто</div>'}
+                        ${pet ? `<div class="slot-pet-emoji">${pet.emoji}</div><div style="font-size: 10px;">${pet.name}</div><div style="font-size: 9px; color:#ffd700;">⚡${this.formatNumber(pet.power)}</div>` : '<div style="font-size: 12px;">🔓 Пусто</div>'}
                         ${pet ? `<button class="btn" style="margin-top: 5px; padding: 3px 8px; font-size: 10px;" onclick="game.removePetFromSlot(${i})">✖ Убрать</button>` : ''}
                     `;
                     container.appendChild(card);
@@ -1015,10 +1062,11 @@
             }
             
             renderLocation() {
-                const location = this.worlds[this.currentWorld].locations[this.currentLocation];
+                const currentWorldData = this.worlds[this.currentWorld];
+                const location = currentWorldData.locations[currentWorldData.currentLocation];
                 document.getElementById('locationName').textContent = location.name;
                 document.getElementById('locationMultiplier').textContent = `Множитель: x${location.multiplier.toFixed(2)} | Стоимость: ${this.formatNumber(location.unlockCost)}💰`;
-                const progress = ((this.currentLocation + 1) / 99) * 100;
+                const progress = ((currentWorldData.currentLocation + 1) / 99) * 100;
                 document.getElementById('locationProgress').style.width = `${progress}%`;
             }
             
@@ -1036,41 +1084,45 @@
             
             renderEggs() {
                 const container = document.getElementById('eggsContainer');
-                const location = this.worlds[this.currentWorld].locations[this.currentLocation];
-                const pets = generateEggPets(this.worlds[this.currentWorld].theme, location.id, this.worlds[this.currentWorld].multiplier);
+                const currentWorldData = this.worlds[this.currentWorld];
+                const location = currentWorldData.locations[currentWorldData.currentLocation];
                 
-                const eggs = [
-                    { id: "common", name: "🥚 Обычное яйцо", price: 1000 * location.id * this.worlds[this.currentWorld].multiplier, icon: "🥚", pets: pets },
-                    { id: "rare", name: "🔵 Редкое яйцо", price: 5000 * location.id * this.worlds[this.currentWorld].multiplier, icon: "🔵🥚", pets: pets },
-                    { id: "epic", name: "🟣 Эпическое яйцо", price: 20000 * location.id * this.worlds[this.currentWorld].multiplier, icon: "🟣🥚", pets: pets },
-                    { id: "legendary", name: "⭐ Легендарное яйцо", price: 80000 * location.id * this.worlds[this.currentWorld].multiplier, icon: "⭐🥚", pets: pets },
-                    { id: "mythic", name: "💎 Мифическое яйцо", price: 250000 * location.id * this.worlds[this.currentWorld].multiplier, icon: "💎🥚", pets: pets }
+                // Цены на яйца - чем дороже яйцо, тем лучше питомцы
+                const eggTypes = [
+                    { type: "common", name: "🥚 Обычное яйцо", price: 500 * location.id * currentWorldData.multiplier, icon: "🥚", color: "#8B4513" },
+                    { type: "rare", name: "🔵 Редкое яйцо", price: 2500 * location.id * currentWorldData.multiplier, icon: "🔵🥚", color: "#3498db" },
+                    { type: "epic", name: "🟣 Эпическое яйцо", price: 10000 * location.id * currentWorldData.multiplier, icon: "🟣🥚", color: "#9b59b6" },
+                    { type: "legendary", name: "⭐ Легендарное яйцо", price: 50000 * location.id * currentWorldData.multiplier, icon: "⭐🥚", color: "#f39c12" },
+                    { type: "mythic", name: "💎 Мифическое яйцо", price: 250000 * location.id * currentWorldData.multiplier, icon: "💎🥚", color: "#e91e63" }
                 ];
                 
                 container.innerHTML = '';
-                eggs.forEach(egg => {
+                for (const eggType of eggTypes) {
+                    const pets = generateEggPets(eggType.type, location.id, currentWorldData.multiplier, currentWorldData.theme);
+                    
                     const card = document.createElement('div');
                     card.className = 'egg-card';
                     card.innerHTML = `
-                        <div class="egg-header"><div class="egg-emoji">${egg.icon}</div><div class="egg-title">${egg.name}</div></div>
-                        <div class="egg-price">💰 ${this.formatNumber(egg.price)} монет</div>
+                        <div class="egg-header"><div class="egg-emoji">${eggType.icon}</div><div class="egg-title">${eggType.name}</div></div>
+                        <div class="egg-price">💰 ${this.formatNumber(eggType.price)} монет</div>
                         <div class="pet-list">
                             <div style="font-size: 12px; color: #ffd700; margin-bottom: 8px;">📋 Питомцы и шансы:</div>
-                            ${egg.pets.map(p => `
+                            ${pets.map(p => `
                                 <div class="pet-item">
                                     <div class="pet-name-chance">
                                         <span class="pet-emoji-small">${p.emoji}</span>
                                         <span>${p.name}</span>
                                         ${p.isHuge ? '<span class="huge-badge">🌟 HUGE</span>' : ''}
+                                        <span class="power-badge">⚡${this.formatNumber(p.power)}</span>
                                     </div>
                                     <span class="chance-badge">${p.chance}%</span>
                                 </div>
                             `).join('')}
                         </div>
                     `;
-                    card.onclick = () => this.openEgg(egg, this.bulkAmount);
+                    card.onclick = () => this.openEgg({ ...eggType, pets: pets }, this.bulkAmount);
                     container.appendChild(card);
-                });
+                }
             }
             
             renderPets() {
@@ -1088,7 +1140,7 @@
                         ${isEquipped ? '<div class="equipped-badge">✅</div>' : ''}
                         <div class="pet-card-emoji">${pet.emoji}</div>
                         <div class="pet-card-name">${pet.name}</div>
-                        <div class="pet-card-power">⚡${pet.power}</div>
+                        <div class="pet-card-power">⚡${this.formatNumber(pet.power)}</div>
                         ${!isEquipped ? `<button class="sell-btn" onclick="game.sellPet(${pet.id})">💰 ${this.formatNumber(Math.floor(pet.power * 10))}💰</button>` : '<div style="font-size: 10px; color:#ffd700; margin-top: 5px;">В слоте</div>'}
                     `;
                     card.onclick = (e) => { 
@@ -1155,10 +1207,11 @@
                 if (this.autoInterval) clearInterval(this.autoInterval);
                 this.autoInterval = setInterval(() => {
                     if (this.autoClickerLevel > 0) {
-                        let locationBonus = this.worlds[this.currentWorld].locations[this.currentLocation].multiplier;
-                        let worldBonus = this.worlds[this.currentWorld].multiplier;
-                        let boostBonus = this.boostActive ? 2 : 1;
-                        let slotBonus = this.activeSlots;
+                        const currentWorldData = this.worlds[this.currentWorld];
+                        const locationBonus = currentWorldData.locations[currentWorldData.currentLocation].multiplier;
+                        const worldBonus = currentWorldData.multiplier;
+                        const boostBonus = this.boostActive ? 2 : 1;
+                        const slotBonus = this.activeSlots;
                         let earned = Math.floor(this.autoClickerLevel * 8 * locationBonus * worldBonus * this.multiplier * boostBonus * slotBonus);
                         this.coins += earned;
                         this.updateUI();
@@ -1179,32 +1232,54 @@
             }
             
             saveGame() {
+                const worldsSave = this.worlds.map(world => ({
+                    name: world.name,
+                    multiplier: world.multiplier,
+                    unlocked: world.unlocked,
+                    cost: world.cost,
+                    icon: world.icon,
+                    theme: world.theme,
+                    locations: world.locations,
+                    currentLocation: world.currentLocation
+                }));
+                
                 const save = {
                     coins: this.coins, gems: this.gems, clickPower: this.clickPower, totalClicks: this.totalClicks,
-                    multiplier: this.multiplier, currentWorld: this.currentWorld, currentLocation: this.currentLocation,
-                    worlds: this.worlds, pets: this.pets, slotPets: this.slotPets, activeSlots: this.activeSlots,
+                    multiplier: this.multiplier, currentWorld: this.currentWorld,
+                    worlds: worldsSave,
+                    pets: this.pets, slotPets: this.slotPets, activeSlots: this.activeSlots,
                     upgrades: this.upgrades.map(u => ({ level: u.level, price: u.price })),
                     autoClickerLevel: this.autoClickerLevel, boostActive: this.boostActive, boostEndTime: this.boostEndTime
                 };
-                localStorage.setItem('petSimulatorHuge', JSON.stringify(save));
+                localStorage.setItem('petSimulatorFinal', JSON.stringify(save));
             }
             
             loadGame() {
-                const save = localStorage.getItem('petSimulatorHuge');
+                const save = localStorage.getItem('petSimulatorFinal');
                 if (save) {
                     const data = JSON.parse(save);
                     this.coins = data.coins; this.gems = data.gems; this.clickPower = data.clickPower;
                     this.totalClicks = data.totalClicks; this.multiplier = data.multiplier;
-                    this.currentWorld = data.currentWorld; this.currentLocation = data.currentLocation || 0;
-                    this.worlds = data.worlds; this.pets = data.pets; this.slotPets = data.slotPets || [null];
+                    this.currentWorld = data.currentWorld;
+                    this.pets = data.pets; this.slotPets = data.slotPets || [null];
                     this.activeSlots = data.activeSlots || 1;
                     this.autoClickerLevel = data.autoClickerLevel;
                     this.boostActive = data.boostActive; this.boostEndTime = data.boostEndTime;
+                    
+                    if (data.worlds) {
+                        this.worlds = data.worlds;
+                    }
+                    
                     if (data.upgrades) this.upgrades.forEach((u, i) => { if (data.upgrades[i]) { u.level = data.upgrades[i].level; u.price = data.upgrades[i].price; } });
                 }
-                if (this.worlds[0].locations.length === 0) {
-                    this.worlds.forEach(world => { world.locations = generateLocations(world.multiplier); });
-                }
+                
+                this.worlds.forEach(world => {
+                    if (world.currentLocation === undefined) world.currentLocation = 0;
+                    if (!world.locations || world.locations.length === 0) {
+                        world.locations = generateLocations(world.multiplier);
+                    }
+                });
+                
                 if (!this.slotPets || this.slotPets.length < this.activeSlots) {
                     this.slotPets = Array(this.activeSlots).fill(null);
                 }
